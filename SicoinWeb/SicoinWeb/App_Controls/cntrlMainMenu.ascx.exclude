@@ -1,0 +1,43 @@
+﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlMainMenu.ascx.vb" Inherits="App_Controls_cntrlMainMenu" %>
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
+<asp:SqlDataSource ID="dsMainMenu" runat="server" ConnectionString="<%$ ConnectionStrings:UTC_IntranetConnectionString %>" SelectCommand="SELECT menuID, menuText, menuParent, menuSection, menuSortKey, menuChilds FROM vMenuItems WHERE (menuParent = @menuParent) AND (@admin = 0) AND (menuSortKey &lt; 99) OR (menuParent = @menuParent) AND (@admin = 1) ORDER BY menuSortKey">
+    <SelectParameters>
+        <asp:Parameter DefaultValue="0" Name="menuParent" Type="Int32" />
+        <asp:SessionParameter DefaultValue="0" Name="admin" SessionField="IsAdmin" />
+    </SelectParameters>
+</asp:SqlDataSource>
+<asp:DataList ID="dtlMenu" runat="server"  CellPadding="15" DataKeyField="menuID" DataSourceID="dsMainMenu" Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Size="11pt" Font-Strikeout="False" Font-Underline="False" ForeColor="White" HorizontalAlign="Center" RepeatColumns="10" RepeatDirection="Horizontal" RepeatLayout="Flow" ShowFooter="False" ShowHeader="False">
+    <ItemStyle  Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Size="11pt" Font-Strikeout="False" Font-Underline="False" ForeColor="White" HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False" CssClass="menuitem" />
+    <ItemTemplate>
+             <asp:Linkbutton ID="menuTextLabel" runat="server" Text='<%# Eval("menuText") %>' CssClass="menulabel" CommandArgument='<%# Eval("menuID")%>' OnClick="openSection" Enabled='<%# Eval("menuSection") IsNot DBNull.Value%>' ></asp:Linkbutton>
+    <asp:HiddenField ID="hflMenuItem" runat="server" Value='<%# Eval("menuId")%>' />
+             <asp:HoverMenuExtender ID="menuTextLabel_HoverMenuExtender" runat="server" Enabled="True" TargetControlID="menuTextLabel" PopupControlID="pnlMenuItems" OffsetY="29" OffsetX="-10" PopDelay="300">
+             </asp:HoverMenuExtender>
+                <asp:Panel ID="pnlMenuItems" runat="server" CssClass="menuchildlist" Visible='<%# Eval("menuChilds") > 0%>' >
+            
+            <asp:SqlDataSource ID="dsMenuChilds" runat="server" ConnectionString="<%$ ConnectionStrings:UTC_IntranetConnectionString %>" SelectCommand="SELECT * FROM [vMenuItems] WHERE ([menuParent] = @menuParent) ORDER BY [menuSortKey]">
+                <SelectParameters>
+                    <asp:ControlParameter ControlID="hflMenuItem" Name="menuParent" PropertyName="Value" Type="Int32" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+            
+            <asp:DataList ID="dtlChilds" runat="server" DataKeyField="menuID" DataSourceID="dsMenuChilds">
+                <ItemStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" HorizontalAlign="Center" VerticalAlign="Middle" Wrap="False" CssClass="menuchilditem" />
+                <ItemTemplate>
+                    <asp:Linkbutton ID="lnbMenu" runat="server" Text='<%# Eval("menuText") %>' CommandArgument='<%# Eval("menuID")%>' OnClick="openSection" Enabled='<%# Eval("menuSection") IsNot DBNull.Value%>' ></asp:Linkbutton>
+                    
+                </ItemTemplate>
+                <SeparatorTemplate></SeparatorTemplate>
+                <SeparatorStyle CssClass="separatorh" />
+            </asp:DataList>
+            
+        </asp:Panel>
+    
+      
+    
+    </ItemTemplate>
+    <SeparatorStyle Font-Bold="False" Font-Italic="False" Font-Overline="False" Font-Strikeout="False" Font-Underline="False" Wrap="False" HorizontalAlign="Center" VerticalAlign="Middle" Font-Names="Verdana" CssClass="separator"  />
+    <SeparatorTemplate><asp:Image runat="server" ImageUrl="~/images/separator.jpg" ImageAlign="Middle" /></SeparatorTemplate>
+</asp:DataList>
+
+<asp:HiddenField ID="hflMenuID" runat="server" />

@@ -1,0 +1,177 @@
+﻿Imports System.Data
+Partial Class cntrlOutputData
+    Inherits System.Web.UI.UserControl
+
+    Public WriteOnly Property Operacion As String
+        Set(value As String)
+            hflOp.Value = value
+            getData()
+        End Set
+    End Property
+    Public Sub clearAll()
+
+        For Each c As Control In Me.Controls
+            If c.GetType() = (New TextBox).GetType() Then
+                Dim txtb As TextBox = DirectCast(c, TextBox)
+                If txtb.Enabled Then
+                    txtb.Text = ""
+                    txtb.CssClass = "textboxg uppercase"
+                End If
+            End If
+        Next
+
+        txtTiempo.Text = DateDiff("d", txtFecha.Text, txtFechaout.Text)
+        txtDescargado.Focus()
+
+    End Sub
+
+    Protected Sub getData()
+        Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
+        If Not dt Is Nothing Then
+            Dim dr As DataRow = dt.Rows(0)
+
+            txtBox.Text = dr("Caja")
+            txtMercancia.Text = dr("Mercancia")
+            txtFecha.Text = dr("Fechain")
+            txtPeso.Text = dr("Peso")
+            txtCliente.Text = dr("Cliente")
+            txtNombre.Text = dr("Nombre")
+            txtRazon.Text = dr("RSocial")
+            txtValor.Text = dr("Valorc")
+            txtFraccion.Text = dr("Fraccion")
+            txtImp1.Text = dr("Importador")
+            txtImp2.Text = dr("Dirimp")
+            txtClave.Text = dr("ClavePed")
+            txtFechaAb.Text = dr("Fechaab")
+            txtCont.Text = dr("Contenedor")
+            txtBultos.Text = dr("Bultos")
+            ddlUM.SelectedValue = dr("UM")
+            txtFechaout.Text = dr("Fechaout")
+            If txtFechaout.Text.Trim = "" Then
+                txtFechaout.Text = Now
+            End If
+            txtTiempo.Text = DateDiff("d", txtFecha.Text, txtFechaout.Text)
+            txtDescargado.Text = dr("Descargado")
+            txtRemanente.Text = dr("Remanente")
+            txtFactura.Text = dr("Factura").trim
+            txtCFDI.Text = dr("CFDI").trim
+            txtMontoMXP.Text = dr("MontoCFDI")
+            txtMontoUSD.Text = dr("MontoCFDIDlls")
+            txtAprov.Text = isNull(dr("Aprovechamiento"), "")
+            Dim Terminado As Boolean = dr("Terminado")
+
+            pnlOut.Enabled = Not Terminado
+            pnlButtons.Visible = Not Terminado
+            txtDescargado.Focus()
+
+        End If
+        clearAll()
+    End Sub
+
+
+    Public Event Aceptar()
+    Public Event Cancelar()
+
+    Dim ValidationMessage As String
+
+    Protected Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+        Try
+            If Not ValidationOK() Then
+                cntrlError.errorMessage = ValidationMessage
+                Exit Sub
+            End If
+
+            If txtCFDI.Text <> "" And txtFactura.Text <> "" And txtMontoMXP.Text <> "" And txtMontoUSD.Text <> "" And txtDescargado.Text <> "" And txtAprov.Text <> "" Then
+                pnlConfirm_ModalPopupExtender.Show()
+            Else
+                SaveData(False)
+            End If
+   
+        Catch ex As Exception
+            cntrlError.errorMessage = ex.Message
+        End Try
+    End Sub
+
+    Protected Sub SaveData(term As Boolean)
+        Dim result As String = ""
+        result = _
+            doSQLProcedure("spInventario_Out", Data.CommandType.StoredProcedure, , _
+                           "@Operacion", hflOp.Value, _
+                           "@Fechaout", CDate(txtFechaout.Text), _
+                           "@Descargado", txtDescargado.Text, _
+                           "@Remanente", txtRemanente.Text, _
+                           "@Factura", txtFactura.Text,
+                           "@CFDI", txtCFDI.Text, _
+                           "@MontoCFDI", txtMontoMXP.Text, _
+                           "@MontoCFDIDlls", txtMontoUSD.Text, _
+                           "@Aprovechamiento", txtAprov.Text, _
+                           "@Terminado", term)
+
+        If result <> "" Then
+            cntrlError.errorMessage = result
+        Else
+            RaiseEvent Aceptar()
+        End If
+    End Sub
+
+    Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+        RaiseEvent Cancelar()
+    End Sub
+
+    Protected Function ValidationOK() As Boolean
+        ValidationOK = True
+        ValidationMessage = ""
+
+        'For Each c As Control In pnlUpdate1.Controls.Item(0).Controls
+        '    If c.GetType() = (New TextBox).GetType() Then
+        '        Dim txtb As TextBox = DirectCast(c, TextBox)
+        '        If txtb.Enabled Then
+        '            txtb.CssClass = "textboxg"
+        '            Dim t As String = txtb.Text
+        '            If t.Trim = "" Then
+        '                ValidationOK = False
+        '                txtb.CssClass = "textboxr"
+        '            End If
+        '        End If
+        '    End If
+        'Next
+
+        'If Not ValidationOK Then
+        '    ValidationMessage = "Ninguno de los valores pueden quedar vacíos."
+        'End If
+
+        If Not IsNumeric(txtDescargado.Text) Then
+            ValidationOK = False
+            ValidationMessage &= IIf(ValidationMessage <> "", "<br>", "") & "El campo 'Descargado' debe ser numérico."
+            txtValor.CssClass = "textboxr"
+        End If
+
+        If Not IsNumeric(txtMontoMXP.Text) And txtMontoMXP.Text <> "" And txtCFDI.Text <> "" Then
+            ValidationOK = False
+            ValidationMessage &= IIf(ValidationMessage <> "", "<br>", "") & "El campo 'Monto MXP' debe ser numérico."
+            txtFraccion.CssClass = "textboxr"
+        End If
+
+        If Not IsNumeric(txtMontoUSD.Text) And txtMontoUSD.Text <> "" And txtCFDI.Text <> "" Then
+            ValidationOK = False
+            ValidationMessage &= IIf(ValidationMessage <> "", "<br>", "") & "El campo 'Monto USD' debe ser numérico."
+            txtFraccion.CssClass = "textboxr"
+        End If
+
+        Return ValidationOK
+    End Function
+
+    Protected Sub txtDescargado_TextChanged(sender As Object, e As EventArgs) Handles txtDescargado.TextChanged
+        If IsNumeric(txtDescargado.Text) Then
+            txtRemanente.Text = txtPeso.Text - txtDescargado.Text
+        End If
+    End Sub
+
+    Protected Sub btnYes_Click(sender As Object, e As EventArgs) Handles btnYes.Click
+        SaveData(True)
+    End Sub
+
+    Protected Sub btnNo_Click(sender As Object, e As EventArgs) Handles btnNo.Click
+        SaveData(False)
+    End Sub
+End Class

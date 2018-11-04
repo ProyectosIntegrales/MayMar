@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2019
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SicoinWeb(1)", "SicoinWeb\", "{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62912"
+		Debug.AspNetCompiler.PhysicalPath = "SicoinWeb\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62912\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62912"
+		Release.AspNetCompiler.PhysicalPath = "SicoinWeb\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62912\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "62912"
+		SlnRelativePath = "SicoinWeb\"
+		DefaultWebSiteLanguage = "Visual Basic"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66ED2173-60EE-4D00-B8A7-138722A9E50A}
+	EndGlobalSection
+EndGlobal

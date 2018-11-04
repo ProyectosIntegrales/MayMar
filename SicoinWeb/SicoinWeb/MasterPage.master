@@ -1,0 +1,65 @@
+﻿<%@ Master Language="VB" CodeFile="MasterPage.master.vb" Inherits="MasterPage" %>
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+
+<%@ Register Src="App_Controls/cntrlLogin.ascx" TagName="cntrlLogin" TagPrefix="uc2" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+        <link href="Styles.css" rel="stylesheet" type="text/css" />
+    
+    <script src="scripts/jquery/jquery-1.12.4.js"></script>
+    <meta name="description" content="The description of my page" />
+</head>
+<body >
+    <form id="form1" runat="server">
+  <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true"></asp:ToolkitScriptManager>
+        <asp:LinkButton ID="lnkFake" runat="server" />
+        <div style="position:absolute; top:0; left:300px; color: #FFF; filter: alpha(opacity=0);    opacity: 0.0;">
+        <p>Session Idle:&nbsp;<span id="secondsIdle"></span>&nbsp;seconds.</p></div>
+<asp:ModalPopupExtender ID="mpeTimeout" BehaviorID ="mpeTimeout" runat="server" PopupControlID="pnlPopup" TargetControlID="lnkFake"
+     CancelControlID="btnNo" BackgroundCssClass="modalBackground">
+</asp:ModalPopupExtender>
+<asp:Panel ID="pnlPopup" runat="server" CssClass="modalPopUpBig" Width="30%" Style="display: none" BackColor="White">
+    <h3>
+        Session Expiring!
+    </h3>
+    <div style="padding:15px;">
+        Your Session will expire in&nbsp;<span id="seconds"></span>&nbsp;seconds.<br /><br />
+        Do you want to reset?
+    </div>
+    <div class="footer" align="right">
+        <asp:Button ID="btnYes" runat="server" Text="Yes" CssClass="btna" OnClick="setSession" />
+        <asp:Button ID="btnNo" runat="server" Text="No" CssClass="btnb" />
+    </div>
+</asp:Panel>
+
+  
+        <div class="content">
+            <table width="60%">
+            <tr>
+                <td align="left" valign="top" width="300"><h2>Sistema de Control de Inventarios</h2></td>
+                <td align="right" ><asp:Image ID="imdLogo" runat="server" ImageUrl="~/images/SicoinLogo.png" Width="150px" style="position:absolute; left:400px; top:20px"/></td>
+                <td>&nbsp;</td>
+            </tr>
+                             </table>
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+            </div>
+
+        <asp:HiddenField ID="hflEmployeeNo" runat="server" Value="0" />
+        <asp:HiddenField ID="hflUsername" runat="server" />
+        <asp:HiddenField ID="hflSectionID" runat="server" Value="1" />
+        <asp:HiddenField ID="hflMenuID" runat="server" Value="1" />
+
+
+
+    </form>
+</body>
+</html>
