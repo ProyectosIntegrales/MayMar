@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlError.ascx.vb" Inherits="App_Controls_cntrlError" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<asp:Panel ID="pnlError" runat="server" CssClass="errorMessage" Width="600" Style="display:none" >
+<asp:Panel ID="pnlError" runat="server" CssClass="errorMessage" Width="600" Style="display:none; z-index:100000; top:30%" >
        
     <table style="width: 100%">
         <tr>
@@ -20,5 +20,5 @@
 <asp:Button ID="btnPopUp" runat="server" Style="display: none" />
 <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" DropShadow="True"
     TargetControlID="btnPopUp" PopupControlID="pnlError" BackgroundCssClass="modalBackground"
-    Y="158"></asp:ModalPopupExtender>
+    Y="200"></asp:ModalPopupExtender>
     <asp:HiddenField ID="hflReturn" runat="server" Value="False" />

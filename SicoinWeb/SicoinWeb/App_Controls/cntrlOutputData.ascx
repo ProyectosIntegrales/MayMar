@@ -66,27 +66,7 @@
         <td align="right" valign="top">&nbsp;</td>
         <td>
             &nbsp;</td>
-        <td align="right">
-            &nbsp;</td>
-        <td align="left">
-            &nbsp;</td>
-    </tr>
-    <tr>
-        <td align="right" valign="top">Fracción A.</td>
-        <td>
-            <asp:TextBox ID="txtFraccion" runat="server" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" Enabled="False"></asp:TextBox>
-        &nbsp;</td>
-        <td align="right">
-            &nbsp;</td>
-        <td align="left">
-            &nbsp;</td>
-    </tr>
-    <tr>
-        <td align="right" valign="top">Valor Comercial</td>
-        <td>
-            <asp:TextBox ID="txtValor" runat="server"  onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" Enabled="False"></asp:TextBox>
-        &nbsp;</td>
-        <td align="right" rowspan="4" colspan="2">
+        <td align="right" colspan="2" rowspan="6">
             <asp:Panel ID="pnlOut" runat="server" CssClass="tableHl" Style="position:relative; width:400px; left:-10px;" >
 
            <asp:UpdatePanel ID="pnlUpdate1" runat="server">
@@ -106,7 +86,7 @@
         <td align="right" valign="top">&nbsp;</td>
                     <td align="left" valign="top"></td>
                 </tr>
-                <tr>
+                <tr >
         <td align="right" valign="top">
            
             Descargado</td>
@@ -116,16 +96,56 @@
                         &nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="right" colspan="2" valign="top">
-                        &nbsp;</td>
+                    <td align="right" colspan="2" valign="middle" style="min-height: 50px;">
+                        <asp:Button ID="btnDeclAb" runat="server" Text="Declarar en Abandono" CssClass="btn" />
+                        <asp:Panel ID="pnlDeclAbandono" runat="server" Visible="false" style="border-top: 1px solid #333; margin-top:5px;" >
+                            <table>
+                                <tr><td style="padding: 5px; width:50%">Declaracón en abandono</td>
+                                    <td style="padding: 5px; width:50%">Fecha de salida de abandono</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; width:50%">
+<asp:TextBox ID="txtDeclAb" runat="server" CssClass="textboxg uppercase" Enabled="False" Width="100%"></asp:TextBox>
+                                        <ajaxToolkit:CalendarExtender ID="txtDeclAb_CalendarExtender" runat="server" TargetControlID="txtDeclAb">
+                                        </ajaxToolkit:CalendarExtender>
+                                    </td>
+                                    <td style="padding: 5px; width:50%">
+<asp:TextBox ID="txtSalAb" runat="server" CssClass="textboxg uppercase" Width="100%"></asp:TextBox>
+                                                                            <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtSalAb">
+                                        </ajaxToolkit:CalendarExtender>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px; width:50%" valign="top">Comentario sobre la razón de Abandono:
+                                    </td>
+                                    <td style="padding: 5px; width:50%">
+                                        <asp:HiddenField ID="hflDeclAb" runat="server" />
+                                        <asp:TextBox runat="server" ID="txtNotaAb" Width="100%" CssClass="textboxg uppercase" MaxLength="1000" Rows="4" TextMode="MultiLine"></asp:TextBox>
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
+                    </td>
                 </tr>
             </table>
-                             
 
-                                  </ContentTemplate>
+
+               </ContentTemplate>
            </asp:UpdatePanel>
                   </asp:Panel>
         </td>
+    </tr>
+    <tr>
+        <td align="right" valign="top">Fracción A.</td>
+        <td>
+            <asp:TextBox ID="txtFraccion" runat="server" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" Enabled="False"></asp:TextBox>
+        &nbsp;</td>
+    </tr>
+    <tr>
+        <td align="right" valign="top">Valor Comercial</td>
+        <td>
+            <asp:TextBox ID="txtValor" runat="server"  onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" Enabled="False"></asp:TextBox>
+        &nbsp;</td>
     </tr>
     <tr>
         <td align="right" valign="top">Importador/Exportador</td>
@@ -174,7 +194,7 @@
 
 <asp:HiddenField ID="hflOp" runat="server" />
 
-<asp:Panel ID="pnlPopUp" runat="server" CssClass="modalPopUpBig" Width="300" Height="150">
+<asp:Panel ID="pnlPopUp" runat="server" CssClass="modalPopUpBig" Width="300" Height="150" style="display:none" >
     <div style="text-align:center; padding:15px;">
         Se ha completado el total de la información de salida para<br />este registro.<br /><br />¿Desea marcar esta operación como terminada?.<br /><br />
         <asp:Button ID="btnYes" runat="server" CssClass="btn" Text="Si" Width="80" />

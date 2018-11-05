@@ -19,11 +19,17 @@ Partial Class cntrlOutputData
                     txtb.CssClass = "textboxg uppercase"
                 End If
             End If
+
+            txtSalAb.Text = ""
+            txtNotaAb.Text = ""
+            btnDeclAb.Visible = True
+            pnlDeclAbandono.Visible = False
         Next
 
     End Sub
 
     Protected Sub getData()
+        clearAll()
         Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
         If Not dt Is Nothing Then
             Dim dr As DataRow = dt.Rows(0)
@@ -44,6 +50,10 @@ Partial Class cntrlOutputData
             txtFechaAb.Text = dr("Fechaab")
             txtCont.Text = dr("Contenedor")
             txtBultos.Text = dr("Bultos")
+            txtDeclAb.Text = isNull(dr("FechaDeclAb"), "")
+            txtSalAb.Text = isNull(dr("FechaSalidaAb"), "")
+            txtNotaAb.Text = isNull(dr("NotaAb"), "")
+
             Try
                 ddlUM.SelectedValue = isNull(dr("UM"), 1)
             Catch ex As Exception
@@ -57,17 +67,28 @@ Partial Class cntrlOutputData
             txtTiempo.Text = DateDiff("d", txtFecha.Text, txtFechaout.Text)
             txtDescargado.Text = dr("Descargado")
             txtRemanente.Text = dr("Remanente")
-       
+
             Dim Terminado As Boolean = dr("Terminado")
 
             pnlOut.Enabled = Not Terminado
             pnlButtons.Visible = Not Terminado
             If txtDescargado.Text.Trim = "0" Then txtDescargado.Text = ""
 
+
+
             btnMod.Visible = Session("IsAdmin")
         End If
-        clearAll()
         txtDescargado.Focus()
+
+        If txtDeclAb.Text <> "" Then
+            pnlDeclAbandono.Visible = True
+            btnDeclAb.Visible = False
+            hflDeclAb.Value = True
+            txtSalAb.Focus()
+        Else
+            hflDeclAb.Value = False
+        End If
+
 
     End Sub
 
@@ -97,18 +118,35 @@ Partial Class cntrlOutputData
 
     Protected Sub SaveData(term As Boolean)
         Dim result As String = ""
-        result = _
-            doSQLProcedure("spInventario_Out", Data.CommandType.StoredProcedure, , _
-                           "@Operacion", hflOp.Value, _
-                           "@Fechaout", CDate(txtFechaout.Text), _
-                           "@Descargado", txtDescargado.Text, _
-                           "@Remanente", txtRemanente.Text, _
+        result =
+            doSQLProcedure("spInventario_Out", Data.CommandType.StoredProcedure, ,
+                           "@Operacion", hflOp.Value,
+                           "@Fechaout", CDate(txtFechaout.Text),
+                           "@Descargado", txtDescargado.Text,
+                           "@Remanente", txtRemanente.Text,
                            "@Terminado", term)
 
         If result <> "" Then
             cntrlError.errorMessage = result
         Else
-            RaiseEvent Aceptar()
+
+            If hflDeclAb.Value Then
+                result = doSQLProcedure("spInventario_Ab", Data.CommandType.StoredProcedure,,
+                               "@Operacion", hflOp.Value,
+                               "@FechaDeclAb", txtDeclAb.Text,
+                               "@FechaSalidaAb", IIf(txtSalAb.Text.Trim = "", DBNull.Value, txtSalAb.Text),
+                               "@NotaAb", txtNotaAb.Text)
+
+                If result <> "" Then
+                    cntrlError.errorMessage = result
+                End If
+
+            End If
+
+            If result = "" Then
+                RaiseEvent Aceptar()
+            End If
+
         End If
     End Sub
 
@@ -147,5 +185,11 @@ Partial Class cntrlOutputData
     Public Event ModBtnClicked()
     Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
         RaiseEvent ModBtnClicked()
+    End Sub
+    Protected Sub btnDeclAb_Click(sender As Object, e As EventArgs) Handles btnDeclAb.Click
+        pnlDeclAbandono.Visible = True
+        btnDeclAb.Visible = False
+        hflDeclAb.Value = True
+        txtDeclAb.Text = Now
     End Sub
 End Class
