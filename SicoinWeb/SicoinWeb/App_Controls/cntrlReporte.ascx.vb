@@ -98,8 +98,19 @@ Partial Class cntrlReporte
             Dim reportFile As String = dr.Item("reportFile")
             Dim reportName As String = Mid(reportFile, reportFile.LastIndexOf("/") + 2)
             Dim reportTitle As String = dr.Item("reportTitle").ToString.Trim
-            Dim serverName As String = dr.Item("DatabaseServerName")
-            Dim databaseName As String = dr.Item("DatabaseName")
+            Dim dvs As DataView = DirectCast(dsServer.Select(DataSourceSelectArguments.Empty), DataView)
+            Dim drs As DataRow = dvs.Item(0).Row
+
+            Dim serverName As String
+            Dim databaseName As String
+
+            If Not drs Is DBNull.Value Then
+                serverName = drs.Item("ServerName")
+                databaseName = drs.Item("DatabaseName")
+            Else
+                serverName = dr.Item("DatabaseServerName")
+                databaseName = dr.Item("DatabaseName")
+            End If
 
             Dim oDfDopt As New DiskFileDestinationOptions
             Dim expo As New ExportOptions

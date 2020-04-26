@@ -154,7 +154,7 @@ input:focus {
 
 .btnca {
     font-size: .9em;
-    padding:5px;
+    padding: 5px;
     width: 120px;
     border-radius: 5px 5px 0 0;
     text-align: center;
@@ -164,9 +164,11 @@ input:focus {
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     background-image: url("images/icons/16X16/applications.png");
-    background-position:center;
+    background-position: center;
     background-repeat: no-repeat;
     background-color: #d1dcef;
+    position: relative;
+    top: 9px;
 }
 
     .btnca:hover {
@@ -1054,7 +1056,7 @@ hr {
 .tabs {
     width: 50%;
     margin-left: 20px;
-    top: 96px;
+    top: 87px;
     position: absolute;
     font-size: 1.3em;
 }

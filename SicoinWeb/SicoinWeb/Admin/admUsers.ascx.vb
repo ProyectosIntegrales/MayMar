@@ -28,12 +28,13 @@ Partial Class Admin_admUsers
     Protected Sub Save(sender As Object, e As ImageClickEventArgs)
         Dim b As ImageButton = sender
         Dim r As GridViewRow = b.Parent.Parent
-        Result = doSQLProcedure("spUsers", Data.CommandType.StoredProcedure, , "@Action", "UPD", _
-                                "@Username", DirectCast(r.FindControl("Label1"), Label).Text, _
-                                "@Nombre", DirectCast(r.FindControl("Textbox2"), TextBox).Text, _
-                                "@Email", DirectCast(r.FindControl("Textbox3"), TextBox).Text, _
-                                "@Priv", DirectCast(r.FindControl("ddlPrivs"), DropDownList).SelectedValue _
-                               )
+        Result = doSQLProcedure("spUsers", Data.CommandType.StoredProcedure, , "@Action", "UPD",
+                                "@Username", DirectCast(r.FindControl("Label1"), Label).Text,
+                                "@Nombre", DirectCast(r.FindControl("Textbox2"), TextBox).Text,
+                                "@Email", DirectCast(r.FindControl("Textbox3"), TextBox).Text,
+                                "@Priv", DirectCast(r.FindControl("ddlPrivs"), DropDownList).SelectedValue,
+                                "@Server", DirectCast(r.FindControl("ddlServer"), DropDownList).SelectedValue
+                                )
         If Not Result = "" Then
             cntrlError1.errorMessage = Result
         Else
@@ -46,12 +47,13 @@ Partial Class Admin_admUsers
     Dim Result As String
     Protected Sub Insert(sender As Object, e As ImageClickEventArgs)
         Dim r As GridViewRow = gvUsers.FooterRow
-        Result = doSQLProcedure("spUsers", Data.CommandType.StoredProcedure, , "@Action", "ADD", _
-                                "@Username", DirectCast(r.FindControl("Textbox1"), TextBox).Text, _
-                                "@Nombre", DirectCast(r.FindControl("Textbox2"), TextBox).Text, _
-                                "@Email", DirectCast(r.FindControl("Textbox3"), TextBox).Text, _
-                                "@Password", DirectCast(r.FindControl("Textbox4"), TextBox).Text, _
-                                "@Priv", DirectCast(r.FindControl("ddlPrivs"), DropDownList).SelectedValue _
+        Result = doSQLProcedure("spUsers", Data.CommandType.StoredProcedure, , "@Action", "ADD",
+                                "@Username", DirectCast(r.FindControl("Textbox1"), TextBox).Text,
+                                "@Nombre", DirectCast(r.FindControl("Textbox2"), TextBox).Text,
+                                "@Email", DirectCast(r.FindControl("Textbox3"), TextBox).Text,
+                                "@Password", DirectCast(r.FindControl("Textbox4"), TextBox).Text,
+                                "@Priv", DirectCast(r.FindControl("ddlPrivs"), DropDownList).SelectedValue,
+                                "@Server", DirectCast(r.FindControl("ddlServer"), DropDownList).SelectedValue
                                 )
         If Not Result = "" Then
             cntrlError1.errorMessage = Result

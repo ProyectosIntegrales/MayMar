@@ -133,3 +133,12 @@
 
 
 
+<asp:SqlDataSource ID="dsServer" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.ServerID, tblServers.ServerName, tblServers.DatabaseName, tblUsers.Username FROM tblServers INNER JOIN tblUsers ON tblServers.ID = tblUsers.ServerID WHERE (tblUsers.Username = @Username)">
+    <SelectParameters>
+        <asp:SessionParameter Name="Username" SessionField="Username" />
+    </SelectParameters>
+</asp:SqlDataSource>
+
+
+
+
