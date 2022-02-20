@@ -1,6 +1,8 @@
 ﻿Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
 Imports CrystalDecisions.ReportSource
+Imports System.Data
+
 Partial Class App_Controls_cntrlRepAnexo29
     Inherits System.Web.UI.UserControl
 
@@ -18,9 +20,17 @@ Partial Class App_Controls_cntrlRepAnexo29
 
             Dim reportFile As String = "~/reports/Anexo29.rpt"
             Dim reportName As String = Mid(reportFile, reportFile.LastIndexOf("/") + 2)
-            reportTitle = "Anexo 29 - Folio: " & FolioNum
+            reportTitle = "Anexo 29 - Folio: " & folioNum
             Dim serverName As String = ".\SQLEXPRESS"
             Dim databaseName As String = "Maymar"
+
+            Dim dvs As DataView = DirectCast(dsServer.Select(DataSourceSelectArguments.Empty), DataView)
+            Dim drs As DataRow = dvs.Item(0).Row
+
+            If Not drs Is DBNull.Value Then
+                serverName = drs.Item("ServerName")
+                databaseName = drs.Item("DatabaseName")
+            End If
 
             Dim oDfDopt As New DiskFileDestinationOptions
             Dim expo As New ExportOptions
@@ -33,7 +43,7 @@ Partial Class App_Controls_cntrlRepAnexo29
             FileDestinationPath = MapPath("~/_temp/" & reportName.Replace(".", "_") & "_" & Session.SessionID.ToString & Now.GetHashCode & ".tmp")
 
             oRDoc.Load(MapPath(strCrystalReportFilePath)) 'loads the crystalreports in to the memory
-            oRDoc.SetParameterValue("Folio", FolioNum)
+            oRDoc.SetParameterValue("Folio", folioNum)
 
             oDfDopt.DiskFileName = FileDestinationPath 'path of file where u want to locate ur PDF
             oRDoc.SetDatabaseLogon("maymaruser", "mm2016")

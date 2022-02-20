@@ -217,7 +217,7 @@ Partial Class App_Controls_cntrlAnexo29
         Catch ex As Exception
 
         End Try
-   
+
     End Sub
 
     Protected Function FolioNumero(FolioText As String) As Integer

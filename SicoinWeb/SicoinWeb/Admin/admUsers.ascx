@@ -39,6 +39,22 @@
                         </ItemTemplate>
                     </asp:TemplateField>
  
+                    <asp:TemplateField ConvertEmptyStringToNull="False" HeaderText="ServerName" SortExpression="ServerName">
+                        <EditItemTemplate>
+                            <asp:DropDownList ID="ddlServer" runat="server" CssClass="editTextbox" DataSourceID="dsServers" DataTextField="ServerName" DataValueField="ID" SelectedValue='<%# Eval("ServerID") %>'  >
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="dsServers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT 0 AS ID, 'Seleccionar' AS ServerName UNION SELECT ID, ServerName + '\' + DatabaseName AS ServerName FROM tblServers"></asp:SqlDataSource>
+                        </EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblServer" runat="server" Text='<%# Bind("ServerName") %>' />
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            <asp:DropDownList ID="ddlServer" runat="server" CssClass="editTextbox" DataSourceID="dsServers" DataTextField="ServerName" DataValueField="ID" >
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="dsServers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT 0 AS ID, 'Seleccionar' AS ServerName UNION SELECT ID, ServerName + '\' + DatabaseName AS ServerName FROM tblServers"></asp:SqlDataSource>
+                        </FooterTemplate>
+                    </asp:TemplateField>
+ 
                     <asp:TemplateField HeaderText="Priv" SortExpression="Descripcion">
                         <EditItemTemplate>
                             <asp:DropDownList ID="ddlPrivs" runat="server" DataSourceID="dsPrivs" DataTextField="Descripcion" DataValueField="Priv" CssClass="editTextbox" selectedValue='<%# Bind("Priv")%>'></asp:DropDownList>
@@ -98,7 +114,7 @@
                 <RowStyle VerticalAlign="Top" />
                 <SelectedRowStyle CssClass="selectedCell" />
             </asp:GridView>
-            <asp:SqlDataSource ID="dsUsers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.Username, tblUsers.Nombre, tblUsers.Email, tblUsers.Password, tblUsers.Priv, tblPrivs.Descripcion FROM tblUsers INNER JOIN tblPrivs ON tblUsers.Priv = tblPrivs.Priv ORDER BY tblUsers.Username"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="dsUsers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.Username, tblUsers.Nombre, tblUsers.Email, tblUsers.Password, tblUsers.Priv, tblPrivs.Descripcion, tblServers.ServerName + '\' + tblServers.DatabaseName AS ServerName, ISNULL(tblUsers.ServerID, 0) AS ServerID FROM tblUsers INNER JOIN tblPrivs ON tblUsers.Priv = tblPrivs.Priv LEFT OUTER JOIN tblServers ON tblUsers.ServerID = tblServers.ID ORDER BY tblUsers.Username"></asp:SqlDataSource>
 
         
     </ContentTemplate>

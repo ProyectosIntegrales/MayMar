@@ -9,14 +9,6 @@
 <%@ Register Src="~/App_Controls/cntrlConsulta.ascx" TagPrefix="uc1" TagName="cntrlConsulta" %>
 
 
-
-
-
-
-
-
-
-
 <style type="text/css">
     .auto-style1 {
         width: 100%;
@@ -101,14 +93,12 @@
 </div>
 
 <asp:Panel ID="pnlMain" runat="server" CssClass="mainDialog" Style="position: relative; top: -20px">
-    <uc1:cntrlInventory runat="server" id="cntrlInventory" />
+    <uc1:cntrlInventory runat="server" ID="cntrlInventory" />
 </asp:Panel>
 
 <asp:Panel ID="pnlAnx" runat="server"  CssClass="mainDialog" Style="position: relative; top: -20px">
     <uc1:cntrlAnexo29 runat="server" ID="cntrlAnexo29" />
 </asp:Panel>
-
-
 
 <asp:Panel ID="pnlAdmin" runat="server" Visible="false" CssClass="mainDialog" Style="position: relative; top: -20px; padding-top:20px;">
  

@@ -193,6 +193,7 @@
 <uc1:cntrlError ID="cntrlError" runat="server" />
 
 <asp:HiddenField ID="hflOp" runat="server" />
+<asp:HiddenField ID="hflUsername" runat="server" />
 
 <asp:Panel ID="pnlPopUp" runat="server" CssClass="modalPopUpBig" Width="300" Height="150" style="display:none" >
     <div style="text-align:center; padding:15px;">

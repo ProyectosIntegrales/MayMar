@@ -99,6 +99,8 @@ input:focus {
     -webkit-border-radius: 5px 5px 0 0;
     border: 1px solid #DDD;
     background-color: #dcdcdc;
+    position:relative;
+    top: -9px;
 }
 
 /*.btnb:hover  {
@@ -121,6 +123,8 @@ input:focus {
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     background-color: #d1dcef;
+    position:relative;
+    top: -9px;
 }
 
     .btnc:hover {

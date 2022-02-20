@@ -11,6 +11,7 @@ Partial Class App_Controls_cntrlMain
         Set(value As String)
             hflUsername.Value = value
             cntrlAdmin.Username = value
+            cntrlInventory.Username = value
         End Set
     End Property
 
@@ -88,7 +89,7 @@ Partial Class App_Controls_cntrlMain
                 ' txtOp.Focus()
                 btnInv.Enabled = False
                 btnInv.CssClass = "btnb"
-
+                cntrlInventory.Username = hflUsername.Value
             ElseIf pnlAnx.Visible Then
             End If
 

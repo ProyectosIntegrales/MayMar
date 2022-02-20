@@ -5,8 +5,13 @@ Partial Class cntrlOutputData
     Public WriteOnly Property Operacion As String
         Set(value As String)
             hflOp.Value = value
-
             getData()
+        End Set
+    End Property
+
+    Public WriteOnly Property Username As String
+        Set(value As String)
+            hflUsername.Value = value
         End Set
     End Property
     Public Sub clearAll()
@@ -122,6 +127,8 @@ Partial Class cntrlOutputData
             doSQLProcedure("spInventario_Out", Data.CommandType.StoredProcedure, ,
                            "@Operacion", hflOp.Value,
                            "@Fechaout", CDate(txtFechaout.Text),
+                           "@Caja", txtBox.Text,
+                           "@User", hflUsername.Value,
                            "@Descargado", txtDescargado.Text,
                            "@Remanente", txtRemanente.Text,
                            "@Terminado", term)

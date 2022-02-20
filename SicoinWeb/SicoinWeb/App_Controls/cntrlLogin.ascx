@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlLogin.ascx.vb" Inherits="App_Controls_cntrlLogin" %>
   
-<asp:Panel ID="pnlLogin" runat="server" CssClass="loginDialog" Width="400" Height="200" HorizontalAlign="Center">
+<asp:Panel ID="pnlLogin" runat="server" CssClass="loginDialog" Width="400" Height="200" HorizontalAlign="Center" DefaultButton="btnOK">
     <asp:Panel ID="pnlUsername" runat="server">
 
     <asp:Label ID="lbl1" runat="server" Text="Acceso de usuarios" style="color:#FFF; font-size: 18px; font-weight:bold"></asp:Label>
