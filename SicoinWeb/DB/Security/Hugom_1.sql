@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [Hugom]
+    AUTHORIZATION [Hugom];
+
