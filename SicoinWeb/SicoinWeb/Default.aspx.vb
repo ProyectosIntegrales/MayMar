@@ -3,6 +3,10 @@
 Partial Class _Default
     Inherits System.Web.UI.Page
 
+    Public Sub New()
+        AddMigrations()
+    End Sub
+
     Protected Sub cntrlWelcome1_LoginClicked()
 
         cntrlWelcome1.Visible = False

@@ -5,12 +5,6 @@
 <%@ Register Src="~/Admin/admServers.ascx" TagPrefix="uc1" TagName="admServers" %>
 <%@ Register Src="~/Admin/admUsers.ascx" TagPrefix="uc1" TagName="admUsers" %>
 
-
-
-<%@ Register src="../Admin/admServers.ascx" tagname="admServers" tagprefix="uc2" %>
-
-
-
 <asp:HiddenField ID="hflUsername" runat="server" />
 <div style="padding-left:20px; padding-right: 20px;">
 

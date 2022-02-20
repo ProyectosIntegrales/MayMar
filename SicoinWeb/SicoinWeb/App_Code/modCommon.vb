@@ -169,8 +169,6 @@ Public Module modCommon
     Public Function SQLDataTable(ByVal selectCommand As String, Optional Connection As String = "MayMarCS") As DataTable
 
         Try
-
-
             Dim dt As New DataTable
             Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings(Connection).ToString)
 
@@ -181,7 +179,6 @@ Public Module modCommon
             Return ds.Tables(0)
         Catch ex As Exception
             Return Nothing
-
         End Try
     End Function
 

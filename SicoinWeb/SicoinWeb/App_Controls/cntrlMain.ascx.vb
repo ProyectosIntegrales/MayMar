@@ -19,8 +19,6 @@ Partial Class App_Controls_cntrlMain
 
 
     Public Sub Initialize()
-
-
         If Not Username = Nothing Then
 
             Dim dt As DataTable = SQLDataTable("SELECT Nombre, Priv FROM tblUsers WHERE Username = '" & Username & "'")
