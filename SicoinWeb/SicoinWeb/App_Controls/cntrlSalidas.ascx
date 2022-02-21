@@ -2,7 +2,10 @@
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="ajaxToolkit" %>
 
 <div style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px;">
-    <h3 style="margin-top: 0">Control de Salidas</h3>
+    <h3 style="margin-top: 0">
+        <asp:Timer ID="Timer1" runat="server" Interval="60000">
+        </asp:Timer>
+        Control de Salidas</h3>
     <h4>Salidas Pendientes</h4>
     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="8" DataSourceID="dsSalidas" HorizontalAlign="Center" Width="100%">
         <Columns>
@@ -28,7 +31,7 @@
             </asp:TemplateField>
         </Columns>
         <EmptyDataTemplate>
-            No existen salidas por aceptar en este momento.. consulte con el administrador si cree que esto es un error!
+            No existen Salidas por Aceptar en este momento. Consulte con el Administrador si cree que esto es un Error!
         </EmptyDataTemplate>
         <FooterStyle BackColor="White" ForeColor="#000066" />
         <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" Height="20px" HorizontalAlign="Center" VerticalAlign="Middle" />
@@ -84,6 +87,6 @@
 </asp:Panel>
 
 <asp:Button ID="btnPopUp" runat="server" Style="display: none" />
-<ajaxtoolkit:modalpopupextender id="pnlConfirm_ModalPopupExtender" runat="server" targetcontrolid="btnPopUp" popupcontrolid="pnlPopUp" backgroundcssclass="modalBackground" CancelControlID="btnNo">
+<ajaxtoolkit:modalpopupextender id="pnlConfirm_ModalPopupExtender" runat="server" targetcontrolid="btnPopUp" popupcontrolid="pnlPopUp" backgroundcssclass="modalBackground">
 </ajaxtoolkit:modalpopupextender>
 <asp:HiddenField ID="hflID" runat="server" />
