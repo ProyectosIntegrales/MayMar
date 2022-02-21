@@ -2,16 +2,11 @@
 
 Partial Class _Default
     Inherits System.Web.UI.Page
-
-    Public Sub New()
-        AddMigrations()
-    End Sub
-
     Protected Sub cntrlWelcome1_LoginClicked()
 
         cntrlWelcome1.Visible = False
         cntrlLogin.Visible = True
-        cntrlLogin.initialize()
+        cntrlLogin.Initialize()
     End Sub
 
     Protected Sub cntrlLogin_Cancel() Handles cntrlLogin.Cancel

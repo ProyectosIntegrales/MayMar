@@ -1,9 +1,11 @@
 ﻿Imports Microsoft.VisualBasic
 
 Public Module modMigrations
-    Public Function AddMigrations()
+    Public Sub AddMigrations()
         CrearTablaMigrations()
-    End Function
+        Dim migrations As New Migrations()
+        migrations.ImplementMigrations()
+    End Sub
 
     'Crea tabla de Migraciones
     Private Sub CrearTablaMigrations()
@@ -18,4 +20,17 @@ Public Module modMigrations
         Dim result = doSQLProcedure(cmd, Data.CommandType.Text)
         Console.Write(result)
     End Sub
+
+    Public Sub NewMigration(MigrationName As String, MigrationCommand As String)
+        Dim check = SQLDataTable("SELECT * FROM _migrations WHERE migrationName = '" & MigrationName & "'")
+        If check.Rows.Count = 0 Then
+            Dim result = doSQLProcedure(MigrationCommand, Data.CommandType.Text)
+            If (result Is Nothing) Then
+                doSQLProcedure(
+                "INSERT INTO _migrations (migrationName, migrationDate) " &
+                "VALUES ('" & MigrationName & "', GETDATE())", Data.CommandType.Text)
+            End If
+        End If
+    End Sub
+
 End Module

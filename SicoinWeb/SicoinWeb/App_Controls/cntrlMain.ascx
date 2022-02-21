@@ -9,6 +9,9 @@
 <%@ Register Src="~/App_Controls/cntrlConsulta.ascx" TagPrefix="uc1" TagName="cntrlConsulta" %>
 
 
+<%@ Register src="cntrlSalidas.ascx" tagname="cntrlSalidas" tagprefix="uc2" %>
+
+
 <style type="text/css">
     .auto-style1 {
         width: 100%;
@@ -92,21 +95,25 @@
 
 </div>
 
-<asp:Panel ID="pnlMain" runat="server" CssClass="mainDialog" Style="position: relative; top: -20px">
+<asp:Panel ID="pnlMain" runat="server" CssClass="mainDialog panel" >
     <uc1:cntrlInventory runat="server" ID="cntrlInventory" />
 </asp:Panel>
 
-<asp:Panel ID="pnlAnx" runat="server"  CssClass="mainDialog" Style="position: relative; top: -20px">
+<asp:Panel ID="pnlAnx" runat="server"  CssClass="mainDialog panel">
     <uc1:cntrlAnexo29 runat="server" ID="cntrlAnexo29" />
 </asp:Panel>
 
-<asp:Panel ID="pnlAdmin" runat="server" Visible="false" CssClass="mainDialog" Style="position: relative; top: -20px; padding-top:20px;">
+<asp:Panel ID="pnlAdmin" runat="server" Visible="false" CssClass="mainDialog panel" >
  
     <uc1:cntrlAdmin runat="server" ID="cntrlAdmin" />
 </asp:Panel>
 
-<asp:Panel ID="pnlConsulta" runat="server" Visible="false" CssClass="mainDialog" Style="position: relative; top: -20px; padding-top:20px;">
+<asp:Panel ID="pnlConsulta" runat="server" Visible="false" CssClass="mainDialog panel" >
     <uc1:cntrlConsulta runat="server" ID="cntrlConsulta" />
+</asp:Panel>
+
+<asp:Panel ID="pnlSalidas" runat="server" Visible="false" CssClass="mainDialog panel">
+    <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" />
 </asp:Panel>
 
 <asp:Panel ID="pnlConfirm" runat="server" CssClass="modalPopUpBig" Width="300" Height="150" Style="display: none">
@@ -134,6 +141,14 @@
 
 
 <asp:HiddenField ID="hflUsername" runat="server" />
+
+
+
+
+
+
+
+
 
 
 

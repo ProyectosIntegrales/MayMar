@@ -158,8 +158,8 @@ Public Module modCommon
             End With
 
         Catch ex As Exception
+            doSQLProcedure("spErrorLog", CommandType.StoredProcedure, , "@logText", ex.ToString)
             Return "error: " & ex.Message
-            doSQLProcedure("spErrorLog", CommandType.StoredProcedure, , "@logText", ex.ToString, "@logUsername", System.Environment.UserName, "@logMachineId", System.Environment.MachineName)
         Finally
             cm.Connection.Close()
         End Try

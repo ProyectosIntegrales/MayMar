@@ -10,10 +10,10 @@
 
 <div class="menu1" style="white-space: nowrap;">
     <a id="lnbAb" href="#" class="btn" style="margin-right: 100px;" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
-    <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn">Reportes</a>
+    <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right:10px">Reportes</a>
 </div>
 
-<div id="reps" style="display: none; position: absolute; top: 40px; right: 10px; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 199px; border-width: 2px; box-shadow: 5px 5px 10px; padding: 10px; z-index: 10000">
+<div id="reps" style="display: none; position: absolute; top: 40px; right: 20px; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 199px; border-width: 2px; box-shadow: 5px 5px 10px; padding: 10px; z-index: 10000">
     <asp:LinkButton runat="server" ID="lnbReportes" Text="Reporte de Inventario" Style="padding-left: 20px; padding-bottom: 15px;"></asp:LinkButton><br style="height: 10px" />
     <asp:LinkButton runat="server" ID="lnbReportAb" Text="Reporte de Abandonos" Style="padding-left: 20px;"></asp:LinkButton>
 </div>

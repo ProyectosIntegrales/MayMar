@@ -20,43 +20,57 @@ Partial Class App_Controls_cntrlMain
 
     Public Sub Initialize()
         If Not Username = Nothing Then
-
             Dim dt As DataTable = SQLDataTable("SELECT Nombre, Priv FROM tblUsers WHERE Username = '" & Username & "'")
             lblname.Text = dt.Rows(0)("Nombre")
-
-            Session("IsAdmin") = dt.Rows(0)("Priv") = 5
-
-            If dt.Rows(0)("Priv") = 0 Then
-                pnlMain.Visible = False
-
-                pnlAdmin.Visible = False
-                pnlAnx.Visible = False
-                pnlConsulta.Visible = True
-                btnConsulta.Visible = True
-                btnAdmin.Visible = False
-                btnAnx.Visible = False
-                btnInv.Visible = False
-
-            Else
-                pnlMain.Visible = True
-                pnlAdmin.Visible = False
-                pnlAnx.Visible = False
-                pnlConsulta.Visible = False
-
-                btnConsulta.Visible = False
-                btnAdmin.Visible = Session("IsAdmin")
-                btnAnx.Visible = True
-                btnInv.Visible = True
-
-            End If
-
+            Dim priv = dt.Rows(0)("Priv")
+            Session("IsAdmin") = priv = 5
+            Select Case priv
+                Case 0 'Consulta
+                    pnlMain.Visible = False
+                    pnlAdmin.Visible = False
+                    pnlAnx.Visible = False
+                    pnlSalidas.Visible = False
+                    pnlConsulta.Visible = True
+                    btnConsulta.Visible = True
+                    btnAdmin.Visible = False
+                    btnAnx.Visible = False
+                    btnInv.Visible = False
+                Case 3 'Capturista
+                    pnlMain.Visible = True
+                    pnlAdmin.Visible = False
+                    pnlAnx.Visible = False
+                    pnlConsulta.Visible = False
+                    pnlSalidas.Visible = False
+                    btnConsulta.Visible = False
+                    btnAdmin.Visible = Session("IsAdmin")
+                    btnAnx.Visible = True
+                    btnInv.Visible = True
+                Case 4 'Caseta
+                    pnlMain.Visible = False
+                    pnlAdmin.Visible = False
+                    pnlAnx.Visible = False
+                    pnlConsulta.Visible = False
+                    pnlSalidas.Visible = True
+                    btnConsulta.Visible = False
+                    btnAnx.Visible = False
+                    btnInv.Visible = False
+                    btnAdmin.Visible = False
+                Case 5 'Admin
+                    pnlMain.Visible = True
+                    pnlAdmin.Visible = False
+                    pnlAnx.Visible = False
+                    pnlConsulta.Visible = False
+                    pnlSalidas.Visible = False
+                    btnConsulta.Visible = False
+                    btnAdmin.Visible = Session("IsAdmin")
+                    btnAnx.Visible = True
+                    btnInv.Visible = True
+            End Select
         Else
             RaiseEvent Close()
-
         End If
     End Sub
 
-  
 
     Public Event Close()
 
