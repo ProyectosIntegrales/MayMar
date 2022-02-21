@@ -3,7 +3,7 @@
 
 <div style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px;">
     <h3 style="margin-top: 0">
-        <asp:Timer ID="Timer1" runat="server" Interval="60000">
+        <asp:Timer ID="Timer1" runat="server" Interval="5000">
         </asp:Timer>
         Control de Salidas</h3>
     <h4>Salidas Pendientes</h4>
