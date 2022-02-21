@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="admClientes.ascx.vb" Inherits="Admin_admClientes" %>
-<%@ Register Src="../App_Controls/cntrlError.ascx" TagName="cntrlError" TagPrefix="uc1" %>
+<%@ Register Src="../cntrlError.ascx" TagName="cntrlError" TagPrefix="uc1" %>
 <asp:UpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
         <asp:GridView ID="gvClientes" runat="server" AutoGenerateColumns="False" CssClass="gridView" DataSourceID="dsClientes" AllowPaging="True" PageSize="12" ShowHeaderWhenEmpty="True" AllowSorting="True" Width="100%">
