@@ -7,6 +7,57 @@ Public Class Migrations
 
     Public Sub Migrations_Feb2022()
         NewMigration(
+            MigrationName:="20220219100000_Crear Tabla tblSalidas",
+            MigrationCommand:=
+                "CREATE TABLE [dbo].[tblSalidas](" &
+                "[ID] [int] IDENTITY(1,1) NOT NULL," &
+                "[Operacion] [nvarchar](max) NOT NULL," &
+                "[Caja] [nchar](10) NULL," &
+                "[FechaTerminado] [datetime] NULL," &
+                "[UserTerminado] [nvarchar](50) NULL," &
+                "[FechaSalida] [datetime] NULL," &
+                "[UserSalida] [nvarchar](50) NULL" &
+                ") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]"
+                )
+
+        NewMigration(
+            MigrationName:="20220219110000_Alter spInventario_Out",
+            MigrationCommand:=
+                "ALTER PROCEDURE [dbo].[spInventario_Out] @Operacion char(20), @Caja char(20), @User char(50), @Fechaout datetime, @Descargado float, @Remanente float, @Terminado bit AS " &
+                "BEGIN " &
+                "SET NOCOUNT ON; " &
+                "Declare @hh int = datepart(Hour,@fechaout) " &
+                "Declare @ap char(1) " &
+                "IF @hh > 12 " &
+                "BEGIN " &
+                "SET @hh = @hh -12 " &
+                "SET @ap = 'p' " &
+                "END " &
+                "ELSE " &
+                "SET @ap = 'a' " &
+                "IF @hh = 0 " &
+                "BEGIN " &
+                "SET @hh = 12 " &
+                "SET @ap = 'a' " &
+                "END " &
+                "Declare @Horaout char(10) = replace(str(@hh,2),' ','0') + ':' +  replace(str(datepart(minute,@fechaout),2),' ','0') + ':' + replace(str(datepart(second,@fechaout),2),' ','0') + ' ' + @ap " &
+                "UPDATE Inventario " &
+                "SET Fechaout = @Fechaout," &
+                "Horaout = @Horaout," &
+                "DiasAlmacen = DATEDIFF(DAY,@Fechaout, Fechain) ," &
+                "Descargado = @Descargado," &
+                "Remanente = @Remanente," &
+                "Terminado = @Terminado," &
+                "[Status] = 1 " &
+                "WHERE Operacion = @Operacion " &
+                "If @Terminado = 1 " &
+                "BEGIN " &
+                "INSERT INTO tblSalidas (Operacion, Caja, FechaTerminado, UserTerminado) " &
+                "VALUES (@Operacion, @Caja, @Fechaout, @User) " &
+                "END END"
+            )
+
+        NewMigration(
             MigrationName:="20220221100100_vSalidas",
             MigrationCommand:=
                 "CREATE VIEW [dbo].[vSalidas] " &
