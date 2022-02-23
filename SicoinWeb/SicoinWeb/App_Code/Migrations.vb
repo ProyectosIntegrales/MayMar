@@ -117,6 +117,57 @@ Public Class Migrations
             "SET FechaSalida = GETDATE(), UserSalida = @username	WHERE ID = @id " &
             "END"
             )
+
+        NewMigration(
+            MigrationName:="20220222162600_Correcion a Insert de tblUsers",
+            MigrationCommand:=
+            "-- ============================================= " & vbCr &
+            "-- Author:		Gabriel Estrada " & vbCr &
+            "-- Create date: 2020-04-25 " & vbCr &
+            "-- Description:	<Description,,> " & vbCr &
+            "-- ============================================= " & vbCr &
+            "ALTER PROCEDURE [dbo].[spUsers] " & vbCr &
+            "	-- Add the parameters for the stored procedure here " & vbCr &
+            "	@Action char(3), " & vbCr &
+            "	@Username varchar(50), " & vbCr &
+            "	@Nombre varchar(150) = '', " & vbCr &
+            "	@Email varchar(300) = '', " & vbCr &
+            "  	@Server int = 0, " & vbCr &
+            "	@Password varchar(50) = '', " & vbCr &
+            "	@Priv Int = 0 " & vbCr &
+            "AS " & vbCr &
+            "BEGIN " & vbCr &
+            "	-- SET NOCOUNT ON added to prevent extra result sets from " & vbCr &
+            "	-- interfering with SELECT statements. " & vbCr &
+            "	SET NOCOUNT ON; " & vbCr &
+            "    -- Insert statements for procedure here " & vbCr &
+            "	IF @Action = 'ADD' " & vbCr &
+            "	BEGIN " & vbCr &
+            "		INSERT INTO tblUsers (Username, Nombre, Email, [Password], Priv, ServerID) " & vbCr &
+            "			VALUES(@Username, @Nombre, @Email, @Password, @Priv, @Server) " & vbCr &
+            "	END " & vbCr &
+            "	IF @Action = 'UPD' " & vbCr &
+            "	BEGIN " & vbCr &
+            "		UPDATE tblUsers " & vbCr &
+            "			SET Nombre = @Nombre, " & vbCr &
+            "				Email = @Email, " & vbCr &
+            "				Priv = @Priv, " & vbCr &
+            "				ServerID = @Server " & vbCr &
+            "			WHERE Username = @Username " & vbCr &
+            "	END " & vbCr &
+            "	IF @Action = 'DEL' " & vbCr &
+            "	BEGIN " & vbCr &
+            "		DELETE tblUsers WHERE Username = @Username " & vbCr &
+            "	END " & vbCr &
+            " " & vbCr &
+            "	IF @Action = 'PWD' " & vbCr &
+            "	BEGIN " & vbCr &
+            "		UPDATE tblUsers " & vbCr &
+            "			SET [Password] = @Password " & vbCr &
+            "		WHERE Username = @Username " & vbCr &
+            "	END " & vbCr &
+            "END "
+            )
     End Sub
 
 End Class

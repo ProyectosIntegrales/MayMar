@@ -15,15 +15,15 @@ Partial Class App_Controls_cntrlMain
         End Set
     End Property
 
-    
-
 
     Public Sub Initialize()
         If Not Username = Nothing Then
-            Dim dt As DataTable = SQLDataTable("SELECT Nombre, Priv FROM tblUsers WHERE Username = '" & Username & "'")
+            Dim dt As DataTable = SQLDataTable("SELECT Nombre, Priv, ServerID FROM tblUsers WHERE Username = '" & Username & "'")
             lblname.Text = dt.Rows(0)("Nombre")
             Dim priv = dt.Rows(0)("Priv")
+            Dim server = dt.Rows(0)("ServerID")
             Session("IsAdmin") = priv = 5
+            Session("IsAduana") = isNull(server, 0) = 2
             Select Case priv
                 Case 0 'Consulta
                     pnlMain.Visible = False
@@ -35,6 +35,8 @@ Partial Class App_Controls_cntrlMain
                     btnAdmin.Visible = False
                     btnAnx.Visible = False
                     btnInv.Visible = False
+                    btnSalidas.Visible = Not Session("IsAduana")
+                    btnSalidas.Enabled = Not Session("IsAduana")
                 Case 3 'Capturista
                     pnlMain.Visible = True
                     pnlAdmin.Visible = False
@@ -45,6 +47,7 @@ Partial Class App_Controls_cntrlMain
                     btnAdmin.Visible = Session("IsAdmin")
                     btnAnx.Visible = True
                     btnInv.Visible = True
+                    btnSalidas.Visible = True
                 Case 4 'Caseta
                     pnlMain.Visible = False
                     pnlAdmin.Visible = False
@@ -65,6 +68,7 @@ Partial Class App_Controls_cntrlMain
                     btnAdmin.Visible = Session("IsAdmin")
                     btnAnx.Visible = True
                     btnInv.Visible = True
+                    btnSalidas.Visible = True
             End Select
         Else
             RaiseEvent Close()
@@ -109,9 +113,14 @@ Partial Class App_Controls_cntrlMain
     End Sub
 
 
+    Protected Sub btnConsulta_Click(sender As Object, e As EventArgs) Handles btnConsulta.Click
+        resetButtons()
+        pnlConsulta.Visible = True
+        btnConsulta.Enabled = False
+        btnConsulta.CssClass = "btnb"
+    End Sub
 
 
- 
     Protected Sub btnAnx_Click(sender As Object, e As EventArgs) Handles btnAnx.Click
 
         resetButtons()
@@ -142,15 +151,28 @@ Partial Class App_Controls_cntrlMain
         btnAdmin.CssClass = "btnba"
     End Sub
 
+    Protected Sub btnSalidas_Click(sender As Object, e As EventArgs) Handles btnSalidas.Click
+        resetButtons()
+        pnlSalidas.Visible = True
+        btnSalidas.Enabled = False
+        btnSalidas.CssClass = "btnb"
+    End Sub
+
     Protected Sub resetButtons()
         pnlMain.Visible = False
         pnlAdmin.Visible = False
+        pnlSalidas.Visible = False
+        pnlConsulta.Visible = False
         pnlAnx.Visible = False
         btnAnx.Enabled = True
         btnInv.Enabled = True
         btnAdmin.Enabled = True
+        btnConsulta.Enabled = True
+        btnSalidas.Enabled = Not Session("IsAduana")
         btnAnx.CssClass = "btnc"
         btnInv.CssClass = "btnc"
         btnAdmin.CssClass = "btnca"
+        btnSalidas.CssClass = "btnc"
+        btnConsulta.CssClass = "btnc"
     End Sub
 End Class

@@ -94,7 +94,7 @@ input:focus {
     padding: 5px;
     padding-left: 15px;
     padding-right: 15px;
-    width: 140px;
+    width: 110px;
     border-radius: 5px 5px 0 0;
     text-align: center;
     -moz-border-radius: 5px 5px 0 0;
@@ -121,7 +121,7 @@ input:focus {
     text-align: center;
     border: 1px solid #b7d3ff;
     color: #134680;
-    width: 140px;
+    width: 110px;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     background-color: #d1dcef;
@@ -140,7 +140,7 @@ input:focus {
     font-size: .9em;
     color: #666;
     padding:5px;
-    width: 140px;
+    width: 110px;
     border-radius: 5px 5px 0 0;
     text-align: center;
     -moz-border-radius: 5px 5px 0 0;
@@ -466,6 +466,7 @@ hr {
 }
 
 .modalPopUpBig {
+    z-index: 20000 !important;
     padding: 20px;
     background-color: #FFF;
     width: auto !important;
