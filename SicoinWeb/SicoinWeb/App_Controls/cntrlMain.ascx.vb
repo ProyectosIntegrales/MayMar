@@ -23,6 +23,7 @@ Partial Class App_Controls_cntrlMain
             Dim priv = dt.Rows(0)("Priv")
             Dim server = dt.Rows(0)("ServerID")
             Session("IsAdmin") = priv = 5
+            Session("IsCaseta") = priv = 4
             Session("IsAduana") = isNull(server, 0) = 2
             Select Case priv
                 Case 0 'Consulta
@@ -31,7 +32,7 @@ Partial Class App_Controls_cntrlMain
                     pnlAnx.Visible = False
                     pnlSalidas.Visible = False
                     pnlConsulta.Visible = True
-                    btnConsulta.Visible = True
+                    btnConsulta.Visible = Not Session("IsAduana")
                     btnAdmin.Visible = False
                     btnAnx.Visible = False
                     btnInv.Visible = False
@@ -48,6 +49,7 @@ Partial Class App_Controls_cntrlMain
                     btnAnx.Visible = True
                     btnInv.Visible = True
                     btnSalidas.Visible = True
+                    btnSalidas.Enabled = True
                 Case 4 'Caseta
                     pnlMain.Visible = False
                     pnlAdmin.Visible = False
@@ -58,6 +60,7 @@ Partial Class App_Controls_cntrlMain
                     btnAnx.Visible = False
                     btnInv.Visible = False
                     btnAdmin.Visible = False
+                    btnSalidas.Visible = False
                 Case 5 'Admin
                     pnlMain.Visible = True
                     pnlAdmin.Visible = False
@@ -69,6 +72,7 @@ Partial Class App_Controls_cntrlMain
                     btnAnx.Visible = True
                     btnInv.Visible = True
                     btnSalidas.Visible = True
+                    btnSalidas.Enabled = True
             End Select
         Else
             RaiseEvent Close()
