@@ -8,6 +8,9 @@
 <%@ Register Src="~/App_Controls/cntrlAbandono.ascx" TagPrefix="uc1" TagName="cntrlAbandono" %>
 
 
+<%@ Register src="cntrlSalidas.ascx" tagname="cntrlSalidas" tagprefix="uc2" %>
+
+
 <div class="menu1" style="white-space: nowrap;">
     <a id="lnbAb" href="#" class="btn" style="margin-right: 100px;" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
     <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right:10px">Reportes</a>
@@ -82,6 +85,7 @@
             <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
             <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
             <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />
+            <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" Visible="false" />
 
         </asp:PlaceHolder>
         <uc1:cntrlAbandono runat="server" ID="cntrlAbandono" Visible="false" />
@@ -98,6 +102,8 @@
 
 <asp:HiddenField ID="hflChanging" runat="server" Value="False" />
 <asp:HiddenField ID="hflUsername" runat="server" />
+
+
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
