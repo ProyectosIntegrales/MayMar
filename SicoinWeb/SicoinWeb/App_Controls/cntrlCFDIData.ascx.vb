@@ -180,7 +180,6 @@ Partial Class cntrlCFDIData
             chkCompartido.Checked = True
             SetValues()
         End If
-
     End Sub
 
     Protected Sub ddFacturas_SelectedIndexChanged(sender As Object, e As EventArgs)
