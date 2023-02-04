@@ -22,6 +22,12 @@ Partial Class cntrlCFDIData
 
     End Sub
 
+    Protected Sub Page_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+        If Not IsPostBack Then
+
+        End If
+    End Sub
+
     Protected Sub getData()
         Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
         If Not dt Is Nothing Then
@@ -53,11 +59,15 @@ Partial Class cntrlCFDIData
             txtMontoMXP.Text = isNull(dr("MontoCFDI"), "")
             txtMontoUSD.Text = isNull(dr("MontoCFDIDlls"), "")
             txtAprov.Text = isNull(dr("Aprovechamiento"), "")
+            pnlCompartido.Visible = False
             Dim Terminado As Boolean = dr("Terminado")
 
             btnMod.Visible = Session("IsAdmin")
-
+            chkCompartido.Checked = False
             txtFactura.Focus()
+            txtCFDI.ReadOnly = False
+            txtMontoMXP.Enabled = True
+            txtMontoUSD.Enabled = True
 
         End If
         clearAll()
@@ -84,15 +94,19 @@ Partial Class cntrlCFDIData
     End Sub
 
     Protected Sub SaveData(term As Boolean)
+
         Dim result As String = ""
-        result = _
-            doSQLProcedure("spInventario_CFDI", Data.CommandType.StoredProcedure, , _
-                           "@Operacion", hflOp.Value, _
+        result =
+            doSQLProcedure("spInventario_CFDI", Data.CommandType.StoredProcedure, ,
+                           "@Operacion", hflOp.Value,
                            "@Factura", txtFactura.Text,
-                           "@CFDI", txtCFDI.Text, _
-                           "@MontoCFDI", txtMontoMXP.Text, _
-                           "@MontoCFDIDlls", txtMontoUSD.Text, _
-                           "@Aprovechamiento", txtAprov.Text)
+                           "@CFDI", txtCFDI.Text,
+                           "@MontoCFDI", txtMontoMXP.Text,
+                           "@MontoCFDIDlls", txtMontoUSD.Text,
+                           "@Aprovechamiento", txtAprov.Text,
+                           "@Compartido", chkCompartido.Checked,
+                           "@CompartidoCon", ddFacturas.SelectedItem.Text
+                           )
 
         If result <> "" Then
             cntrlError.errorMessage = result
@@ -121,6 +135,12 @@ Partial Class cntrlCFDIData
             txtFraccion.CssClass = "textboxr"
         End If
 
+        If chkCompartido.Checked And ddFacturas.SelectedItem Is Nothing Then
+            ValidationOK = False
+            ValidationMessage &= IIf(ValidationMessage <> "", "<br>", "") & "No se ha seleccionado Operacion/Pedimento Compartido"
+            ddFacturas.CssClass = "textboxr"
+        End If
+
         Return ValidationOK
     End Function
 
@@ -133,5 +153,54 @@ Partial Class cntrlCFDIData
     Public Event ModBtnClicked()
     Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
         RaiseEvent ModBtnClicked()
+    End Sub
+
+    Protected Sub chkCompartido_CheckedChanged(sender As Object, e As EventArgs)
+        pnlCompartido.Visible = chkCompartido.Checked
+        If chkCompartido.Checked Then
+            dsFacturas.DataBind()
+            ddFacturas.DataBind()
+            SetValues()
+        Else
+            txtCFDI.Text = ""
+            txtMontoMXP.Text = ""
+            txtMontoUSD.Text = ""
+            txtCFDI.ReadOnly = False
+            txtMontoMXP.Enabled = True
+            txtMontoUSD.Enabled = True
+            txtCFDI.Focus()
+        End If
+    End Sub
+
+    Protected Sub txtFactura_TextChanged(sender As Object, e As EventArgs)
+        dsFacturas.DataBind()
+        ddFacturas.DataBind()
+        If ddFacturas.Items.Count > 0 Then
+            pnlCompartido.Visible = True
+            chkCompartido.Checked = True
+            SetValues()
+        End If
+
+    End Sub
+
+    Protected Sub ddFacturas_SelectedIndexChanged(sender As Object, e As EventArgs)
+        txtCFDI.Text = ddFacturas.SelectedItem.Value
+        txtAprov.Focus()
+    End Sub
+
+    Private Sub SetValues()
+        If ddFacturas.SelectedItem IsNot Nothing Then
+            txtCFDI.Text = ddFacturas.SelectedItem.Value
+            txtMontoMXP.Text = "0"
+            txtMontoUSD.Text = "0"
+            txtCFDI.ReadOnly = True
+            txtMontoMXP.Enabled = False
+            txtMontoUSD.Enabled = False
+            txtAprov.Focus()
+        Else
+            txtCFDI.Text = ""
+            txtMontoMXP.Text = ""
+            txtMontoUSD.Text = ""
+        End If
     End Sub
 End Class

@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlAnexo29.ascx.vb" Inherits="App_Controls_cntrlAnexo29" %>
-<%@ Register Src="~/cntrlError.ascx" TagPrefix="uc1" TagName="cntrlError" %>
+<%@ Register Src="~/App_Controls/cntrlError.ascx" TagPrefix="uc1" TagName="cntrlError" %>
 
 
 <%@ Register Src="cntrlRepAnexo29.ascx" TagName="cntrlRepAnexo29" TagPrefix="uc2" %>

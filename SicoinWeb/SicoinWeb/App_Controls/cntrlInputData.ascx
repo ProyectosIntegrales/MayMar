@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlInputData.ascx.vb" Inherits="cntrlInputData" %>
 
-<%@ Register src="~/cntrlError.ascx" tagname="cntrlError" tagprefix="uc1" %>
+<%@ Register src="~/App_Controls/cntrlError.ascx" tagname="cntrlError" tagprefix="uc1" %>
 
 
 <table class="auto-style1">

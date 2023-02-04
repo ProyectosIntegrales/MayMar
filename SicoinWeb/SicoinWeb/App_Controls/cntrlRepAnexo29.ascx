@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlRepAnexo29.ascx.vb" Inherits="App_Controls_cntrlRepAnexo29" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
-<%@ Register Src="~/cntrlError.ascx" TagPrefix="uc1" TagName="cntrlError" %>
+<%@ Register Src="~/App_Controls/cntrlError.ascx" TagPrefix="uc1" TagName="cntrlError" %>
 
 <style type="text/css">
     .modalBackground {

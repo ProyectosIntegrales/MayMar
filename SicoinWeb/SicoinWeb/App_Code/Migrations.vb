@@ -2,10 +2,11 @@
 
 Public Class Migrations
     Public Sub ImplementMigrations()
-        Migrations_Feb2022()
+        Migrations_2022()
+        Migrations_2023()
     End Sub
 
-    Public Sub Migrations_Feb2022()
+    Public Sub Migrations_2022()
         NewMigration(
             MigrationName:="20220219100000_Crear Tabla tblSalidas",
             MigrationCommand:=
@@ -168,6 +169,42 @@ Public Class Migrations
             "	END " & vbCr &
             "END "
             )
+    End Sub
+    Sub Migrations_2023()
+        NewMigration(
+            MigrationName:="20230204103100_Se agregan campos para CDFI compartido",
+            MigrationCommand:=
+            "ALTER TABLE dbo.Inventario ADD " & vbCr &
+            "	Compartido bit NULL, " & vbCr &
+            "	CompartidoCon nchar(20) NULL "
+            )
+
+        NewMigration(
+        MigrationName:="20230204132000_Modifica Procedimiento almacenado para Actualizar CFDI Compartidos",
+        MigrationCommand:=
+            "ALTER PROCEDURE [dbo].[spInventario_CFDI] " & vbCr &
+            "   @Operacion Char(20), " & vbCr &
+            "   @Factura nchar(10), " & vbCr &
+            "   @CFDI nchar(36), " & vbCr &
+            "   @MontoCFDI float, " & vbCr &
+            "   @MontoCFDIDlls float, " & vbCr &
+            "   @Aprovechamiento float, " & vbCr &
+            "   @Compartido bit, " & vbCr &
+            "   @CompartidoCon nchar(20) " & vbCr &
+            "AS " & vbCr &
+            "BEGIN " & vbCr &
+            "   UPDATE Inventario  " & vbCr &
+            "       SET	Factura = @Factura, " & vbCr &
+            "           CFDI = @CFDI, " & vbCr &
+            "           MontoCFDI = @MontoCFDI, " & vbCr &
+            "           MontoCFDIDlls = @MontoCFDIDlls, " & vbCr &
+            "           Aprovechamiento = @Aprovechamiento, " & vbCr &
+            "           Compartido = @Compartido, " & vbCr &
+            "           CompartidoCon = @CompartidoCon, " & vbCr &
+            "           [Status] = 2 " & vbCr &
+            "       WHERE Operacion = @Operacion " & vbCr &
+            "END"
+        )
     End Sub
 
 End Class

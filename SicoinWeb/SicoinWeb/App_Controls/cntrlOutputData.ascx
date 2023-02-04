@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlOutputData.ascx.vb" Inherits="cntrlOutputData" %>
 <%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="ajaxToolkit" %>
-<%@ Register src="~/cntrlError.ascx" tagname="cntrlError" tagprefix="uc1" %>
+<%@ Register src="~/App_Controls/cntrlError.ascx" tagname="cntrlError" tagprefix="uc1" %>
 
 
 <style type="text/css">
