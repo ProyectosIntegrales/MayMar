@@ -99,6 +99,9 @@ Partial Class cntrlReporte
             Dim reportName As String = Mid(reportFile, reportFile.LastIndexOf("/") + 2)
             Dim reportTitle As String = dr.Item("reportTitle").ToString.Trim
             Dim dvs As DataView = DirectCast(dsServer.Select(DataSourceSelectArguments.Empty), DataView)
+            If dvs.Count = 0 Then
+                Throw New Exception("El usuario no tiene configurado un Servidor!")
+            End If
             Dim drs As DataRow = dvs.Item(0).Row
 
             Dim serverName As String
