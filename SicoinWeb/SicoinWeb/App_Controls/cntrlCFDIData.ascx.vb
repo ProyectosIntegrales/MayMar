@@ -1,4 +1,6 @@
 ﻿Imports System.Data
+Imports CrystalDecisions.Web
+
 Partial Class cntrlCFDIData
     Inherits System.Web.UI.UserControl
 
@@ -94,7 +96,10 @@ Partial Class cntrlCFDIData
     End Sub
 
     Protected Sub SaveData(term As Boolean)
-
+        Dim compartidoCon As String = ""
+        If chkCompartido.Checked Then
+            compartidoCon = ddFacturas.SelectedItem.Text
+        End If
         Dim result As String = ""
         result =
             doSQLProcedure("spInventario_CFDI", Data.CommandType.StoredProcedure, ,
@@ -105,8 +110,8 @@ Partial Class cntrlCFDIData
                            "@MontoCFDIDlls", txtMontoUSD.Text,
                            "@Aprovechamiento", txtAprov.Text,
                            "@Compartido", chkCompartido.Checked,
-                           "@CompartidoCon", ddFacturas.SelectedItem.Text
-                           )
+                           "@CompartidoCon", compartidoCon
+            )
 
         If result <> "" Then
             cntrlError.errorMessage = result
@@ -165,9 +170,11 @@ Partial Class cntrlCFDIData
             txtCFDI.Text = ""
             txtMontoMXP.Text = ""
             txtMontoUSD.Text = ""
+            txtAprov.Text = ""
             txtCFDI.ReadOnly = False
             txtMontoMXP.Enabled = True
             txtMontoUSD.Enabled = True
+            txtAprov.Enabled = True
             txtCFDI.Focus()
         End If
     End Sub
@@ -178,6 +185,12 @@ Partial Class cntrlCFDIData
         If ddFacturas.Items.Count > 0 Then
             pnlCompartido.Visible = True
             chkCompartido.Checked = True
+            chkCompartido.Enabled = False
+            SetValues()
+        Else
+            pnlCompartido.Visible = False
+            chkCompartido.Checked = False
+            chkCompartido.Enabled = True
             SetValues()
         End If
     End Sub
@@ -189,17 +202,25 @@ Partial Class cntrlCFDIData
 
     Private Sub SetValues()
         If ddFacturas.SelectedItem IsNot Nothing Then
+            Dim dv As DataView = DirectCast(dsFacturas.Select(DataSourceSelectArguments.Empty), DataView)
+            Dim dr As DataRow = dv.Item(0).Row
             txtCFDI.Text = ddFacturas.SelectedItem.Value
-            txtMontoMXP.Text = "0"
-            txtMontoUSD.Text = "0"
-            txtCFDI.ReadOnly = True
+            txtAprov.Text = "0"
+            txtMontoMXP.Text = dr.Item("MontoCFDI")
+            txtMontoUSD.Text = dr.Item("MontoCFDIDlls")
+            txtAprov.Enabled = False
             txtMontoMXP.Enabled = False
             txtMontoUSD.Enabled = False
-            txtAprov.Focus()
+            txtCFDI.ReadOnly = True
         Else
             txtCFDI.Text = ""
             txtMontoMXP.Text = ""
             txtMontoUSD.Text = ""
+            txtAprov.Text = ""
+            txtAprov.Enabled = True
+            txtMontoMXP.Enabled = True
+            txtMontoUSD.Enabled = True
+            txtCFDI.ReadOnly = False
         End If
     End Sub
 End Class

@@ -206,7 +206,7 @@
 
 <asp:HiddenField ID="hflOp" runat="server" />
 
-<asp:SqlDataSource ID="dsFacturas" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT [Operacion], [CFDI] FROM [Inventario] WHERE ([Factura] = @Factura)">
+<asp:SqlDataSource ID="dsFacturas" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion, CFDI, MontoCFDI, MontoCFDIDlls FROM Inventario WHERE (Factura = @Factura) ORDER BY ISNULL(Compartido, 0)">
     <SelectParameters>
         <asp:ControlParameter ControlID="txtFactura" PropertyName="Text" Name="Factura" Type="String"></asp:ControlParameter>
     </SelectParameters>
