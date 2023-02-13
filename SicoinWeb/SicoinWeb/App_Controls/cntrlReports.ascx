@@ -240,6 +240,11 @@
         <asp:SessionParameter Name="rID" SessionField="ReportID" />
     </SelectParameters>
 </asp:SqlDataSource>
+<asp:SqlDataSource ID="dsServer" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.ServerID, tblServers.ServerName, tblServers.DatabaseName, tblUsers.Username FROM tblServers INNER JOIN tblUsers ON tblServers.ID = tblUsers.ServerID WHERE (tblUsers.Username = @Username)">
+    <SelectParameters>
+        <asp:SessionParameter Name="Username" SessionField="Username" />
+    </SelectParameters>
+</asp:SqlDataSource>
 <asp:SqlDataSource ID="dsSettings" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>"
     SelectCommand="SELECT tblReportParameters.paramID, tblReportParameters.paramName, tblReportParameters.paramTitle, tblReportParameters.paramOptionalID, tblReports.reportType, tblReportParameters.paramValue, tblReports.reportTitle, tblReports.reportID, tblReportParameters.paramSetting FROM tblReportParameters INNER JOIN tblReports ON tblReportParameters.reportID = tblReports.reportID WHERE (tblReports.reportType = @reportType) AND (tblReportParameters.paramSetting = 1) ORDER BY tblReportParameters.paramID">
     <SelectParameters>

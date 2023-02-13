@@ -158,30 +158,54 @@ Public Module modCommon
             End With
 
         Catch ex As Exception
+            MsgBox(ex.ToString)
             Return "error: " & ex.Message
-            doSQLProcedure("spErrorLog", CommandType.StoredProcedure, , "@logText", ex.ToString, "@logUsername", System.Environment.UserName, "@logMachineId", System.Environment.MachineName)
         Finally
             cm.Connection.Close()
         End Try
 
     End Function
 
+    Public Sub logErrors(ParmValue As String, Optional connectionName As String = "MayMarCS")
+        Dim Procedure As String = "spErrorLog"
+        Dim cm As New SqlClient.SqlCommand
+        Dim cnUTC As New SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings(connectionName).ToString)
+        Try
+            Dim ParmName1 As String = "@logText"
+            With cm
+                .CommandText = Procedure
+                .CommandType = CommandType.StoredProcedure
+                .Connection = cnUTC
+                .CommandTimeout = 10000
+
+                If ParmName1 <> "" Then
+                    .Parameters.AddWithValue(ParmName1, ParmValue)
+                End If
+                .Connection.Open()
+                Dim result As Object = .ExecuteScalar
+            End With
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        Finally
+            cm.Connection.Close()
+        End Try
+
+    End Sub
+
     Public Function SQLDataTable(ByVal selectCommand As String, Optional Connection As String = "MayMarCS") As DataTable
 
         Try
-
-
             Dim dt As New DataTable
             Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings(Connection).ToString)
 
             Dim da As New SqlClient.SqlDataAdapter(selectCommand, cn)
-            da.SelectCommand.CommandTimeout = 1000
+            da.SelectCommand.CommandTimeout = 10000
             Dim ds As New DataSet
             da.Fill(ds)
             Return ds.Tables(0)
         Catch ex As Exception
             Return Nothing
-
         End Try
     End Function
 

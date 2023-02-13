@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="admUsers.ascx.vb" Inherits="Admin_admUsers" %>
-<%@ Register src="../App_Controls/cntrlError.ascx" tagname="cntrlError" tagprefix="uc1" %>
+<%@ Register src="~/App_Controls/cntrlError.ascx" tagname="cntrlError" tagprefix="uc1" %>
 <asp:UpdatePanel ID="pnlUpdate" runat="server">
     <ContentTemplate>
   <asp:GridView ID="gvUsers" runat="server" AutoGenerateColumns="False" CssClass="gridView" DataSourceID="dsUsers" AllowPaging="True" PageSize="12" ShowHeaderWhenEmpty="True" AllowSorting="True" Width="100%">
@@ -37,6 +37,22 @@
                         <ItemTemplate>
                             <asp:Label ID="Label3" runat="server" Text='<%# Bind("Email")%>'></asp:Label>
                         </ItemTemplate>
+                    </asp:TemplateField>
+ 
+                    <asp:TemplateField ConvertEmptyStringToNull="False" HeaderText="ServerName" SortExpression="ServerName">
+                        <EditItemTemplate>
+                            <asp:DropDownList ID="ddlServer" runat="server" CssClass="editTextbox" DataSourceID="dsServers" DataTextField="ServerName" DataValueField="ID" SelectedValue='<%# Eval("ServerID") %>'  >
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="dsServers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT 0 AS ID, 'Seleccionar' AS ServerName UNION SELECT ID, ServerName + '\' + DatabaseName AS ServerName FROM tblServers"></asp:SqlDataSource>
+                        </EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="lblServer" runat="server" Text='<%# Bind("ServerName") %>' />
+                        </ItemTemplate>
+                        <FooterTemplate>
+                            <asp:DropDownList ID="ddlServer" runat="server" CssClass="editTextbox" DataSourceID="dsServers" DataTextField="ServerName" DataValueField="ID" >
+                            </asp:DropDownList>
+                            <asp:SqlDataSource ID="dsServers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT 0 AS ID, 'Seleccionar' AS ServerName UNION SELECT ID, ServerName + '\' + DatabaseName AS ServerName FROM tblServers"></asp:SqlDataSource>
+                        </FooterTemplate>
                     </asp:TemplateField>
  
                     <asp:TemplateField HeaderText="Priv" SortExpression="Descripcion">
@@ -98,7 +114,7 @@
                 <RowStyle VerticalAlign="Top" />
                 <SelectedRowStyle CssClass="selectedCell" />
             </asp:GridView>
-            <asp:SqlDataSource ID="dsUsers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.Username, tblUsers.Nombre, tblUsers.Email, tblUsers.Password, tblUsers.Priv, tblPrivs.Descripcion FROM tblUsers INNER JOIN tblPrivs ON tblUsers.Priv = tblPrivs.Priv ORDER BY tblUsers.Username"></asp:SqlDataSource>
+            <asp:SqlDataSource ID="dsUsers" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.Username, tblUsers.Nombre, tblUsers.Email, tblUsers.Password, tblUsers.Priv, tblPrivs.Descripcion, tblServers.ServerName + '\' + tblServers.DatabaseName AS ServerName, ISNULL(tblUsers.ServerID, 0) AS ServerID FROM tblUsers INNER JOIN tblPrivs ON tblUsers.Priv = tblPrivs.Priv LEFT OUTER JOIN tblServers ON tblUsers.ServerID = tblServers.ID ORDER BY tblUsers.Username"></asp:SqlDataSource>
 
         
     </ContentTemplate>

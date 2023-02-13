@@ -33,6 +33,14 @@
 
 
 
+<asp:SqlDataSource ID="dsServer" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT tblUsers.ServerID, tblServers.ServerName, tblServers.DatabaseName, tblUsers.Username FROM tblServers INNER JOIN tblUsers ON tblServers.ID = tblUsers.ServerID WHERE (tblUsers.Username = @Username)">
+    <SelectParameters>
+        <asp:SessionParameter Name="Username" SessionField="Username" />
+    </SelectParameters>
+</asp:SqlDataSource>
+
+
+
 <uc1:cntrlError runat="server" ID="cntrlError" />
 
 <asp:Button ID="btnShowPopup" runat="server" Text="PopUp" Style="display: none;" />
@@ -65,3 +73,10 @@
 </asp:Panel>
 
 <asp:HiddenField ID="hflFolio" runat="server" />
+
+
+<asp:SqlDataSource ID="dsReport" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT reportID, reportFile, reportTitle, reportType, reportIcon, reportDescription, sort, DatabaseServerName, DatabaseName, allowDOC, allowPDF, allowXLS, allowXLT FROM tblReports"></asp:SqlDataSource>
+
+
+
+

@@ -8,50 +8,21 @@
 <%@ Register Src="~/App_Controls/cntrlAbandono.ascx" TagPrefix="uc1" TagName="cntrlAbandono" %>
 
 
+<%@ Register src="cntrlSalidas.ascx" tagname="cntrlSalidas" tagprefix="uc2" %>
 
 
-<div class="menu1" style="white-space:nowrap;">
-         <a ID="lnbAb" href="#" class="btn" style="margin-right:100px;" onclick="javascript:$('#ifraba').toggle(500);" >Abandonos</a>
-       <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn">Reportes</a>
+<div class="menu1" style="white-space: nowrap;">
+    <a id="lnbAb" href="#" class="btn" style="margin-right: 100px;" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
+    <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right:10px">Reportes</a>
+</div>
 
-
-    </div>
-
-<div id="reps" style="
-    display:none;
-    position: absolute;
-    top: 40px;
-    right: 10px;
-    background-color: #fff;
-    border-color: #0a1963;
-    border-radius: 3px;
-    width: 199px;
-    border-width: 2px;
-    box-shadow: 5px 5px 10px;
-    padding: 10px;
-    z-index:10000" >
-    <asp:LinkButton runat="server" ID="lnbReportes" Text="Reporte de Inventario" Style="padding-left: 20px; padding-bottom:15px;"></asp:LinkButton><br style="height:10px" />
+<div id="reps" style="display: none; position: absolute; top: 40px; right: 20px; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 199px; border-width: 2px; box-shadow: 5px 5px 10px; padding: 10px; z-index: 10000">
+    <asp:LinkButton runat="server" ID="lnbReportes" Text="Reporte de Inventario" Style="padding-left: 20px; padding-bottom: 15px;"></asp:LinkButton><br style="height: 10px" />
     <asp:LinkButton runat="server" ID="lnbReportAb" Text="Reporte de Abandonos" Style="padding-left: 20px;"></asp:LinkButton>
 </div>
-<div id="ifraba" style="
-    display:none;
-    position: fixed ;
-    top: 10vh;
-    right: 0;
-    left: 0;
-    margin-right: auto;
-    margin-left: auto;
-    height: 80vh;
-    background-color: #fff;
-    border-color: #0a1963;
-    border-radius: 3px;
-    width: 90vw;
-    border-width: 2px;
-    box-shadow: 0px 0px 10px;
-    padding: 10px;
-    z-index:20000">
+<div id="ifraba" style="display: none; position: fixed; top: 10vh; right: 0; left: 0; margin-right: auto; margin-left: auto; height: 80vh; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 90vw; border-width: 2px; box-shadow: 0px 0px 10px; padding: 10px; z-index: 20000">
     <div class="close" onclick="javascript:$('#ifraba').toggle(500);"><span>X</span></div>
-<iframe src="app_controls/cntrlAbandono.aspx" width="100%" height="100%" frameborder="0"  ></iframe>
+    <iframe src="app_controls/cntrlAbandono.aspx" width="100%" height="100%" frameborder="0"></iframe>
 </div>
 
 <asp:Panel ID="pnlMain" runat="server" CssClass="main" DefaultButton="btnGo">
@@ -69,12 +40,13 @@
                                 <asp:ListItem Text="Capturar Factura y CFDI" Value="CFDI" style="padding-right: 20px;"></asp:ListItem>
 
                             </asp:RadioButtonList>
-                       
+
                         </td>
 
                     </tr>
                     <tr>
-                        <td align="right" valign="middle" style="width: 190px;"><asp:Label ID="lblOper" runat="server">Operación/Pedimento</asp:Label></td>
+                        <td align="right" valign="middle" style="width: 190px;">
+                            <asp:Label ID="lblOper" runat="server">Operación/Pedimento</asp:Label></td>
                         <td valign="middle">
                             <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="120px"></asp:TextBox>
                             <asp:DropDownList ID="ddlOut" runat="server" CssClass="textboxg uppercase" DataSourceID="dsOut" DataTextField="Operacion" DataValueField="Operacion" Visible="false" Width="150px" Style="width: 150px;"></asp:DropDownList>
@@ -109,18 +81,19 @@
         </asp:UpdatePanel>
         <br />
         <asp:PlaceHolder ID="plhControls" runat="server">
-            <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false" />
+            <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false"  />
             <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
             <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
             <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />
-  
+            <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" Visible="false" />
+
         </asp:PlaceHolder>
-                  <uc1:cntrlAbandono runat="server" ID="cntrlAbandono" Visible="false"/>
-            <uc1:cntrlReports runat="server" ID="cntrlReports"  />
+        <uc1:cntrlAbandono runat="server" ID="cntrlAbandono" Visible="false" />
+        <uc1:cntrlReports runat="server" ID="cntrlReports" />
         <uc1:cntrlRepAbandono runat="server" ID="cntrlRepAbandono" />
     </div>
 
-    </asp:Panel>
+</asp:Panel>
 <div id="dvMsg" class="notification" runat="server" visible="false" clientidmode="Static">
     <img src="../images/icons/ok.png" height="36" align="middle" />
     <asp:Label ID="lblMsg" runat="server">Operación exitosa!</asp:Label>
@@ -128,6 +101,10 @@
 
 
 <asp:HiddenField ID="hflChanging" runat="server" Value="False" />
+<asp:HiddenField ID="hflUsername" runat="server" />
+
+
+
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
         $('#dvMsg').fadeOut(3000, function () {

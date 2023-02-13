@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2019
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SicoinWeb(1)", "SicoinWeb\", "{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SicoinWeb", "SicoinWeb\", "{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_62912"
@@ -25,13 +25,24 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "SicoinWeb(1)", "SicoinWeb\"
 		DefaultWebSiteLanguage = "Visual Basic"
 	EndProjectSection
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB", "DB\DB.sqlproj", "{51735911-4253-4F50-A4CA-ABFC12DEC80E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{40708F98-07A0-4DD7-A7BC-CD8F958E4AD0}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{51735911-4253-4F50-A4CA-ABFC12DEC80E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51735911-4253-4F50-A4CA-ABFC12DEC80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51735911-4253-4F50-A4CA-ABFC12DEC80E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{51735911-4253-4F50-A4CA-ABFC12DEC80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51735911-4253-4F50-A4CA-ABFC12DEC80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51735911-4253-4F50-A4CA-ABFC12DEC80E}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

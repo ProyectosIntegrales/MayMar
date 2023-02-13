@@ -25,6 +25,7 @@ Partial Class App_Controls_cntrlAdmin
         admImportador.Visible = False
         admMedidas.Visible = False
         admUsers.Visible = False
+        admServers.Visible = False
     End Sub
 
     Protected Sub txtFilter_TextChanged(sender As Object, e As EventArgs) Handles txtFilter.TextChanged
@@ -59,10 +60,16 @@ Partial Class App_Controls_cntrlAdmin
                 admMedidas.Initialize()
                 pnlFilter.Visible = False
 
+            Case "Servidores"
+                admServers.Visible = True
+                admServers.Initialize()
+                pnlFilter.Visible = False
+
         End Select
     End Sub
 
-    Protected Sub lnbReset_Click(sender As Object, e As EventArgs) Handles lnbReset.Click
+
+    Protected Sub imbReset_Click(sender As Object, e As ImageClickEventArgs) Handles imbReset.Click
         txtFilter.Text = ""
 
         OpenControl()

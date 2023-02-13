@@ -2,6 +2,13 @@
 Partial Class App_Controls_cntrlInventory
     Inherits System.Web.UI.UserControl
 
+    Public WriteOnly Property Username As String
+        Set(value As String)
+            hflUsername.Value = value
+            cntrlOutputData.Username = value
+        End Set
+    End Property
+
     Dim Terminado As Boolean
 
     Dim Status As Integer

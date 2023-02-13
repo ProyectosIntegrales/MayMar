@@ -40,25 +40,27 @@ input:focus {
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    -webkit-box-shadow: #000 1px 1px 1px;
+    -webkit-box-shadow: #a5a5a5 1px 1px 1px;
     -moz-box-shadow: #000 1px 1px 1px;
-    box-shadow: #000 1px 1px 1px;
+    box-shadow: #c1c1c1 1px 1px 0px 1px;
     text-decoration: none;
+    transition: .3s;
 }
 
-    .btn:hover {
-        background-color: #FFF;
-        -webkit-box-shadow: #000 2px 2px 5px;
-        -moz-box-shadow: #000 2px 2px 5px;
-        box-shadow: #000 1px 2px 5px;
-        text-decoration: none;
-    }
+.btn:hover {
+    background-color: #FFF;
+    -webkit-box-shadow: #000 2px 2px 5px;
+    -moz-box-shadow: #000 2px 2px 5px;
+    box-shadow: #c1c1c1 1px 2px 5px;
+    text-decoration: none;
+}
 
 .warn {
     color: #ff0000;
     background-image: url(/images/icons/16X16/error.png);
     background-repeat: no-repeat;
     padding-left: 20px;
+    transition: .3s;
 }
 
 .btna {
@@ -92,13 +94,15 @@ input:focus {
     padding: 5px;
     padding-left: 15px;
     padding-right: 15px;
-    width: 140px;
+    width: 110px;
     border-radius: 5px 5px 0 0;
     text-align: center;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     border: 1px solid #DDD;
     background-color: #dcdcdc;
+    position:relative;
+    top: -9px;
 }
 
 /*.btnb:hover  {
@@ -117,10 +121,12 @@ input:focus {
     text-align: center;
     border: 1px solid #b7d3ff;
     color: #134680;
-    width: 140px;
+    width: 110px;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     background-color: #d1dcef;
+    position:relative;
+    top: -9px;
 }
 
     .btnc:hover {
@@ -134,7 +140,7 @@ input:focus {
     font-size: .9em;
     color: #666;
     padding:5px;
-    width: 140px;
+    width: 110px;
     border-radius: 5px 5px 0 0;
     text-align: center;
     -moz-border-radius: 5px 5px 0 0;
@@ -383,16 +389,16 @@ hr {
 
 .mainDialog {
     padding: 5px;
-    padding-right: 1px;
+    /* padding-right: 1px; */
     padding-left: 1px;
     padding-top: 15px;
-    border: 1px solid #d4c8c8;
-    background-color: #d7d7d7;
-    border-radius: 15px 15px 0 15px;
-    background-position: center;
-    margin-left: 5px;
+    /* border: 1px solid #d7d2d2; */
+    background-color: #ededed;
+    border-radius: 10px 10px 0 10px;
+    /* background-position: center; */
+    /* margin-left: 5px; */
     margin-top: 55px;
-    box-shadow: 3px 3px 8px #444444;
+    box-shadow: 3px 3px 6px #AAA;
 }
 
 .menuitem {
@@ -460,15 +466,11 @@ hr {
 }
 
 .modalPopUpBig {
-    padding-left: 20px;
-    padding-top: 20px;
-    padding-right: 20px;
-    margin-bottom: 10px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    z-index: 20000 !important;
+    padding: 20px;
     background-color: #FFF;
-    width: auto;
-    height: auto;
+    width: auto !important;
+    height: auto !important;
     border-radius: 5px 5px 5px 5px;
     -moz-border-radius: 5px 5px 5px 5px;
     -webkit-border-radius: 5px 5px 5px 5px;
@@ -477,8 +479,8 @@ hr {
     -moz-box-shadow: #000 2px 2px 5px;
     box-shadow: #000 1px 2px 5px;
     position: fixed;
-    left: 50%;
-    top: 50%;
+    left: 50% !important;
+    top: 40% !important;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
     -moz-transform: translate(-50%,-50%);
@@ -1126,3 +1128,12 @@ hr {
     left: 0px;
 }
 
+.panel {
+    position: relative; 
+    top: -20px;
+}
+
+.bold {
+    font-weight: bold;
+    color: #11418d;
+}

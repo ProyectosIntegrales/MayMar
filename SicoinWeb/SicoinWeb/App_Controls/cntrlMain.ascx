@@ -9,12 +9,7 @@
 <%@ Register Src="~/App_Controls/cntrlConsulta.ascx" TagPrefix="uc1" TagName="cntrlConsulta" %>
 
 
-
-
-
-
-
-
+<%@ Register Src="cntrlSalidas.ascx" TagName="cntrlSalidas" TagPrefix="uc2" %>
 
 
 <style type="text/css">
@@ -86,37 +81,40 @@
     rel="Stylesheet" type="text/css" />--%>
 
 
- <div class="closeButton">
-                <asp:Label ID="lblname" runat="server" Font-Bold="true"></asp:Label> &nbsp;&nbsp;
+<div class="closeButton">
+    <asp:Label ID="lblname" runat="server" Font-Bold="true"></asp:Label>
+    &nbsp;&nbsp;
                 <asp:LinkButton ID="lnbClose" runat="server" Text="Cerrar sesión" ForeColor="#134680"></asp:LinkButton>
 
-            </div>
+</div>
 
-<div class="tabs" >
+<div class="tabs">
     <asp:Button ID="btnConsulta" runat="server" Text="Consulta" CssClass="btnb" Enabled="False" Visible="false" />
-  <asp:Button ID="btnInv" runat="server" Text="Inventario" CssClass="btnb" Enabled="False" />
+    <asp:Button ID="btnInv" runat="server" Text="Inventario" CssClass="btnb" Enabled="False" />
     <asp:Button ID="btnAnx" runat="server" Text="Anexo 29" CssClass="btnc" />
+    <asp:Button ID="btnSalidas" runat="server" Text="Salidas" CssClass="btnc" />
     <asp:Button ID="btnAdmin" runat="server" CssClass="btnca" Width="30" />
 
 </div>
 
-<asp:Panel ID="pnlMain" runat="server" CssClass="mainDialog" Style="position: relative; top: -20px">
-    <uc1:cntrlInventory runat="server" id="cntrlInventory" />
+<asp:Panel ID="pnlMain" runat="server" CssClass="mainDialog panel">
+    <uc1:cntrlInventory runat="server" ID="cntrlInventory" />
 </asp:Panel>
 
-<asp:Panel ID="pnlAnx" runat="server"  CssClass="mainDialog" Style="position: relative; top: -20px">
+<asp:Panel ID="pnlAnx" runat="server" CssClass="mainDialog panel">
     <uc1:cntrlAnexo29 runat="server" ID="cntrlAnexo29" />
 </asp:Panel>
 
-
-
-<asp:Panel ID="pnlAdmin" runat="server" Visible="false" CssClass="mainDialog" Style="position: relative; top: -20px; padding-top:20px;">
- 
+<asp:Panel ID="pnlAdmin" runat="server" Visible="false" CssClass="mainDialog panel">
     <uc1:cntrlAdmin runat="server" ID="cntrlAdmin" />
 </asp:Panel>
 
-<asp:Panel ID="pnlConsulta" runat="server" Visible="false" CssClass="mainDialog" Style="position: relative; top: -20px; padding-top:20px;">
+<asp:Panel ID="pnlConsulta" runat="server" Visible="false" CssClass="mainDialog panel">
     <uc1:cntrlConsulta runat="server" ID="cntrlConsulta" />
+</asp:Panel>
+
+<asp:Panel ID="pnlSalidas" runat="server" Visible="false" CssClass="mainDialog panel">
+    <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" />
 </asp:Panel>
 
 <asp:Panel ID="pnlConfirm" runat="server" CssClass="modalPopUpBig" Width="300" Height="150" Style="display: none">
@@ -144,6 +142,14 @@
 
 
 <asp:HiddenField ID="hflUsername" runat="server" />
+
+
+
+
+
+
+
+
 
 
 

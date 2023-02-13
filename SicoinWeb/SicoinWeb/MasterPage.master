@@ -19,7 +19,7 @@
 </head>
 <body >
     <form id="form1" runat="server">
-  <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true"></asp:ToolkitScriptManager>
+  <asp:ScriptManager ID="ToolkitScriptManager1" runat="server" EnablePageMethods="true"></asp:ScriptManager>
         <asp:LinkButton ID="lnkFake" runat="server" />
         <div style="position:absolute; top:0; left:300px; color: #FFF; filter: alpha(opacity=0);    opacity: 0.0;">
         <p>Session Idle:&nbsp;<span id="secondsIdle"></span>&nbsp;seconds.</p></div>

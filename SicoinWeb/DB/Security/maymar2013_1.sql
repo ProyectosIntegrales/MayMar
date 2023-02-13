@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [maymar2013]
+    AUTHORIZATION [maymar2013];
+

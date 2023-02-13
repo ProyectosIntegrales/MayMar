@@ -1,0 +1,3 @@
+﻿CREATE USER [Hugo]
+    WITH DEFAULT_SCHEMA = [Hugo];
+

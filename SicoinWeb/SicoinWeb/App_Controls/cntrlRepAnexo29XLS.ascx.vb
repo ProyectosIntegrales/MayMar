@@ -94,6 +94,14 @@ Partial Class cntrlRepAnexo29XLS
             Dim serverName As String = ".\SQLEXPRESS"
             Dim databaseName As String = "Maymar"
 
+            Dim dvs As DataView = DirectCast(dsServer.Select(DataSourceSelectArguments.Empty), DataView)
+            Dim drs As DataRow = dvs.Item(0).Row
+
+            If Not drs Is DBNull.Value Then
+                serverName = drs.Item("ServerName")
+                databaseName = drs.Item("DatabaseName")
+            End If
+
             Dim oDfDopt As New DiskFileDestinationOptions
             Dim expo As New ExportOptions
 

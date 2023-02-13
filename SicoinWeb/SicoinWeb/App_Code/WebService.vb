@@ -4,26 +4,27 @@ Imports System.Web.Services.Protocols
 Imports System.Data.SqlClient
 Imports System.Web.Script.Services
 Imports System.Collections.Generic
+Imports System.Data
 
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
 ' <System.Web.Script.Services.ScriptService()> _
-<WebService(Namespace:="http://tempuri.org/")> _
-<WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)> _
-<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-<ScriptService()> _
+<WebService(Namespace:="http://tempuri.org/")>
+<WebServiceBinding(ConformsTo:=WsiProfiles.BasicProfile1_1)>
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+<ScriptService()>
 Public Class WebService
     Inherits System.Web.Services.WebService
 
 
 
-    <WebMethod()> _
-   <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
     Public Function getImporters(ByVal prefix As String) As String()
         Dim conn As SqlConnection = New SqlConnection
         conn.ConnectionString = ConfigurationManager _
          .ConnectionStrings("MaymarCS").ConnectionString
         Dim cmd As SqlCommand = New SqlCommand
-        cmd.CommandText = "select Nombre, Clave, Direccion from Importador where" & _
+        cmd.CommandText = "select Nombre, Clave, Direccion from Importador where" &
         " Nombre like @SearchText + '%' order by Nombre"
         cmd.Parameters.AddWithValue("@SearchText", prefix.Trim)
         cmd.Connection = conn
@@ -37,14 +38,14 @@ Public Class WebService
         Return Nombres.ToArray
     End Function
 
-    <WebMethod()> _
- <ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
     Public Function getClientes(ByVal prefix As String) As String()
         Dim conn As SqlConnection = New SqlConnection
         conn.ConnectionString = ConfigurationManager _
          .ConnectionStrings("MaymarCS").ConnectionString
         Dim cmd As SqlCommand = New SqlCommand
-        cmd.CommandText = "select Nombre, Clave, RSocial from Clientes where" & _
+        cmd.CommandText = "select Nombre, Clave, RSocial from Clientes where" &
         " Nombre like @SearchText + '%' order by Nombre"
         cmd.Parameters.AddWithValue("@SearchText", prefix.Trim)
         cmd.Connection = conn
@@ -58,14 +59,14 @@ Public Class WebService
         Return Nombres.ToArray
     End Function
 
-    <WebMethod()> _
-<ScriptMethod(ResponseFormat:=ResponseFormat.Json)> _
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
     Public Function getExporters(ByVal prefix As String) As String()
         Dim conn As SqlConnection = New SqlConnection
         conn.ConnectionString = ConfigurationManager _
          .ConnectionStrings("MaymarCS").ConnectionString
         Dim cmd As SqlCommand = New SqlCommand
-        cmd.CommandText = "select ID, NombreExp, Direccion, Ciudad, RFC from tblExportadores where" & _
+        cmd.CommandText = "select ID, NombreExp, Direccion, Ciudad, RFC from tblExportadores where" &
         " NombreExp like @SearchText + '%' order by NombreExp"
         cmd.Parameters.AddWithValue("@SearchText", prefix.Trim)
         cmd.Connection = conn
@@ -79,4 +80,18 @@ Public Class WebService
         Return Nombres.ToArray
     End Function
 
+    <WebMethod()>
+    <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
+    Public Function getSalidas() As DataTable
+        Using conn As New SqlConnection(ConfigurationManager.ConnectionStrings("MaymarCS").ConnectionString)
+            Using cmd As New SqlCommand("select * from vSalidas")
+                Dim ds As New DataSet()
+                cmd.Connection = conn
+                Using sda As New SqlDataAdapter(cmd)
+                    sda.Fill(ds, "Salidas")
+                End Using
+                Return ds.Tables(0)
+            End Using
+        End Using
+    End Function
 End Class
