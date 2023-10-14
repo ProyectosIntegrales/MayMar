@@ -45,13 +45,29 @@ input:focus {
     box-shadow: #c1c1c1 1px 1px 0px 1px;
     text-decoration: none;
     transition: .3s;
+    min-height: 25px;
+    cursor: pointer;
 }
 
-.btn:hover {
+.btn-small {
+    min-height: 20px !important;
+}
+
+.btn:hover, .btn-selected {
     background-color: #FFF;
     -webkit-box-shadow: #000 2px 2px 5px;
     -moz-box-shadow: #000 2px 2px 5px;
     box-shadow: #c1c1c1 1px 2px 5px;
+    text-decoration: none;
+}
+
+.btn-disabled, .btn-disabled:hover {
+    color: #979797 !important;
+    cursor: auto;
+    background-color: #e1e1e1 !important;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
     text-decoration: none;
 }
 
@@ -385,6 +401,18 @@ hr {
     margin-left: -230px;
     margin-top: -200px;
     box-shadow: 3px 3px 8px #444444;
+    text-align: center;
+    height: 200px;
+    width: 400px;
+    text-align: center;
+}
+
+.pnlLoginPopup {
+    position: absolute !important;
+    z-index: 10002 !important;
+    top: 65% !important;
+    width: 100% !important;
+    margin: auto;
 }
 
 .mainDialog {
@@ -998,6 +1026,11 @@ hr {
     padding: 5px;
     width: 50%;
     border: 1px solid #888;
+}
+
+.menu-main {
+    white-space: nowrap;
+    margin-top: 7px;
 }
 
 .reportsHeader {

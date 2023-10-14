@@ -1,12 +1,23 @@
 ﻿Imports System.Data
+Imports System.Web
 Partial Class App_Controls_cntrlInventory
-    Inherits System.Web.UI.UserControl
+    Inherits UI.UserControl
 
     Public WriteOnly Property Username As String
         Set(value As String)
             hflUsername.Value = value
             cntrlOutputData.Username = value
         End Set
+    End Property
+
+    Public Property SuperAdmin As Boolean
+        Set(value As Boolean)
+            hflSA.Value = value
+            btnSA.Visible = value
+        End Set
+        Get
+            Return IIf(hflSA.Value <> "", hflSA.Value, False)
+        End Get
     End Property
 
     Dim Terminado As Boolean
@@ -23,6 +34,7 @@ Partial Class App_Controls_cntrlInventory
         cntrlInputData.clearAll()
         cntrlOutputData.clearAll()
         cntrlCFDIData.clearAll()
+        cntrlAllData.clearAll()
 
         txtOp.Text = txtOp.Text.ToUpper
         pnlValid.Visible = False
@@ -34,28 +46,33 @@ Partial Class App_Controls_cntrlInventory
             pnlValid.Visible = Not AlreadyExist
             btnNew.Focus()
 
-            If AlreadyExist Then
-                If Terminado = False Then
-                    cntrlOutputData.Visible = True
-                    cntrlOutputData.Operacion = txtOp.Text
-                    ddlOut.DataBind()
-                    ddlOut.Items.FindByText(txtOp.Text)
-                    rblOp.SelectedValue = "OUT"
-                ElseIf Status = 1 Then
-                    cntrlCFDIData.Visible = True
-                    cntrlCFDIData.Operacion = txtOp.Text
-                    ddlCFDI.DataBind()
-                    ddlCFDI.Items.FindByText(txtOp.Text)
-                    rblOp.SelectedValue = "CFDI"
-                ElseIf Status = 2 Then
-                    cntrlAllData.Visible = True
-                    cntrlAllData.Operacion = txtOp.Text
-                    rblOp.SelectedValue = "IN"
+            If (rblOp.SelectedValue = "SA") Then
+                cntrlAllData.Visible = True
+                cntrlAllData.Operacion = txtOp.Text
+
+            Else
+                If AlreadyExist Then
+                    If Terminado = False Then
+                        cntrlOutputData.Visible = True
+                        cntrlOutputData.Operacion = txtOp.Text
+                        ddlOut.DataBind()
+                        ddlOut.Items.FindByText(txtOp.Text)
+                        rblOp.SelectedValue = "OUT"
+                    ElseIf Status = 1 Then
+                        cntrlCFDIData.Visible = True
+                        cntrlCFDIData.Operacion = txtOp.Text
+                        ddlCFDI.DataBind()
+                        ddlCFDI.Items.FindByText(txtOp.Text)
+                        rblOp.SelectedValue = "CFDI"
+                    ElseIf Status = 2 Then
+                        cntrlAllData.Visible = True
+                        cntrlAllData.Operacion = txtOp.Text
+                        rblOp.SelectedValue = "IN"
+
+                    End If
 
                 End If
-
             End If
-
         Else
             If Not txtOp.Text = "" Then
                 pnlTryagain.Visible = True
@@ -92,6 +109,7 @@ Partial Class App_Controls_cntrlInventory
 
     Public Sub Initialize()
 
+        rblOp.Items.FindByValue("SA").Enabled = SuperAdmin
 
 
         hflChanging.Value = False
@@ -100,13 +118,11 @@ Partial Class App_Controls_cntrlInventory
 
         btnGo.Visible = True
 
-        
+        dvMsg.Visible = False
+        txtOp.Text = ""
+        txtOp.Focus()
+        EnableButtons(True)
 
-            dvMsg.Visible = False
-            txtOp.Text = ""
-            txtOp.Focus()
-   
- 
     End Sub
 
     Protected Sub btnCancelNew_Click(sender As Object, e As EventArgs) Handles btnCancelNew.Click
@@ -169,12 +185,6 @@ Partial Class App_Controls_cntrlInventory
     End Sub
 
     Protected Sub InitRbl()
-        cntrlInputData.Visible = False
-        cntrlOutputData.Visible = False
-        cntrlCFDIData.Visible = False
-        cntrlAllData.Visible = False
-        cntrlAbandono.Visible = False
-
         Select Case rblOp.SelectedValue
 
             Case "IN"
@@ -207,8 +217,15 @@ Partial Class App_Controls_cntrlInventory
                 ddlCFDI.Visible = False
                 lblOper.Visible = False
                 btnGo.Visible = False
-
                 cntrlAbandono.Visible = True
+
+            Case "SA"
+                txtOp.Visible = True
+                txtOp.Enabled = True
+                ddlOut.Visible = False
+                ddlCFDI.Visible = False
+                lblOper.Visible = True
+                btnGo.Visible = True
 
         End Select
     End Sub
@@ -218,28 +235,44 @@ Partial Class App_Controls_cntrlInventory
     End Sub
 
     Protected Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
+        EnableButtons(False)
         Select Case rblOp.SelectedValue
 
             Case "IN"
-                txtOp.Visible = True
-                ddlOut.Visible = False
-                ddlCFDI.Visible = False
+                If txtOp.Text <> "" Then
+                    txtOp.Visible = True
+                    ddlOut.Visible = False
+                    ddlCFDI.Visible = False
+                    ClosePanels()
+                    cntrlInputData.Visible = True
+                End If
+
             Case "OUT"
                 txtOp.Visible = True
                 txtOp.Text = ddlOut.SelectedValue.Trim
                 ddlOut.Visible = False
+                ClosePanels()
                 cntrlOutputData.Visible = True
-                cntrlInputData.Visible = False
-                cntrlCFDIData.Visible = False
                 cntrlOutputData.Operacion = ddlOut.SelectedValue
+
             Case "CFDI"
                 txtOp.Visible = True
                 txtOp.Text = ddlCFDI.SelectedValue.Trim
                 ddlCFDI.Visible = False
-                cntrlOutputData.Visible = False
-                cntrlInputData.Visible = False
+                ClosePanels()
                 cntrlCFDIData.Visible = True
                 cntrlCFDIData.Operacion = ddlCFDI.SelectedValue
+
+            Case "SA"
+                If txtOp.Text <> "" Then
+                    txtOp.Visible = True
+                    ddlOut.Visible = False
+                    ddlCFDI.Visible = False
+                    ClosePanels()
+                    cntrlAllData.Visible = True
+                    cntrlAllData.EnableFields(True)
+                End If
+
         End Select
 
         If Not pnlTryagain.Visible Then
@@ -248,15 +281,15 @@ Partial Class App_Controls_cntrlInventory
         End If
 
     End Sub
-    Protected Sub Modify() Handles cntrlOutputData.ModBtnClicked, cntrlCFDIData.ModBtnClicked
-        cntrlOutputData.Visible = False
-        cntrlInputData.Visible = False
-        cntrlCFDIData.Visible = False
+    'Protected Sub Modify() Handles cntrlOutputData.ModBtnClicked, cntrlCFDIData.ModBtnClicked
+    '    cntrlOutputData.Visible = False
+    '    cntrlInputData.Visible = False
+    '    cntrlCFDIData.Visible = False
 
-        cntrlAllData.Visible = True
-        cntrlAllData.Operacion = txtOp.Text
-        rblOp.SelectedValue = "IN"
-    End Sub
+    '    cntrlAllData.Visible = True
+    '    cntrlAllData.Operacion = txtOp.Text
+    '    rblOp.SelectedValue = "IN"
+    'End Sub
 
 
     Protected Sub rblOp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles rblOp.SelectedIndexChanged
@@ -284,5 +317,72 @@ Partial Class App_Controls_cntrlInventory
     Protected Sub lnbAb_Click(sender As Object, e As EventArgs)
         cntrlAbandono.Visible = True
 
+    End Sub
+    Protected Sub ClosePanels()
+        cntrlInputData.Visible = False
+        cntrlOutputData.Visible = False
+        cntrlCFDIData.Visible = False
+        cntrlAllData.Visible = False
+        cntrlAbandono.Visible = False
+    End Sub
+
+    Protected Sub btnCapturaIn_Click(sender As Object, e As EventArgs) Handles btnCapturaIn.Click
+        ClosePanels()
+        SetBtnClass(sender)
+        rblOp.SelectedValue = "IN"
+        InitRbl()
+    End Sub
+
+    Protected Sub btnCapturaOut_Click(sender As Object, e As EventArgs) Handles btnCapturaOut.Click
+        ClosePanels()
+        SetBtnClass(sender)
+        rblOp.SelectedValue = "OUT"
+        InitRbl()
+    End Sub
+
+    Protected Sub btnCDFI_Click(sender As Object, e As EventArgs) Handles btnCDFI.Click
+        ClosePanels()
+        SetBtnClass(sender)
+        rblOp.SelectedValue = "CFDI"
+        InitRbl()
+    End Sub
+
+    Protected Sub btnSA_Click(sender As Object, e As EventArgs) Handles btnSA.Click
+        ClosePanels()
+        SetBtnClass(sender)
+        rblOp.SelectedValue = "SA"
+        InitRbl()
+    End Sub
+
+    Protected Sub EnableButtons(value As Boolean)
+        btnCapturaIn.Enabled = value
+        btnCapturaOut.Enabled = value
+        btnCDFI.Enabled = value
+        btnSA.Enabled = value
+
+        If rblOp.SelectedValue = "IN" Then
+            btnCapturaIn.CssClass = "btn btn-selected"
+        End If
+
+        If (value = False) Then
+            btnCapturaIn.CssClass = IIf(rblOp.SelectedValue = "IN", "btn btn-selected", "btn btn-disabled")
+            btnCapturaOut.CssClass = IIf(rblOp.SelectedValue = "OUT", "btn btn-selected", "btn btn-disabled")
+            btnCDFI.CssClass = IIf(rblOp.SelectedValue = "CFDI", "btn btn-selected", "btn btn-disabled")
+            btnSA.CssClass = IIf(rblOp.SelectedValue = "SA", "btn btn-selected", "btn btn-disabled")
+        Else
+            btnCapturaIn.CssClass = IIf(rblOp.SelectedValue = "IN", "btn btn-selected", "btn")
+            btnCapturaOut.CssClass = IIf(rblOp.SelectedValue = "OUT", "btn btn-selected", "btn")
+            btnCDFI.CssClass = IIf(rblOp.SelectedValue = "CFDI", "btn btn-selected", "btn")
+            btnSA.CssClass = IIf(rblOp.SelectedValue = "SA", "btn btn-selected", "btn")
+        End If
+
+    End Sub
+
+    Private Sub SetBtnClass(ByRef btn As Button)
+        btnCapturaIn.CssClass = "btn"
+        btnCapturaOut.CssClass = "btn"
+        btnCDFI.CssClass = "btn"
+        btnSA.CssClass = "btn"
+        btn.CssClass = "btn btn-selected"
     End Sub
 End Class

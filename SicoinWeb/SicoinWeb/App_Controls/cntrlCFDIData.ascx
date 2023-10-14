@@ -193,7 +193,6 @@
     <tr>
         <td colspan="4">
             <asp:Panel ID="pnlButtons" runat="server" Style="padding: 20px; text-align: center">
-                <asp:Button ID="btnMod" runat="server" CssClass="btn" TabIndex="25" Text="Modificar" Visible="false" Style="margin-right: 20px;" />
                 <asp:Button ID="btnOK" runat="server" CssClass="btn" TabIndex="25" Text="Aceptar" />
                 &nbsp;&nbsp;
                             <asp:Button ID="btnCancel" runat="server" CausesValidation="False" CssClass="btna" TabIndex="26" Text="Cancelar" />

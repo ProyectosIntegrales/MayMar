@@ -6,7 +6,6 @@ Partial Class cntrlAllData
         Set(value As String)
             hflOp.Value = value
             getData()
-            btnModify.Visible = True
             btnOK.Visible = False
             EnableFields(False)
         End Set
@@ -65,8 +64,7 @@ Partial Class cntrlAllData
 
             Dim Terminado As Boolean = dr("Terminado")
 
-            btnModify.Visible = Session("IsAdmin")
-            
+
         End If
         '  clearAll()
     End Sub
@@ -160,21 +158,18 @@ Partial Class cntrlAllData
     End Sub
 
 
-    Protected Sub btnModify_Click(sender As Object, e As EventArgs) Handles btnModify.Click
-        mdlLogin.Show()
-    End Sub
-
     Protected Sub cntrlLogin_Cancel() Handles cntrlLogin.Cancel
         mdlLogin.Hide()
     End Sub
     Protected Sub cntrlLogin_LoginOK(Username As String) Handles cntrlLogin.LoginOK
 
-        btnModify.Visible = False
         btnOK.Visible = True
         EnableFields(True)
 
     End Sub
-    Protected Sub EnableFields(Enabled As Boolean)
+    Public Sub EnableFields(Enabled As Boolean)
+
+        btnOK.Visible = Enabled
 
         For Each c As Control In Me.Controls
             If c.GetType() = (New TextBox).GetType() Then

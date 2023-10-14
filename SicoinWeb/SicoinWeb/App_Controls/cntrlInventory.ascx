@@ -12,7 +12,7 @@
 
 
 <div class="menu1" style="white-space: nowrap;">
-    <a id="lnbAb" href="#" class="btn" style="margin-right: 100px;" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
+    <a id="lnbAb" href="#" class="btn" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
     <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right:10px">Reportes</a>
 </div>
 
@@ -20,6 +20,7 @@
     <asp:LinkButton runat="server" ID="lnbReportes" Text="Reporte de Inventario" Style="padding-left: 20px; padding-bottom: 15px;"></asp:LinkButton><br style="height: 10px" />
     <asp:LinkButton runat="server" ID="lnbReportAb" Text="Reporte de Abandonos" Style="padding-left: 20px;"></asp:LinkButton>
 </div>
+
 <div id="ifraba" style="display: none; position: fixed; top: 10vh; right: 0; left: 0; margin-right: auto; margin-left: auto; height: 80vh; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 90vw; border-width: 2px; box-shadow: 0px 0px 10px; padding: 10px; z-index: 20000">
     <div class="close" onclick="javascript:$('#ifraba').toggle(500);"><span>X</span></div>
     <iframe src="app_controls/cntrlAbandono.aspx" width="100%" height="100%" frameborder="0"></iframe>
@@ -34,13 +35,19 @@
                 <table class="auto-style1">
                     <tr>
                         <td colspan="3" style="padding-bottom: 20px; padding-left: 10px;">
-                            <asp:RadioButtonList runat="server" ID="rblOp" RepeatDirection="Horizontal" AutoPostBack="True">
+                            <asp:RadioButtonList runat="server" ID="rblOp" RepeatDirection="Horizontal" AutoPostBack="True" Visible="false">
                                 <asp:ListItem Text="Capturar Entrada" Selected="True" Value="IN" style="padding-right: 20px;"></asp:ListItem>
                                 <asp:ListItem Text="Capturar Salida" Value="OUT" style="padding-right: 20px;"></asp:ListItem>
                                 <asp:ListItem Text="Capturar Factura y CFDI" Value="CFDI" style="padding-right: 20px;"></asp:ListItem>
+                                                                <asp:ListItem Text="Modificar Registro (SA)" Value="SA" style="padding-right: 20px;"></asp:ListItem>
 
                             </asp:RadioButtonList>
-
+                            <div class="menu-main">
+                            <asp:Button ID="btnCapturaIn" runat="server" Text="Capturar Entrada" CssClass="btn btn-selected" OnClientClick="btnCapturaIn" />
+                                <asp:Button ID="btnCapturaOut" runat="server" Text="Capturar Salida" CssClass="btn" />
+                                <asp:Button ID="btnCDFI" runat="server" Text="Capturar Factura y CDFI" CssClass="btn"/>
+                                <asp:Button ID="btnSA" runat="server" Text="Modificar Registro" CssClass="btn" Visible="false"/>
+                                </div>
                         </td>
 
                     </tr>
@@ -54,7 +61,7 @@
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="dsOut" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion FROM Inventario WHERE (Terminado = 0) ORDER BY Operacion"></asp:SqlDataSource>
                             <asp:SqlDataSource ID="dsCFDI" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion FROM Inventario WHERE (Terminado = 1) AND (ISNULL(Status, 0) = 1) ORDER BY Operacion"></asp:SqlDataSource>
-                            <asp:Button ID="btnGo" runat="server" CssClass="btn" Text="Abrir" Height="20px" Width="60px" />
+                            <asp:Button ID="btnGo" runat="server" CssClass="btn btn-small" Text="Abrir" Height="20px" Width="60px" />
                         </td>
 
                         <td valign="middle" align="center">
@@ -102,6 +109,7 @@
 
 <asp:HiddenField ID="hflChanging" runat="server" Value="False" />
 <asp:HiddenField ID="hflUsername" runat="server" />
+<asp:HiddenField ID="hflSA" runat="server" />
 
 
 

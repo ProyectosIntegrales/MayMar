@@ -64,7 +64,7 @@ Partial Class cntrlCFDIData
             pnlCompartido.Visible = False
             Dim Terminado As Boolean = dr("Terminado")
 
-            btnMod.Visible = Session("IsAdmin")
+
             chkCompartido.Checked = False
             txtFactura.Focus()
             txtCFDI.ReadOnly = False
@@ -153,11 +153,6 @@ Partial Class cntrlCFDIData
         If IsNumeric(txtDescargado.Text) Then
             txtRemanente.Text = txtPeso.Text - txtDescargado.Text
         End If
-    End Sub
-
-    Public Event ModBtnClicked()
-    Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
-        RaiseEvent ModBtnClicked()
     End Sub
 
     Protected Sub chkCompartido_CheckedChanged(sender As Object, e As EventArgs)

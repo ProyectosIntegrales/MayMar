@@ -18,8 +18,9 @@ Partial Class App_Controls_cntrlMain
 
     Public Sub Initialize()
         If Not Username = Nothing Then
-            Dim dt As DataTable = SQLDataTable("SELECT Nombre, Priv, ServerID FROM tblUsers WHERE Username = '" & Username & "'")
+            Dim dt As DataTable = SQLDataTable("SELECT Nombre, Priv, ServerID, ISNULL(SuperAdmin,0) SuperAdmin FROM tblUsers WHERE Username = '" & Username & "'")
             lblname.Text = dt.Rows(0)("Nombre")
+            cntrlInventory.SuperAdmin = dt.Rows(0)("SuperAdmin")
             Dim priv = dt.Rows(0)("Priv")
             Dim server = dt.Rows(0)("ServerID")
             Session("IsAdmin") = priv = 5
