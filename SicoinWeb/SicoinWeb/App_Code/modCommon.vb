@@ -158,7 +158,7 @@ Public Module modCommon
             End With
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
             Return "error: " & ex.Message
         Finally
             cm.Connection.Close()
@@ -186,7 +186,8 @@ Public Module modCommon
             End With
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            'Return "error: " & ex.Message
         Finally
             cm.Connection.Close()
         End Try
