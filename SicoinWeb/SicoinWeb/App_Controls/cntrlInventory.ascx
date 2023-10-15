@@ -46,7 +46,7 @@
                             <asp:Button ID="btnCapturaIn" runat="server" Text="Capturar Entrada" CssClass="btn btn-selected" OnClientClick="btnCapturaIn" />
                                 <asp:Button ID="btnCapturaOut" runat="server" Text="Capturar Salida" CssClass="btn" />
                                 <asp:Button ID="btnCDFI" runat="server" Text="Capturar Factura y CDFI" CssClass="btn"/>
-                                <asp:Button ID="btnSA" runat="server" Text="Modificar Registro" CssClass="btn" Visible="false"/>
+                                <asp:Button ID="btnSA" runat="server" Text="Modificar Inventario" CssClass="btn" Visible="false"/>
                                 </div>
                         </td>
 

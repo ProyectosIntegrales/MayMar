@@ -79,9 +79,6 @@ Partial Class cntrlOutputData
             pnlButtons.Visible = Not Terminado
             If txtDescargado.Text.Trim = "0" Then txtDescargado.Text = ""
 
-
-
-            btnMod.Visible = Session("IsAdmin")
         End If
         txtDescargado.Focus()
 
@@ -189,10 +186,6 @@ Partial Class cntrlOutputData
         SaveData(False)
     End Sub
 
-    Public Event ModBtnClicked()
-    Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
-        RaiseEvent ModBtnClicked()
-    End Sub
     Protected Sub btnDeclAb_Click(sender As Object, e As EventArgs) Handles btnDeclAb.Click
         pnlDeclAbandono.Visible = True
         btnDeclAb.Visible = False
