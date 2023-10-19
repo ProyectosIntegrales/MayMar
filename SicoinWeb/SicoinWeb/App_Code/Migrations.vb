@@ -207,7 +207,7 @@ Public Class Migrations
         )
 
         NewMigration(
-            MigrationName:="20231014122500_Modificar SP de Usuarios",
+            MigrationName:="20231014122500_Modificar Tabla de Usuarios",
             MigrationCommand:=<![CDATA[
                 ALTER TABLE dbo.tblUsers ADD
 	            SuperAdmin bit NULL
@@ -215,7 +215,7 @@ Public Class Migrations
         )
 
         NewMigration(
-            MigrationName:="",
+            MigrationName:="20231014122500_Modificar SP de Usuarios",
             MigrationCommand:=<![CDATA[
             ALTER PROCEDURE [dbo].[spUsers] 
 	            -- Add the parameters for the stored procedure here 
@@ -260,6 +260,13 @@ Public Class Migrations
 		            WHERE Username = @Username 
 	            END 
             END 
+            ]]>.Value)
+
+        NewMigration(
+            MigrationName:="201310181900 Agregar Priv superadmin a Hugo",
+            MigrationCommand:=<![CDATA[
+                UPDATE tblUsers SET SuperAdmin = 1
+                WHERE Username = 'Hugo' OR Username = 'ESTRGA'
             ]]>.Value)
 
     End Sub
