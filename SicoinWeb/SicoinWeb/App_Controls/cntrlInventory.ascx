@@ -8,12 +8,31 @@
 <%@ Register Src="~/App_Controls/cntrlAbandono.ascx" TagPrefix="uc1" TagName="cntrlAbandono" %>
 
 
-<%@ Register src="cntrlSalidas.ascx" tagname="cntrlSalidas" tagprefix="uc2" %>
+<%@ Register Src="cntrlSalidas.ascx" TagName="cntrlSalidas" TagPrefix="uc2" %>
 
+<style type="text/css">
+    .btn-selected {
+        background-color: #FFF;
+        -webkit-box-shadow: #000 2px 2px 5px;
+        -moz-box-shadow: #000 2px 2px 5px;
+        box-shadow: #c1c1c1 1px 2px 5px;
+        text-decoration: none;
+    }
+
+    .btn-disabled, .btn-disabled:hover {
+        color: #979797 !important;
+        cursor: auto;
+        background-color: #e1e1e1 !important;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        text-decoration: none;
+    }
+</style>
 
 <div class="menu1" style="white-space: nowrap;">
     <a id="lnbAb" href="#" class="btn" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
-    <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right:10px">Reportes</a>
+    <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right: 10px">Reportes</a>
 </div>
 
 <div id="reps" style="display: none; position: absolute; top: 40px; right: 20px; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 199px; border-width: 2px; box-shadow: 5px 5px 10px; padding: 10px; z-index: 10000">
@@ -39,15 +58,15 @@
                                 <asp:ListItem Text="Capturar Entrada" Selected="True" Value="IN" style="padding-right: 20px;"></asp:ListItem>
                                 <asp:ListItem Text="Capturar Salida" Value="OUT" style="padding-right: 20px;"></asp:ListItem>
                                 <asp:ListItem Text="Capturar Factura y CFDI" Value="CFDI" style="padding-right: 20px;"></asp:ListItem>
-                                                                <asp:ListItem Text="Modificar Registro (SA)" Value="SA" style="padding-right: 20px;"></asp:ListItem>
+                                <asp:ListItem Text="Modificar Registro (SA)" Value="SA" style="padding-right: 20px;"></asp:ListItem>
 
                             </asp:RadioButtonList>
                             <div class="menu-main">
-                            <asp:Button ID="btnCapturaIn" runat="server" Text="Capturar Entrada" CssClass="btn btn-selected" OnClientClick="btnCapturaIn" />
+                                <asp:Button ID="btnCapturaIn" runat="server" Text="Capturar Entrada" CssClass="btn btn-selected" OnClientClick="btnCapturaIn" />
                                 <asp:Button ID="btnCapturaOut" runat="server" Text="Capturar Salida" CssClass="btn" />
-                                <asp:Button ID="btnCDFI" runat="server" Text="Capturar Factura y CDFI" CssClass="btn"/>
-                                <asp:Button ID="btnSA" runat="server" Text="Modificar Inventario" CssClass="btn" Visible="false"/>
-                                </div>
+                                <asp:Button ID="btnCDFI" runat="server" Text="Capturar Factura y CDFI" CssClass="btn" />
+                                <asp:Button ID="btnSA" runat="server" Text="Modificar Inventario" CssClass="btn" Visible="false" />
+                            </div>
                         </td>
 
                     </tr>
@@ -88,7 +107,7 @@
         </asp:UpdatePanel>
         <br />
         <asp:PlaceHolder ID="plhControls" runat="server">
-            <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false"  />
+            <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false" />
             <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
             <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
             <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />

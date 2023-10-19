@@ -244,6 +244,7 @@ Partial Class App_Controls_cntrlInventory
                     ddlOut.Visible = False
                     ddlCFDI.Visible = False
                     ClosePanels()
+                    cntrlInputData.Operacion = txtOp.Text
                     cntrlInputData.Visible = True
                 End If
 
