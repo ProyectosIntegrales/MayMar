@@ -23,10 +23,13 @@ Partial Class App_Controls_cntrlInventory
     Dim Terminado As Boolean
 
     Dim Status As Integer
+
     Protected Sub txtOp_TextChanged(sender As Object, e As EventArgs) Handles txtOp.TextChanged
         If hflChanging.Value = True Then
             Exit Sub
         End If
+
+        btnGo.Visible = txtOp.Text <> ""
 
         cntrlInputData.Visible = False
         cntrlOutputData.Visible = False
@@ -38,49 +41,33 @@ Partial Class App_Controls_cntrlInventory
 
         txtOp.Text = txtOp.Text.ToUpper
         pnlValid.Visible = False
+        pnlNotExists.Visible = False
         pnlTryagain.Visible = False
-        '  dvMsg.Visible = False
+        dvMsg.Visible = False
 
         If txtOp.Text.Trim <> "" And txtOp.Text.Trim.Length >= 11 Then
             Dim AlreadyExist As Boolean = Exists(txtOp.Text)
-            pnlValid.Visible = Not AlreadyExist
-            btnNew.Focus()
 
-            If (rblOp.SelectedValue = "SA") Then
-                cntrlAllData.Visible = True
-                cntrlAllData.Operacion = txtOp.Text
-
-            Else
-                If AlreadyExist Then
-                    If Terminado = False Then
-                        cntrlOutputData.Visible = True
-                        cntrlOutputData.Operacion = txtOp.Text
-                        ddlOut.DataBind()
-                        ddlOut.Items.FindByText(txtOp.Text)
-                        rblOp.SelectedValue = "OUT"
-                    ElseIf Status = 1 Then
-                        cntrlCFDIData.Visible = True
-                        cntrlCFDIData.Operacion = txtOp.Text
-                        ddlCFDI.DataBind()
-                        ddlCFDI.Items.FindByText(txtOp.Text)
-                        rblOp.SelectedValue = "CFDI"
-                    ElseIf Status = 2 Then
-                        cntrlAllData.Visible = True
-                        cntrlAllData.Operacion = txtOp.Text
-                        rblOp.SelectedValue = "IN"
-
-                    End If
-
+            If AlreadyExist Then
+                If (rblOp.SelectedValue = "SA") Then
+                    cntrlAllData.Visible = True
+                    cntrlAllData.Operacion = txtOp.Text
                 End If
+            Else
+                If rblOp.SelectedValue = "SA" Then
+                    pnlNotExists.Visible = True
+                Else
+                    pnlValid.Visible = True
+                End If
+                btnGo.Visible = False
             End If
         Else
             If Not txtOp.Text = "" Then
                 pnlTryagain.Visible = True
-
             End If
             txtOp.Enabled = True
+            btnGo.Visible = False
             txtOp.Focus()
-            btnGo.Visible = True
         End If
 
 
@@ -88,13 +75,10 @@ Partial Class App_Controls_cntrlInventory
 
     Private Function Exists(OperationNo As String) As Boolean
         Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & OperationNo & "'")
-        If Not dt Is Nothing Then
-
-            If dt.Rows.Count = 1 Then
-                Terminado = dt.Rows(0)("Terminado")
-                Status = isNull(dt.Rows(0)("Status"), 0)
-                Return True
-            End If
+        If Not dt Is Nothing And dt.Rows.Count = 1 Then
+            Terminado = dt.Rows(0)("Terminado")
+            Status = isNull(dt.Rows(0)("Status"), 0)
+            Return True
         End If
 
         Return False
@@ -105,31 +89,29 @@ Partial Class App_Controls_cntrlInventory
         cntrlInputData.clearAll()
         cntrlInputData.Operacion = txtOp.Text.Trim
         pnlValid.Visible = False
+        pnlNotExists.Visible = False
+        txtOp.Enabled = False
     End Sub
 
     Public Sub Initialize()
-
         rblOp.Items.FindByValue("SA").Enabled = SuperAdmin
-
-
         hflChanging.Value = False
 
-        InitRbl()
+            InitRbl()
 
-        btnGo.Visible = True
-
+            btnGo.Visible = False
+            pnlTryagain.Visible = False
+        pnlNotExists.Visible = False
         dvMsg.Visible = False
         txtOp.Text = ""
-        txtOp.Focus()
-        EnableButtons(True)
+            txtOp.Focus()
+            EnableButtons(True)
 
     End Sub
 
     Protected Sub btnCancelNew_Click(sender As Object, e As EventArgs) Handles btnCancelNew.Click
         pnlValid.Visible = False
-
         Initialize()
-
     End Sub
 
     Protected Sub cntrlInputData_Aceptar() Handles cntrlInputData.Aceptar
@@ -193,7 +175,8 @@ Partial Class App_Controls_cntrlInventory
                 lblOper.Visible = True
                 ddlOut.Visible = False
                 ddlCFDI.Visible = False
-                btnGo.Visible = True
+                btnGo.Visible = False
+                txtOp.Focus()
 
             Case "OUT"
                 txtOp.Visible = False
@@ -225,7 +208,8 @@ Partial Class App_Controls_cntrlInventory
                 ddlOut.Visible = False
                 ddlCFDI.Visible = False
                 lblOper.Visible = True
-                btnGo.Visible = True
+                btnGo.Visible = False
+                txtOp.Focus()
 
         End Select
     End Sub
@@ -235,63 +219,64 @@ Partial Class App_Controls_cntrlInventory
     End Sub
 
     Protected Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
-        EnableButtons(False)
         Select Case rblOp.SelectedValue
 
             Case "IN"
                 If txtOp.Text <> "" Then
                     txtOp.Visible = True
+                    txtOp.Enabled = False
                     ddlOut.Visible = False
                     ddlCFDI.Visible = False
                     ClosePanels()
                     cntrlInputData.Operacion = txtOp.Text
                     cntrlInputData.Visible = True
+                    btnGo.Visible = False
+                    EnableButtons(False)
                 End If
 
             Case "OUT"
                 txtOp.Visible = True
                 txtOp.Text = ddlOut.SelectedValue.Trim
+                txtOp.Enabled = False
                 ddlOut.Visible = False
                 ClosePanels()
                 cntrlOutputData.Visible = True
                 cntrlOutputData.Operacion = ddlOut.SelectedValue
+                btnGo.Visible = False
+                EnableButtons(False)
 
             Case "CFDI"
                 txtOp.Visible = True
                 txtOp.Text = ddlCFDI.SelectedValue.Trim
+                txtOp.Enabled = False
                 ddlCFDI.Visible = False
                 ClosePanels()
                 cntrlCFDIData.Visible = True
                 cntrlCFDIData.Operacion = ddlCFDI.SelectedValue
+                btnGo.Visible = False
+                EnableButtons(False)
 
             Case "SA"
                 If txtOp.Text <> "" Then
                     txtOp.Visible = True
+                    txtOp.Enabled = False
                     ddlOut.Visible = False
                     ddlCFDI.Visible = False
                     ClosePanels()
                     cntrlAllData.Visible = True
                     cntrlAllData.EnableFields(True)
+                    btnGo.Visible = False
+                    EnableButtons(False)
                 End If
 
         End Select
 
-        If Not pnlTryagain.Visible Then
-            btnGo.Visible = False
-            txtOp.Enabled = False
-        End If
+        'If Not pnlTryagain.Visible Then
+        '    btnGo.Visible = False
+        '    txtOp.Enabled = False
+        'End If
 
     End Sub
-    'Protected Sub Modify() Handles cntrlOutputData.ModBtnClicked, cntrlCFDIData.ModBtnClicked
-    '    cntrlOutputData.Visible = False
-    '    cntrlInputData.Visible = False
-    '    cntrlCFDIData.Visible = False
-
-    '    cntrlAllData.Visible = True
-    '    cntrlAllData.Operacion = txtOp.Text
-    '    rblOp.SelectedValue = "IN"
-    'End Sub
-
 
     Protected Sub rblOp_SelectedIndexChanged(sender As Object, e As EventArgs) Handles rblOp.SelectedIndexChanged
 
@@ -325,6 +310,9 @@ Partial Class App_Controls_cntrlInventory
         cntrlCFDIData.Visible = False
         cntrlAllData.Visible = False
         cntrlAbandono.Visible = False
+        btnGo.Visible = False
+        pnlTryagain.Visible = False
+        dvMsg.Visible = False
     End Sub
 
     Protected Sub btnCapturaIn_Click(sender As Object, e As EventArgs) Handles btnCapturaIn.Click

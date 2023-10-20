@@ -74,13 +74,13 @@
                         <td align="right" valign="middle" style="width: 190px;">
                             <asp:Label ID="lblOper" runat="server">Operación/Pedimento</asp:Label></td>
                         <td valign="middle">
-                            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="120px"></asp:TextBox>
+                            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="130px" AutoPostBack="True"></asp:TextBox>
                             <asp:DropDownList ID="ddlOut" runat="server" CssClass="textboxg uppercase" DataSourceID="dsOut" DataTextField="Operacion" DataValueField="Operacion" Visible="false" Width="150px" Style="width: 150px;"></asp:DropDownList>
                             <asp:DropDownList ID="ddlCFDI" runat="server" CssClass="textboxg uppercase" DataSourceID="dsCFDI" DataTextField="Operacion" DataValueField="Operacion" Visible="False" Width="150px" Style="width: 150px;">
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="dsOut" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion FROM Inventario WHERE (Terminado = 0) ORDER BY Operacion"></asp:SqlDataSource>
                             <asp:SqlDataSource ID="dsCFDI" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion FROM Inventario WHERE (Terminado = 1) AND (ISNULL(Status, 0) = 1) ORDER BY Operacion"></asp:SqlDataSource>
-                            <asp:Button ID="btnGo" runat="server" CssClass="btn btn-small" Text="Abrir" Height="20px" Width="60px" />
+                            <asp:Button ID="btnGo" runat="server" CssClass="btn btn-small" Text="Abrir" Height="20px" Width="60px" Visible="False" />
                         </td>
 
                         <td valign="middle" align="center">
@@ -89,6 +89,9 @@
                                 <br />
                                 &nbsp;<asp:Button ID="btnNew" runat="server" Text="Aceptar" CssClass="btn" />
                                 &nbsp;<asp:Button ID="btnCancelNew" runat="server" Text="Cancelar" CssClass="btna" />
+                            </asp:Panel>
+                                                        <asp:Panel ID="pnlNotExists" runat="server" Visible="false">
+                                <asp:Label ID="Label1" runat="server" Text="Este número de operación no existe!"></asp:Label>
                             </asp:Panel>
                             <asp:Panel ID="pnlTryagain" runat="server" Visible="false" Style="color: #a90000">
                                 Algo salió mal, intente de nuevo. Verifique que sea el número correcto.
@@ -121,7 +124,7 @@
 
 </asp:Panel>
 <div id="dvMsg" class="notification" runat="server" visible="false" clientidmode="Static">
-    <img src="../images/icons/ok.png" height="36" align="middle" />
+    <img src="../images/icons/ok.png" height="32" style="position: relative; top: 10px" />
     <asp:Label ID="lblMsg" runat="server">Operación exitosa!</asp:Label>
 </div>
 
@@ -134,7 +137,7 @@
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        $('#dvMsg').fadeOut(3000, function () {
+        $('#dvMsg').fadeOut(2000, function () {
             $(this).html(""); //reset label after fadeout
         });
     });

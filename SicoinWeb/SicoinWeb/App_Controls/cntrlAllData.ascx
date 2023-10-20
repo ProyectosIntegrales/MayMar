@@ -1,8 +1,6 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlAllData.ascx.vb" Inherits="cntrlAllData" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/App_Controls/cntrlError.ascx" TagName="cntrlError" TagPrefix="uc1" %>
-<%@ Register Src="~/App_Controls/cntrlLogin.ascx" TagPrefix="uc1" TagName="cntrlLogin" %>
-
 
 
 <style type="text/css">
@@ -181,9 +179,3 @@
 
 <asp:HiddenField ID="hflOp" runat="server" />
 
-<asp:Panel ID="pnlPopUp" runat="server" CssClass="pnlLoginPopup">
-    <uc1:cntrlLogin runat="server" ID="cntrlLogin" />
-</asp:Panel>
-<asp:Button ID="btnPopUp" runat="server" Style="display: none" />
-<ajaxToolkit:ModalPopupExtender ID="mdlLogin" runat="server" TargetControlID="btnPopUp" PopupControlID="pnlPopUp" BackgroundCssClass="modalBackground">
-</ajaxToolkit:ModalPopupExtender>

@@ -31,7 +31,7 @@ Partial Class cntrlInputData
 
     Protected Sub getData()
         Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
-        If Not dt Is Nothing Then
+        If Not dt Is Nothing And dt.Rows.Count > 0 Then
             Dim dr As DataRow = dt.Rows(0)
 
             'txtOp.Text = hflOp.Value.Trim

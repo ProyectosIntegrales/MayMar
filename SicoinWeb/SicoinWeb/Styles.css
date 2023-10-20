@@ -997,9 +997,6 @@ hr {
     text-align: right;
     padding-top: 10px;
 }
-
-
-
     .closeButton a {
         color: #11418d;
         text-decoration: dotted;
@@ -1008,14 +1005,18 @@ hr {
 .notification {
     background-color: #9ad39a;
     min-height: 40px;
-    width: 30%;
+    width: 210px;
     margin: 0 auto;
     text-align: center;
+    width: 209px;
+    left: calc(50% - 105px);
+    top: 20vh;
     line-height: 50px;
     color: #444444;
     font-size: 15px;
-    box-shadow: 3px 3px 3px #444444;
-    border-radius: 15px 15px 15px 15px;
+    box-shadow: 3px 3px 3px #888;
+    border-radius: 7px;
+    position: absolute;
 }
 
 .tableHl {
