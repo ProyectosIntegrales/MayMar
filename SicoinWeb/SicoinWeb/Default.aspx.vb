@@ -1,7 +1,15 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Globalization
+Imports System.Threading
 
 Partial Class _Default
     Inherits System.Web.UI.Page
+
+    Public Sub New()
+        Dim newCulture As CultureInfo = New CultureInfo("en-US") ' Change to French culture
+        Thread.CurrentThread.CurrentCulture = newCulture
+        Thread.CurrentThread.CurrentUICulture = newCulture
+    End Sub
     Protected Sub cntrlWelcome1_LoginClicked()
 
         cntrlWelcome1.Visible = False

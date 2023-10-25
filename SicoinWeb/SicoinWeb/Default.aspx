@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="VB" MasterPageFile="~/MasterPage.master" AutoEventWireup="false" CodeFile="Default.aspx.vb" Inherits="_Default" %>
+﻿<%@ Page Title="" Language="VB" MasterPageFile="~/MasterPage.master" AutoEventWireup="false" CodeFile="Default.aspx.vb" Inherits="_Default" Debug="false" %>
 
 <%@ Register src="~/App_Controls/cntrlWelcome.ascx" tagname="cntrlWelcome" tagprefix="uc1" %>
 <%@ Register Src="~/App_Controls/cntrlLogin.ascx" TagPrefix="uc1" TagName="cntrlLogin" %>

@@ -2,6 +2,7 @@
     Inherits="cntrlReporte" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
+
 <style type="text/css">
     .modalBackground {
         background-color: #414141;

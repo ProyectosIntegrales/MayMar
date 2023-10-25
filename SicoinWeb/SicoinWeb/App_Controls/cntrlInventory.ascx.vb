@@ -115,14 +115,13 @@ Partial Class App_Controls_cntrlInventory
     End Sub
 
     Protected Sub cntrlInputData_Aceptar() Handles cntrlInputData.Aceptar
-        dvMsg.Visible = True
         cntrlInputData.clearAll()
         cntrlInputData.Visible = False
         Initialize()
+        dvMsg.Visible = True
     End Sub
 
     Protected Sub cntrlOutputData_Aceptar() Handles cntrlOutputData.Aceptar
-
         cntrlOutputData.clearAll()
         cntrlOutputData.Visible = False
         Initialize()

@@ -315,7 +315,7 @@ Partial Class cntrlReports
 
             Dim serverName As String
             Dim databaseName As String
-
+            Console.WriteLine("1")
             If Not drs Is DBNull.Value Then
                 serverName = drs.Item("ServerName")
                 databaseName = drs.Item("DatabaseName")
@@ -331,7 +331,7 @@ Partial Class cntrlReports
 
             Dim strCrystalReportFilePath As String = reportFile
             Dim oRDoc As New ReportDocument
-
+            Console.WriteLine("2")
             Dim strFileDestinationPath As String = MapPath("~/_temp/" & reportName.Replace(".", "_") & "_" & Session.SessionID.ToString & Now.GetHashCode & ".tmp")
 
             oRDoc.Load(MapPath(strCrystalReportFilePath)) 'loads the crystalreports in to the memory
@@ -339,7 +339,7 @@ Partial Class cntrlReports
             'oRDoc.RecordSelectionFormula = "{vDocuments.documentDeptoID} = " & hfParamOptional1.Value
 
             Dim dvParams As DataView = DirectCast(dsParams.Select(DataSourceSelectArguments.Empty), DataView)
-
+            Console.WriteLine("3")
             'repeaterParams.DataBind()
             For Each r As RepeaterItem In repeaterParams.Items
 
@@ -390,9 +390,9 @@ Partial Class cntrlReports
 
                 Next
 
-
+                Console.WriteLine("4")
             Next
-
+            Console.WriteLine("5")
             oDfDopt.DiskFileName = strFileDestinationPath 'path of file where u want to locate ur PDF
             oRDoc.SetDatabaseLogon("maymaruser", "mm2016")
             expo = oRDoc.ExportOptions
@@ -406,7 +406,7 @@ Partial Class cntrlReports
             ci.UserID = "maymaruser"
             ci.Password = "mm2016"
             ci.Type = ConnectionInfoType.SQL
-
+            Console.WriteLine("6")
             For Each T As Table In oRDoc.Database.Tables
                 Dim TLogonInfo As TableLogOnInfo = T.LogOnInfo
                 TLogonInfo.ConnectionInfo = ci
@@ -416,7 +416,7 @@ Partial Class cntrlReports
             oRDoc.Export()
             oRDoc.Close()
             oRDoc.Dispose()
-
+            Console.WriteLine("7")
             If System.Web.HttpContext.Current.Request.Url.IsDefaultPort Then
                 Response.Redirect("/app_addins/getReport.aspx?reportFile=" & strFileDestinationPath & "&reportTitle=" & reportTitle & "&reportType=" & exportExtension, False)
             Else
@@ -430,7 +430,7 @@ Partial Class cntrlReports
 
         Catch ex As Exception
             mdlPopup.Show()
-            lblError.Text = ex.Message
+            lblError.Text = ex.ToString()
         End Try
 
     End Sub

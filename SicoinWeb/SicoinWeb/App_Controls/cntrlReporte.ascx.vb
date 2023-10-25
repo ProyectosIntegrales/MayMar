@@ -1,36 +1,17 @@
 ﻿Imports System.Data
+Imports System.Globalization
+Imports System.Threading
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
-Imports CrystalDecisions.ReportSource
-Imports System.Threading
-Imports System.IO
-Imports System.Net
 
 Partial Class cntrlReporte
     Inherits System.Web.UI.UserControl
 
-    '   Public Event LinkClicked(ByVal id As Integer)
-
-  
-
-
     Public Event Closed()
 
-  
-  
     Public Sub goReport()
-        'Dim lb As LinkButton = sender
-        'Session("ReportID") = lb.CommandArgument
-        '  RaiseEvent LinkClicked(lb.CommandArgument)
-
         lblError.Text = ""
 
-        'Dim dv As DataView = DirectCast(dsReport.Select(DataSourceSelectArguments.Empty), DataView)
-
-        'btnDOC.Visible = dv.Table.Rows(0).Item("allowDOC")
-        'btnXLS.Visible = dv.Table.Rows(0).Item("allowXLS")
-        'btnXLD.Visible = dv.Table.Rows(0).Item("allowXLT")
-        'btnPDF.Visible = dv.Table.Rows(0).Item("allowPDF")
         mdlPopup.Show()
         If Math.Abs(CInt(btnDOC.Visible) + CInt(btnXLS.Visible) + CInt(btnXLD.Visible) + CInt(btnPDF.Visible)) <> 1 Then
             mdlPopup.Show()
@@ -58,6 +39,9 @@ Partial Class cntrlReporte
     End Sub
 
     Private Function validateParams() As Boolean
+        Dim newCulture As CultureInfo = New CultureInfo("en-US") ' Change to French culture
+        Thread.CurrentThread.CurrentCulture = newCulture
+        Thread.CurrentThread.CurrentUICulture = newCulture
         Dim result As Boolean = True
 
         If Not IsDate(txtFIni.Text) Or Not IsDate(txtFFin.Text) Then
@@ -91,7 +75,7 @@ Partial Class cntrlReporte
     Protected Sub GenerarReporte(ByVal exportExtension As String, ByVal exportFormat As ExportFormatType)
 
         Try
-
+            Console.WriteLine("Generando Reporte")
             Dim dv As DataView = DirectCast(dsReport.Select(DataSourceSelectArguments.Empty), DataView)
             Dim dr As DataRow = dv.Item(0).Row
 
@@ -189,5 +173,5 @@ Partial Class cntrlReporte
         mdlPopup.Show()
     End Sub
 
- 
+
 End Class
