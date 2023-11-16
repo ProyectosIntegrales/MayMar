@@ -73,6 +73,7 @@ Partial Class cntrlCFDIData
 
         End If
         clearAll()
+        btnMod.Visible = Session("IsAdmin")
     End Sub
 
 

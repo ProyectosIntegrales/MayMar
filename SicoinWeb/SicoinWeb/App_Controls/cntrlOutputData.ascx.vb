@@ -91,7 +91,7 @@ Partial Class cntrlOutputData
             hflDeclAb.Value = False
         End If
 
-
+        btnMod.Visible = Session("IsAdmin")
     End Sub
 
 
