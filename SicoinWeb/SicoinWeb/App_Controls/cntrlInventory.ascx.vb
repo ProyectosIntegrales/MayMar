@@ -126,6 +126,7 @@ Partial Class App_Controls_cntrlInventory
         cntrlOutputData.Visible = False
         Initialize()
         dvMsg.Visible = True
+        btnGo.Visible = True
     End Sub
 
     Public Sub cntrlInputData_Cancelar() Handles cntrlInputData.Cancelar
@@ -138,6 +139,7 @@ Partial Class App_Controls_cntrlInventory
         cntrlOutputData.clearAll()
         cntrlOutputData.Visible = False
         Initialize()
+        btnGo.Visible = True
     End Sub
     Protected Sub cntrlCFDIData_Aceptar() Handles cntrlCFDIData.Aceptar
         cntrlCFDIData.clearAll()
@@ -150,6 +152,7 @@ Partial Class App_Controls_cntrlInventory
         cntrlCFDIData.clearAll()
         cntrlCFDIData.Visible = False
         Initialize()
+        btnGo.Visible = True
     End Sub
 
     Protected Sub cntrlAllData_Aceptar() Handles cntrlAllData.Aceptar
@@ -157,12 +160,33 @@ Partial Class App_Controls_cntrlInventory
         cntrlAllData.Visible = False
         Initialize()
         dvMsg.Visible = True
+        returnToCalling()
     End Sub
 
     Protected Sub cntrlAllData_Cancelar() Handles cntrlAllData.Cancelar
         cntrlAllData.clearAll()
         cntrlAllData.Visible = False
         Initialize()
+        returnToCalling()
+    End Sub
+
+    Private Sub returnToCalling()
+        Select Case hfModifyFrom.Value
+            Case "OUT"
+                cntrlOutputData.Visible = True
+                rblOp.SelectedValue = "OUT"
+                btnGo_Click(btnGo, Nothing)
+
+            Case "CDFI"
+                cntrlCFDIData.Visible = True
+                rblOp.SelectedValue = "CFDI"
+                btnGo_Click(btnGo, Nothing)
+
+            Case Else
+
+
+        End Select
+        hfModifyFrom.Value = Nothing
     End Sub
 
     Protected Sub InitRbl()
@@ -372,5 +396,16 @@ Partial Class App_Controls_cntrlInventory
         btnCDFI.CssClass = "btn"
         btnSA.CssClass = "btn"
         btn.CssClass = "btn btn-selected"
+    End Sub
+
+    Protected Sub Modify(origin As String) Handles cntrlOutputData.ModBtnClicked, cntrlCFDIData.ModBtnClicked
+        hfModifyFrom.Value = origin
+        ClosePanels()
+        SetBtnClass(btnSA)
+
+        cntrlAllData.Visible = True
+        cntrlAllData.Operacion = txtOp.Text
+        rblOp.SelectedValue = "SA"
+        cntrlAllData.EnableFields(True)
     End Sub
 End Class

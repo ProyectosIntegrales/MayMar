@@ -132,6 +132,7 @@
 <asp:HiddenField ID="hflChanging" runat="server" Value="False" />
 <asp:HiddenField ID="hflUsername" runat="server" />
 <asp:HiddenField ID="hflSA" runat="server" />
+<asp:HiddenField ID="hfModifyFrom" runat="server" />
 
 
 

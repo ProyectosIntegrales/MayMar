@@ -218,4 +218,9 @@ Partial Class cntrlCFDIData
             txtCFDI.ReadOnly = False
         End If
     End Sub
+
+    Public Event ModBtnClicked(o As String)
+    Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
+        RaiseEvent ModBtnClicked("CDFI")
+    End Sub
 End Class

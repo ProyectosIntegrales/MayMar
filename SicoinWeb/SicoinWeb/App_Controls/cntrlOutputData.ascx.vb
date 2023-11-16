@@ -192,4 +192,9 @@ Partial Class cntrlOutputData
         hflDeclAb.Value = True
         txtDeclAb.Text = Now
     End Sub
+
+    Public Event ModBtnClicked(o As String)
+    Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
+        RaiseEvent ModBtnClicked("OUT")
+    End Sub
 End Class

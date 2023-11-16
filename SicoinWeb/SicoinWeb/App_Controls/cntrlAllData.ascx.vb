@@ -157,16 +157,6 @@ Partial Class cntrlAllData
         End If
     End Sub
 
-
-    'Protected Sub cntrlLogin_Cancel() Handles cntrlLogin.Cancel
-    '    mdlLogin.Hide()
-    'End Sub
-    'Protected Sub cntrlLogin_LoginOK(Username As String) Handles cntrlLogin.LoginOK
-
-    '    btnOK.Visible = True
-    '    EnableFields(True)
-
-    'End Sub
     Public Sub EnableFields(Enabled As Boolean)
 
         btnOK.Visible = Enabled
@@ -182,7 +172,6 @@ Partial Class cntrlAllData
             End If
             ddlUM.Enabled = Enabled
         Next
-
 
     End Sub
 End Class
