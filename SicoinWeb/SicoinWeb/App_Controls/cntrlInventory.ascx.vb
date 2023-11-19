@@ -52,12 +52,14 @@ Partial Class App_Controls_cntrlInventory
                 If (rblOp.SelectedValue = "SA") Then
                     cntrlAllData.Visible = True
                     cntrlAllData.Operacion = txtOp.Text
+                    btnGo.Focus()
                 End If
             Else
                 If rblOp.SelectedValue = "SA" Then
                     pnlNotExists.Visible = True
                 Else
                     pnlValid.Visible = True
+                    btnNew.Focus()
                 End If
                 btnGo.Visible = False
             End If
@@ -69,7 +71,6 @@ Partial Class App_Controls_cntrlInventory
             btnGo.Visible = False
             txtOp.Focus()
         End If
-
 
     End Sub
 
