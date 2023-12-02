@@ -157,10 +157,14 @@ Partial Class cntrlAllData
         End If
     End Sub
 
+    Protected Sub btnMod_clicked(sender As Object, e As EventArgs) Handles btnMod.Click
+        EnableFields(True)
+    End Sub
+
     Public Sub EnableFields(Enabled As Boolean)
 
         btnOK.Visible = Enabled
-
+        btnMod.Visible = Not Enabled And Session("IsAdmin")
         For Each c As Control In Me.Controls
             If c.GetType() = (New TextBox).GetType() Then
                 Dim txtb As TextBox = DirectCast(c, TextBox)

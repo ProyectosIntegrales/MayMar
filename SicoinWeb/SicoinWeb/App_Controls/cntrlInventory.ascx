@@ -79,7 +79,7 @@
                             <asp:DropDownList ID="ddlCFDI" runat="server" CssClass="textboxg uppercase" DataSourceID="dsCFDI" DataTextField="Operacion" DataValueField="Operacion" Visible="False" Width="150px" Style="width: 150px;">
                             </asp:DropDownList>
                             <asp:SqlDataSource ID="dsOut" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion FROM Inventario WHERE (Terminado = 0) ORDER BY Operacion"></asp:SqlDataSource>
-                            <asp:SqlDataSource ID="dsCFDI" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion FROM Inventario WHERE (Terminado = 1) AND (ISNULL(Status, 0) = 1) ORDER BY Operacion"></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="dsCFDI" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Operacion, CFDI FROM Inventario WHERE (Terminado = 1) AND (ISNULL(Status, 0) = 1) AND (CFDI IS NULL) OR (CFDI = N'') ORDER BY Operacion"></asp:SqlDataSource>
                             <asp:Button ID="btnGo" runat="server" CssClass="btn btn-small" Text="Abrir" Height="20px" Width="60px" Visible="False" />
                         </td>
 
@@ -87,7 +87,7 @@
                             <asp:Panel ID="pnlValid" runat="server" Visible="false">
                                 <asp:Label ID="lblValid" runat="server" Text="Este número de operación no existe, ¿Desea crear una nueva entrada?"></asp:Label><br />
                                 <br />
-                                &nbsp;<asp:Button ID="btnNew" runat="server" Text="Aceptar" CssClass="btn" />
+                                &nbsp;<asp:Button ID="btnNew" runat="server" Text="Aceptar" CssClass="btn" OnPreRender="btnNew_PreRender" />
                                 &nbsp;<asp:Button ID="btnCancelNew" runat="server" Text="Cancelar" CssClass="btna" />
                             </asp:Panel>
                                                         <asp:Panel ID="pnlNotExists" runat="server" Visible="false">

@@ -49,11 +49,11 @@ Partial Class App_Controls_cntrlInventory
             Dim AlreadyExist As Boolean = Exists(txtOp.Text)
 
             If AlreadyExist Then
-                If (rblOp.SelectedValue = "SA") Then
-                    cntrlAllData.Visible = True
-                    cntrlAllData.Operacion = txtOp.Text
-                    btnGo.Focus()
-                End If
+                'If (rblOp.SelectedValue = "SA") Then
+                cntrlAllData.Visible = True
+                cntrlAllData.Operacion = txtOp.Text
+                btnGo.Focus()
+                'End If
             Else
                 If rblOp.SelectedValue = "SA" Then
                     pnlNotExists.Visible = True
@@ -71,7 +71,6 @@ Partial Class App_Controls_cntrlInventory
             btnGo.Visible = False
             txtOp.Focus()
         End If
-
     End Sub
 
     Private Function Exists(OperationNo As String) As Boolean
@@ -146,7 +145,9 @@ Partial Class App_Controls_cntrlInventory
         cntrlCFDIData.clearAll()
         cntrlCFDIData.Visible = False
         Initialize()
+        ddlCFDI.DataBind()
         dvMsg.Visible = True
+        btnGo.Visible = True
     End Sub
 
     Protected Sub cntrlCFDIData_Cancelar() Handles cntrlCFDIData.Cancelar
@@ -247,18 +248,32 @@ Partial Class App_Controls_cntrlInventory
 
             Case "IN"
                 If txtOp.Text <> "" Then
-                    txtOp.Visible = True
-                    txtOp.Enabled = False
-                    ddlOut.Visible = False
-                    ddlCFDI.Visible = False
-                    ClosePanels()
-                    cntrlInputData.Operacion = txtOp.Text
-                    cntrlInputData.Visible = True
-                    btnGo.Visible = False
-                    EnableButtons(False)
+                    Dim AlreadyExist As Boolean = Exists(txtOp.Text)
+                    If (Not AlreadyExist) Then
+                        txtOp.Visible = True
+                        txtOp.Enabled = False
+                        ddlOut.Visible = False
+                        ddlCFDI.Visible = False
+                        ClosePanels()
+                        cntrlInputData.Operacion = txtOp.Text
+                        cntrlInputData.Visible = True
+                        btnGo.Visible = False
+                        EnableButtons(False)
+                    Else
+                        txtOp.Visible = True
+                        txtOp.Enabled = False
+                        ddlOut.Visible = False
+                        ddlCFDI.Visible = False
+                        ClosePanels()
+                        cntrlAllData.Visible = True
+                        cntrlAllData.EnableFields(False)
+                        btnGo.Visible = False
+                        EnableButtons(False)
+                    End If
+
                 End If
 
-            Case "OUT"
+                    Case "OUT"
                 txtOp.Visible = True
                 txtOp.Text = ddlOut.SelectedValue.Trim
                 txtOp.Enabled = False
@@ -408,5 +423,9 @@ Partial Class App_Controls_cntrlInventory
         cntrlAllData.Operacion = txtOp.Text
         rblOp.SelectedValue = "SA"
         cntrlAllData.EnableFields(True)
+    End Sub
+
+    Protected Sub btnNew_PreRender(sender As Object, e As EventArgs)
+        btnNew.Focus()
     End Sub
 End Class
