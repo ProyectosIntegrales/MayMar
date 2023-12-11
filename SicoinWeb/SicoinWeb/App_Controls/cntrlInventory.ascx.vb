@@ -162,32 +162,45 @@ Partial Class App_Controls_cntrlInventory
         cntrlAllData.Visible = False
         Initialize()
         dvMsg.Visible = True
-        returnToCalling()
+        ReturnToCalling()
     End Sub
 
     Protected Sub cntrlAllData_Cancelar() Handles cntrlAllData.Cancelar
         cntrlAllData.clearAll()
         cntrlAllData.Visible = False
         Initialize()
-        returnToCalling()
+        ReturnToCalling()
     End Sub
 
-    Private Sub returnToCalling()
+    Private Sub ReturnToCalling()
+        If Session("op") IsNot Nothing Then
+            ddlCFDI.DataBind()
+            ddlOut.DataBind()
+        End If
+
         Select Case hfModifyFrom.Value
             Case "OUT"
                 cntrlOutputData.Visible = True
                 rblOp.SelectedValue = "OUT"
                 btnGo_Click(btnGo, Nothing)
+                If Session("op") IsNot Nothing Then
+                    txtOp.Text = Session("op")
+                    cntrlOutputData.Operacion = Session("op")
+                End If
 
             Case "CDFI"
                 cntrlCFDIData.Visible = True
                 rblOp.SelectedValue = "CFDI"
                 btnGo_Click(btnGo, Nothing)
+                If Session("op") IsNot Nothing Then
+                    txtOp.Text = Session("op")
+                    cntrlCFDIData.Operacion = Session("op")
+                End If
 
             Case Else
 
-
         End Select
+        Session("op") = Nothing
         hfModifyFrom.Value = Nothing
     End Sub
 

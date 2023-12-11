@@ -25,7 +25,7 @@
     <tr>
         <td align="right" valign="top" style="width: 190px;">Caja #</td>
         <td>
-            <asp:TextBox ID="txtBox" runat="server" Width="100px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False"></asp:TextBox>&nbsp;
+            <asp:TextBox ID="txtBox" runat="server" Width="100px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False"></asp:TextBox>&nbsp;<asp:TextBox ID="txtNewOper" runat="server" CssClass="textboxg uppercase" Width="130px" style="position: relative; top:-42px; left:-98px;"></asp:TextBox>
         </td>
         <td align="center" valign="top" colspan="2" style="font-weight: bold;">Cliente</td>
     </tr>

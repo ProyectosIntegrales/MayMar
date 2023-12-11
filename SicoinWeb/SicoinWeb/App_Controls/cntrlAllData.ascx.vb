@@ -32,6 +32,7 @@ Partial Class cntrlAllData
             Dim dr As DataRow = dt.Rows(0)
 
             txtOp.Text = hflOp.Value.Trim
+            txtNewOper.Text = hflOp.Value.Trim
             txtBox.Text = dr("Caja")
             txtMercancia.Text = dr("Mercancia")
             txtFecha.Text = dr("Fechain")
@@ -94,7 +95,7 @@ Partial Class cntrlAllData
         result =
             doSQLProcedure("spInventario_All", CommandType.StoredProcedure, ,
                            "@Operacion", txtOp.Text,
-                           "@NewOper", txtOp.Text,
+                           "@NewOper", txtNewOper.Text,
                            "@Caja", txtBox.Text,
                            "@Mercancia", txtMercancia.Text,
                            "@FechaIn", txtFecha.Text,
@@ -124,8 +125,12 @@ Partial Class cntrlAllData
         If result <> "" Then
             cntrlError.errorMessage = result
         Else
+            If txtNewOper.Text <> txtOp.Text Then
+                Session("op") = txtNewOper.Text
+            End If
+
             RaiseEvent Aceptar()
-        End If
+            End If
     End Sub
 
     Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -177,5 +182,16 @@ Partial Class cntrlAllData
             ddlUM.Enabled = Enabled
         Next
 
+    End Sub
+End Class
+
+
+Public Class AllDataEventArgs
+    Inherits EventArgs
+
+    Public Property AdditionalData As String
+
+    Public Sub New(data As String)
+        AdditionalData = data
     End Sub
 End Class
