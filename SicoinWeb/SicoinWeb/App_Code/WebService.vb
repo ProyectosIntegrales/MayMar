@@ -66,9 +66,9 @@ Public Class WebService
         conn.ConnectionString = ConfigurationManager _
          .ConnectionStrings("MaymarCS").ConnectionString
         Dim cmd As SqlCommand = New SqlCommand
-        cmd.CommandText = "select ID, NombreExp, Direccion, Ciudad, RFC from tblExportadores where" &
-        " NombreExp like @SearchText + '%' order by NombreExp"
-        cmd.Parameters.AddWithValue("@SearchText", prefix.Trim)
+        cmd.CommandText = "SELECT TOP (100) MIN(ID) AS ID, NombreExp, MAX(DISTINCT Direccion) AS Direccion,         MAX(DISTINCT Ciudad) AS Ciudad, MAX(DISTINCT RFC) AS RFC FROM dbo.tblExportadores                        GROUP BY NombreExp HAVING (UPPER(NombreExp) = NombreExp) AND (MIN(CASE WHEN NombreExp COLLATE Latin1_General_BIN LIKE @SearchText + '%' THEN 1 ELSE 0 END) = 1) ORDER BY ID"
+
+        cmd.Parameters.AddWithValue("@SearchText", prefix.Trim.ToUpper())
         cmd.Connection = conn
         conn.Open()
         Dim Nombres As List(Of String) = New List(Of String)

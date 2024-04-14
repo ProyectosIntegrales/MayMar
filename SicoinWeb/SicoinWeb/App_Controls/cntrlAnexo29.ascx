@@ -172,7 +172,7 @@
             <div class="container">
                 <div class="itemLabel">Nombre:</div>
                 <div id="Nombre" style="width: 100%">
-                    <asp:HiddenField ID="hflID" runat="server" />
+                    <asp:HiddenField ID="hflID" runat="server" ClientIDMode="Static" />
                     <asp:TextBox ID="txtNombreExp" runat="server" CssClass="textboxg uppercase" Width="98%" onkeydown="nextOnEnter(this,event);" TabIndex="110" ClientIDMode="Static"></asp:TextBox>
                 </div>
             </div>

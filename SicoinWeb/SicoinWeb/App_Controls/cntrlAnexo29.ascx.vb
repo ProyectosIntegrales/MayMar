@@ -125,7 +125,7 @@ Partial Class App_Controls_cntrlAnexo29
     Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
 
         rblOp.SelectedValue = Nothing
-
+        hflID.Value = Nothing
         OpcionSeleccionada()
 
     End Sub
@@ -133,6 +133,7 @@ Partial Class App_Controls_cntrlAnexo29
     Protected Sub clearAll()
         pnlFields.Enabled = True
         CheckBox1.Checked = False
+        hflID.Value = Nothing
 
         For Each c As Control In pnlFields.Controls
             Dim t As TextBox = TryCast(c, TextBox)
@@ -189,17 +190,19 @@ Partial Class App_Controls_cntrlAnexo29
                                )
 
             If result = "" Then
-
-                updateExportadores()
+                If IsDBNull(hflID.Value) Or hflID.Value = "" Then
+                    updateExportadores()
+                End If
 
                 Dim Folio As String = txtFolio.Text
                 rblOp.SelectedValue = Nothing
+                hflID.Value = Nothing
                 OpcionSeleccionada()
 
-                cntrlRepAnexo291.goReport(Folio)
+                    cntrlRepAnexo291.goReport(Folio)
 
-            Else
-                cntrlError.errorMessage = result
+                Else
+                    cntrlError.errorMessage = result
             End If
 
         Else
@@ -213,7 +216,7 @@ Partial Class App_Controls_cntrlAnexo29
     Protected Sub updateExportadores()
         Try
             Dim result As String
-            result = doSQLProcedure("spAddUpdateExportadores", CommandType.StoredProcedure, , "@ID", hflID.Value, "@NombreExp", txtNombreExp.Text, "@Direccion", txtDireccion.Text, "@Ciudad", txtCiudad.Text, "@RFC", txtRFC.Text)
+            result = doSQLProcedure("spAddUpdateExportadores", CommandType.StoredProcedure, , "@ID", hflID.Value, "@NombreExp", txtNombreExp.Text.ToUpper(), "@Direccion", txtDireccion.Text.ToUpper(), "@Ciudad", txtCiudad.Text.ToUpper(), "@RFC", txtRFC.Text.ToUpper())
         Catch ex As Exception
 
         End Try

@@ -15,9 +15,9 @@
 }
 </style>
 
-<asp:HiddenField ID="hflRazon" runat="server" />
-<asp:HiddenField ID="hflCliente" runat="server" />
-<asp:HiddenField ID="hflImp2" runat="server" />
+<asp:HiddenField ID="hflRazon" runat="server" ClientIDMode="Static" />
+<asp:HiddenField ID="hflCliente" runat="server" ClientIDMode="Static" />
+<asp:HiddenField ID="hflImp2" runat="server" ClientIDMode="Static" />
 
             <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="120px" Style="display: none"></asp:TextBox>
 

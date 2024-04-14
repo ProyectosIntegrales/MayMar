@@ -384,6 +384,47 @@ Public Class Migrations
             END
             ]]>.Value)
 
+        NewMigration(
+          MigrationName:="202404141351 Stored procedure para editar tabla de Exportadores",
+          MigrationCommand:=<![CDATA[
+                         CREATE PROCEDURE [dbo].[spExportador]
+	                -- Add the parameters for the stored procedure here
+	                @Action char(3),
+	                @ID int = 0,
+	                @Nombre char(100) = '',
+	                @Direccion char(100) = '',
+	                @Ciudad char(50) = '',
+	                @RFC char(50) = ''
+	
+                AS
+                BEGIN
+	                -- SET NOCOUNT ON added to prevent extra result sets from
+	                -- interfering with SELECT statements.
+	                SET NOCOUNT ON;
+
+                    -- Insert statements for procedure here
+	                IF @Action = 'ADD'
+	                BEGIN
+		                INSERT INTO tblExportadores (NombreExp, Direccion, Ciudad, RFC )
+			                VALUES(@Nombre, @Direccion, @Ciudad, @RFC)
+	                END
+
+	                IF @Action = 'UPD'
+	                BEGIN
+		                UPDATE tblExportadores
+			                SET NombreExp = @Nombre,
+				                Direccion = @Direccion,
+				                Ciudad = @Ciudad,
+				                RFC = @RFC
+			                WHERE ID = @ID
+	                END
+
+	                IF @Action = 'DEL'
+	                BEGIN
+		                DELETE tblExportadores WHERE ID = @ID
+	                END
+                END
+            ]]>.Value)
     End Sub
 
 End Class
