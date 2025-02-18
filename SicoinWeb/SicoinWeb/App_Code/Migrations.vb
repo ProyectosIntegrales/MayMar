@@ -172,39 +172,259 @@ Public Class Migrations
     End Sub
     Sub Migrations_2023()
         NewMigration(
-            MigrationName:="20230204103100_Se agregan campos para CDFI compartido",
-            MigrationCommand:=
-            "ALTER TABLE dbo.Inventario ADD " & vbCr &
-            "	Compartido bit NULL, " & vbCr &
-            "	CompartidoCon nchar(20) NULL "
+                MigrationName:="20230204103100_Se agregan campos para CDFI compartido",
+                MigrationCommand:=
+                "ALTER TABLE dbo.Inventario ADD " & vbCr &
+                "	Compartido bit NULL, " & vbCr &
+                "	CompartidoCon nchar(20) NULL "
             )
 
         NewMigration(
-        MigrationName:="20230204132000_Modifica Procedimiento almacenado para Actualizar CFDI Compartidos",
-        MigrationCommand:=
-            "ALTER PROCEDURE [dbo].[spInventario_CFDI] " & vbCr &
-            "   @Operacion Char(20), " & vbCr &
-            "   @Factura nchar(10), " & vbCr &
-            "   @CFDI nchar(36), " & vbCr &
-            "   @MontoCFDI float, " & vbCr &
-            "   @MontoCFDIDlls float, " & vbCr &
-            "   @Aprovechamiento float, " & vbCr &
-            "   @Compartido bit, " & vbCr &
-            "   @CompartidoCon nchar(20) " & vbCr &
-            "AS " & vbCr &
-            "BEGIN " & vbCr &
-            "   UPDATE Inventario  " & vbCr &
-            "       SET	Factura = @Factura, " & vbCr &
-            "           CFDI = @CFDI, " & vbCr &
-            "           MontoCFDI = @MontoCFDI, " & vbCr &
-            "           MontoCFDIDlls = @MontoCFDIDlls, " & vbCr &
-            "           Aprovechamiento = @Aprovechamiento, " & vbCr &
-            "           Compartido = @Compartido, " & vbCr &
-            "           CompartidoCon = @CompartidoCon, " & vbCr &
-            "           [Status] = 2 " & vbCr &
-            "       WHERE Operacion = @Operacion " & vbCr &
-            "END"
+            MigrationName:="20230204132000_Modifica Procedimiento almacenado para Actualizar CFDI Compartidos",
+            MigrationCommand:=
+                "ALTER PROCEDURE [dbo].[spInventario_CFDI] " & vbCr &
+                "   @Operacion Char(20), " & vbCr &
+                "   @Factura nchar(10), " & vbCr &
+                "   @CFDI nchar(36), " & vbCr &
+                "   @MontoCFDI float, " & vbCr &
+                "   @MontoCFDIDlls float, " & vbCr &
+                "   @Aprovechamiento float, " & vbCr &
+                "   @Compartido bit, " & vbCr &
+                "   @CompartidoCon nchar(20) " & vbCr &
+                "AS " & vbCr &
+                "BEGIN " & vbCr &
+                "   UPDATE Inventario  " & vbCr &
+                "       SET	Factura = @Factura, " & vbCr &
+                "           CFDI = @CFDI, " & vbCr &
+                "           MontoCFDI = @MontoCFDI, " & vbCr &
+                "           MontoCFDIDlls = @MontoCFDIDlls, " & vbCr &
+                "           Aprovechamiento = @Aprovechamiento, " & vbCr &
+                "           Compartido = @Compartido, " & vbCr &
+                "           CompartidoCon = @CompartidoCon, " & vbCr &
+                "           [Status] = 2 " & vbCr &
+                "       WHERE Operacion = @Operacion " & vbCr &
+                "END"
         )
+
+        NewMigration(
+            MigrationName:="20231014122500_Modificar Tabla de Usuarios",
+            MigrationCommand:=<![CDATA[
+                ALTER TABLE dbo.tblUsers ADD
+	            SuperAdmin bit NULL
+            ]]>.Value
+        )
+
+        NewMigration(
+            MigrationName:="20231014122500_Modificar SP de Usuarios",
+            MigrationCommand:=<![CDATA[
+            ALTER PROCEDURE [dbo].[spUsers] 
+	            -- Add the parameters for the stored procedure here 
+	            @Action char(3), 
+	            @Username varchar(50), 
+	            @Nombre varchar(150) = '', 
+	            @Email varchar(300) = '', 
+  	            @Server int = 0, 
+	            @Password varchar(50) = '', 
+	            @Priv Int = 0,
+	            @SuperAdmin bit = 0
+            AS 
+            BEGIN 
+	            -- SET NOCOUNT ON added to prevent extra result sets from 
+	            -- interfering with SELECT statements. 
+	            SET NOCOUNT ON; 
+                -- Insert statements for procedure here 
+	            IF @Action = 'ADD' 
+	            BEGIN 
+		            INSERT INTO tblUsers (Username, Nombre, Email, [Password], Priv, ServerID, SuperAdmin) 
+			            VALUES(@Username, @Nombre, @Email, @Password, @Priv, @Server, @SuperAdmin) 
+	            END 
+	            IF @Action = 'UPD' 
+	            BEGIN 
+		            UPDATE tblUsers 
+			            SET Nombre = @Nombre, 
+				            Email = @Email, 
+				            Priv = @Priv, 
+				            ServerID = @Server ,
+				            SuperAdmin = @SuperAdmin
+			            WHERE Username = @Username 
+	            END 
+	            IF @Action = 'DEL' 
+	            BEGIN 
+		            DELETE tblUsers WHERE Username = @Username 
+	            END 
+ 
+	            IF @Action = 'PWD' 
+	            BEGIN 
+		            UPDATE tblUsers 
+			            SET [Password] = @Password 
+		            WHERE Username = @Username 
+	            END 
+            END 
+            ]]>.Value)
+
+        NewMigration(
+            MigrationName:="201310181900 Agregar Priv superadmin a Hugo",
+            MigrationCommand:=<![CDATA[
+                UPDATE tblUsers SET SuperAdmin = 1
+                WHERE Username = 'Hugo' OR Username = 'ESTRGA'
+            ]]>.Value)
+
+        NewMigration(
+            MigrationName:="202311181218 Modificar SP AllData para corregir datos de Cliente e Importador",
+            MigrationCommand:=<![CDATA[
+            ALTER PROCEDURE [dbo].[spInventario_All]
+	            @Operacion char(20),
+	            @NewOper char(20),
+	            @Caja char(10),
+	            @Mercancia char(70),
+	            @Fechain datetime,
+	            @Peso char(10),
+	            @Cajas float,
+	            @Cliente char(5),
+	            @Nombre char(100),
+	            @Rsocial char(120),
+	            @Valorc float,
+	            @Fraccion varchar(50),
+	            @UM numeric(18,0),
+	            @Importador char(100),
+	            @ClavePed char(10),
+	            @FechaAb datetime,
+	            @Contenedor char(90),
+	            @DirImp char(90),
+	            @Bultos char(90),
+	            @Fechaout datetime,
+	            @Descargado float,
+	            @Remanente float,
+	            @Factura nchar(10),
+	            @CFDI nchar(36),
+	            @MontoCFDI float,
+	            @MontoCFDIDlls float,
+	            @Aprovechamiento float
+
+            AS
+            BEGIN
+	            -- SET NOCOUNT ON added to prevent extra result sets from
+	            -- interfering with SELECT statements.
+	            SET NOCOUNT ON;
+	            Declare @hh int = datepart(Hour,@fechaout)
+	            Declare @hi int = datepart(Hour,@fechain)
+
+	            Declare @ap char(1), @api char(1)
+
+	            IF @hh > 12 
+		            BEGIN
+			            SET @hh = @hh -12
+			            SET @ap = 'p'
+		            END
+		            ELSE
+			            SET @ap = 'a'
+		
+	            IF @hh = 0
+		            BEGIN
+		            SET @hh = 12
+		            SET @ap = 'a'
+		            END
+
+	            IF @hi > 12 
+		            BEGIN
+			            SET @hi = @hi -12
+			            SET @api = 'p'
+		            END
+		            ELSE
+			            SET @api = 'a'
+		
+	            IF @hi = 0
+		            BEGIN
+		            SET @hi = 12
+		            SET @ap = 'a'
+		            END
+		 
+                -- Insert statements for procedure here 
+	            Declare @Horaout char(10) = replace(str(@hh,2),' ','0') + ':' +  replace(str(datepart(minute,@fechaout),2),' ','0') + ':' + replace(str(datepart(second,@fechaout),2),' ','0') + ' ' + @ap
+	            Declare @Horain char(10) = replace(str(@hi,2),' ','0') + ':' +  replace(str(datepart(minute,@fechain),2),' ','0') + ':' + replace(str(datepart(second,@fechain),2),' ','0') + ' ' + @api
+
+	            IF @Cliente = '' OR @Rsocial = ''
+	            SELECT @Cliente = Clave, @Rsocial = RSocial FROM Clientes Where Nombre = @Nombre
+
+	            IF @DirImp = ''
+	            SELECT @DirImp = Direccion FROM Importador WHERE Nombre = @Importador
+
+	            UPDATE Inventario 
+		            SET 
+			            Operacion = @NewOper,
+			            Caja = @Caja,
+			            Mercancia = @Mercancia,
+			            Fechain = @Fechain,
+			            @Horain = @Horain,
+			            Peso = @Peso,
+			            Cliente = @Cliente,
+			            Nombre = @Nombre,
+			            Cajas = @Cajas,
+			            RSocial = @Rsocial,
+			            Valorc = @Valorc,
+			            Fraccion = @Fraccion,
+			            UM = @UM,
+			            Importador = @Importador,
+			            ClavePed = @ClavePed,
+			            Fechaab = @FechaAb,
+			            Contenedor = @Contenedor,
+			            DirImp = @DirImp,
+			            Bultos = @Bultos,
+			            Fechaout = @Fechaout,
+			            Horaout = @Horaout,
+			            Descargado = @Descargado,
+			            Remanente = @Remanente,
+			            Factura = @Factura,
+			            CFDI = @CFDI,
+			            MontoCFDI = @MontoCFDI,
+			            MontoCFDIDlls = @MontoCFDIDlls,
+			            Aprovechamiento = @Aprovechamiento
+		            WHERE Operacion = @Operacion
+
+            END
+            ]]>.Value)
+
+        NewMigration(
+          MigrationName:="202404141351 Stored procedure para editar tabla de Exportadores",
+          MigrationCommand:=<![CDATA[
+                         CREATE PROCEDURE [dbo].[spExportador]
+	                -- Add the parameters for the stored procedure here
+	                @Action char(3),
+	                @ID int = 0,
+	                @Nombre char(100) = '',
+	                @Direccion char(100) = '',
+	                @Ciudad char(50) = '',
+	                @RFC char(50) = ''
+	
+                AS
+                BEGIN
+	                -- SET NOCOUNT ON added to prevent extra result sets from
+	                -- interfering with SELECT statements.
+	                SET NOCOUNT ON;
+
+                    -- Insert statements for procedure here
+	                IF @Action = 'ADD'
+	                BEGIN
+		                INSERT INTO tblExportadores (NombreExp, Direccion, Ciudad, RFC )
+			                VALUES(@Nombre, @Direccion, @Ciudad, @RFC)
+	                END
+
+	                IF @Action = 'UPD'
+	                BEGIN
+		                UPDATE tblExportadores
+			                SET NombreExp = @Nombre,
+				                Direccion = @Direccion,
+				                Ciudad = @Ciudad,
+				                RFC = @RFC
+			                WHERE ID = @ID
+	                END
+
+	                IF @Action = 'DEL'
+	                BEGIN
+		                DELETE tblExportadores WHERE ID = @ID
+	                END
+                END
+            ]]>.Value)
     End Sub
 
 End Class

@@ -26,6 +26,7 @@ Partial Class App_Controls_cntrlAdmin
         admMedidas.Visible = False
         admUsers.Visible = False
         admServers.Visible = False
+        admExportadores.Visible = False
     End Sub
 
     Protected Sub txtFilter_TextChanged(sender As Object, e As EventArgs) Handles txtFilter.TextChanged
@@ -51,6 +52,12 @@ Partial Class App_Controls_cntrlAdmin
                 admImportador.Visible = True
                 admImportador.Filter = txtFilter.Text
                 admImportador.Initialize()
+                pnlFilter.Visible = True
+
+            Case "Exportadores"
+                admExportadores.Visible = True
+                admExportadores.Filter = txtFilter.Text
+                admExportadores.Initialize()
                 pnlFilter.Visible = True
 
             Case "Reportes"

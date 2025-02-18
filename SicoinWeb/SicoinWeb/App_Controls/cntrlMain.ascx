@@ -70,8 +70,8 @@
     }
 </script>
 
-<script src="../scripts/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="../scripts/jquery-1.4.1.min.js"></script>
+
+
 
 <%--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"
     type="text/javascript"></script>

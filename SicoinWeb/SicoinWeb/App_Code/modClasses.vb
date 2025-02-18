@@ -180,6 +180,16 @@ Public Class UserIntranet
 
 End Class
 
+Public Class AllDataEventArgs
+    Inherits EventArgs
+
+    Public Property AdditionalData As String
+
+    Public Sub New(data As String)
+        AdditionalData = data
+    End Sub
+End Class
+
 Public Class Employee
 
     'Public Property Username As String

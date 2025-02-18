@@ -5,8 +5,11 @@ Partial Class cntrlInputData
     Public WriteOnly Property Operacion As String
         Set(value As String)
             hflOp.Value = value
+            getData()
         End Set
     End Property
+
+
     Public Sub clearAll()
         Try
             ddlUM.SelectedIndex = 0
@@ -23,7 +26,53 @@ Partial Class cntrlInputData
         txtFecha.Text = Now
         txtFechaAb.Text = NewAbDate()
         txtBox.Focus()
+        btnOK.Visible = True
+    End Sub
 
+    Protected Sub getData()
+        Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
+        If Not dt Is Nothing And dt.Rows.Count > 0 Then
+            Dim dr As DataRow = dt.Rows(0)
+
+            'txtOp.Text = hflOp.Value.Trim
+            txtBox.Text = dr("Caja")
+            txtMercancia.Text = dr("Mercancia")
+            txtFecha.Text = dr("Fechain")
+            txtPeso.Text = dr("Peso")
+            txtMUM.Text = isNull(dr("Cajas"), 0)
+            txtCliente.Text = dr("Cliente")
+            hflCliente.Value = dr("Cliente")
+            txtNombre.Text = dr("Nombre")
+            txtRazon.Text = dr("RSocial")
+            hflRazon.Value = dr("RSocial")
+            txtValor.Text = dr("Valorc")
+            txtFraccion.Text = dr("Fraccion")
+            txtImp1.Text = dr("Importador")
+            txtImp2.Text = dr("Dirimp")
+            hflImp2.Value = dr("DirImp")
+            txtClave.Text = dr("ClavePed")
+            txtFechaAb.Text = dr("Fechaab")
+            txtCont.Text = dr("Contenedor")
+            txtBultos.Text = dr("Bultos")
+            ddlUM.SelectedValue = dr("UM")
+            'txtFechaout.Text = dr("Fechaout")
+            'txtTiempo.Text = DateDiff("d", txtFecha.Text, txtFechaout.Text)
+            'txtDescargado.Text = dr("Descargado")
+            'txtRemanente.Text = dr("Remanente")
+            'txtFactura.Text = isNull(dr("Factura"), "").trim
+            'txtCFDI.Text = isNull(dr("CFDI"), "").trim
+            'txtMontoMXP.Text = isNull(dr("MontoCFDI"), "")
+            'txtMontoUSD.Text = isNull(dr("MontoCFDIDlls"), "")
+            'txtAprov.Text = isNull(dr("Aprovechamiento"), "")
+
+            Dim Terminado As Boolean = dr("Terminado")
+            btnOK.Visible = False
+            EnableFields(False)
+        Else
+            clearAll()
+            EnableFields(True)
+
+        End If
     End Sub
 
     Protected Sub rbt_CheckedChanged(sender As Object, e As EventArgs) Handles rbt1.CheckedChanged, rbt2.CheckedChanged
@@ -163,5 +212,24 @@ Partial Class cntrlInputData
 
         Return False
     End Function
+
+    Public Sub EnableFields(Enabled As Boolean)
+
+        btnOK.Visible = Enabled
+
+        For Each c As Control In Me.Controls
+            If c.GetType() = (New TextBox).GetType() Then
+                Dim txtb As TextBox = DirectCast(c, TextBox)
+                If txtb.ID <> "txtImp2" And txtb.ID <> "txtRazon" And txtb.ID <> "txtCliente" Then
+                    txtb.Enabled = Enabled
+                    txtb.CssClass = "textboxg uppercase"
+                End If
+
+            End If
+            ddlUM.Enabled = Enabled
+        Next
+
+
+    End Sub
 
 End Class

@@ -6,7 +6,7 @@ Public Module modCommon
 
 
 
-    Public Function isNull(ByVal objToEvaluate As Object, ByVal returnValue As Object) As Object
+    Public Function isNull(objToEvaluate As Object, returnValue As Object) As Object
 
         If objToEvaluate Is DBNull.Value Or objToEvaluate Is Nothing Then
             Return returnValue
@@ -17,7 +17,7 @@ Public Module modCommon
     End Function
 
 
-    Public Function isNullOrBlank(ByVal objToEvaluate As Object, ByVal returnValue As Object) As Object
+    Public Function isNullOrBlank(objToEvaluate As Object, returnValue As Object) As Object
 
         If objToEvaluate Is DBNull.Value Or objToEvaluate Is Nothing Then
             Return returnValue
@@ -27,35 +27,35 @@ Public Module modCommon
             Return returnValue
         End If
     End Function
-    Public Function doSQLProcedure(ByVal Procedure As String, ByVal commandType As CommandType, Optional connectionName As String = "MayMarCS",
-                                   Optional ByVal ParmName1 As String = "", Optional ByVal ParmValue1 As Object = Nothing,
-                                   Optional ByVal ParmName2 As String = "", Optional ByVal ParmValue2 As Object = Nothing,
-                                   Optional ByVal ParmName3 As String = "", Optional ByVal ParmValue3 As Object = Nothing,
-                                   Optional ByVal ParmName4 As String = "", Optional ByVal ParmValue4 As Object = Nothing,
-                                   Optional ByVal ParmName5 As String = "", Optional ByVal ParmValue5 As Object = Nothing,
-                                   Optional ByVal ParmName6 As String = "", Optional ByVal ParmValue6 As Object = Nothing,
-                                   Optional ByVal ParmName7 As String = "", Optional ByVal ParmValue7 As Object = Nothing,
-                                   Optional ByVal ParmName8 As String = "", Optional ByVal ParmValue8 As Object = Nothing,
-                                Optional ByVal ParmName9 As String = "", Optional ByVal ParmValue9 As Object = Nothing,
-                                Optional ParmName10 As String = "", Optional ParmValue10 As Object = Nothing,
-                                Optional ParmName11 As String = "", Optional ParmValue11 As Object = Nothing,
-                                Optional ParmName12 As String = "", Optional ParmValue12 As Object = Nothing,
-                                Optional ParmName13 As String = "", Optional ParmValue13 As Object = Nothing,
-                                Optional ParmName14 As String = "", Optional ParmValue14 As Object = Nothing,
-                                Optional ParmName15 As String = "", Optional ParmValue15 As Object = Nothing,
-                                Optional ParmName16 As String = "", Optional ParmValue16 As Object = Nothing,
-                                Optional ParmName17 As String = "", Optional ParmValue17 As Object = Nothing,
-                                Optional ParmName18 As String = "", Optional ParmValue18 As Object = Nothing,
-                                Optional ParmName19 As String = "", Optional ParmValue19 As Object = Nothing,
-                                Optional ParmName20 As String = "", Optional ParmValue20 As Object = Nothing,
-                                Optional ParmName21 As String = "", Optional ParmValue21 As Object = Nothing,
-                                Optional ParmName22 As String = "", Optional ParmValue22 As Object = Nothing,
-                                Optional ParmName23 As String = "", Optional ParmValue23 As Object = Nothing,
-                                Optional ParmName24 As String = "", Optional ParmValue24 As Object = Nothing,
-                                Optional ParmName25 As String = "", Optional ParmValue25 As Object = Nothing,
-                                Optional ParmName26 As String = "", Optional ParmValue26 As Object = Nothing,
-                                Optional ParmName27 As String = "", Optional ParmValue27 As Object = Nothing,
-                                Optional ParmName28 As String = "", Optional ParmValue28 As Object = Nothing) As Object
+    Public Function doSQLProcedure(Procedure As String, commandType As CommandType, Optional connectionName As String = "MayMarCS",
+                            Optional ParmName1 As String = "", Optional ParmValue1 As Object = Nothing,
+                            Optional ParmName2 As String = "", Optional ParmValue2 As Object = Nothing,
+                            Optional ParmName3 As String = "", Optional ParmValue3 As Object = Nothing,
+                            Optional ParmName4 As String = "", Optional ParmValue4 As Object = Nothing,
+                            Optional ParmName5 As String = "", Optional ParmValue5 As Object = Nothing,
+                            Optional ParmName6 As String = "", Optional ParmValue6 As Object = Nothing,
+                            Optional ParmName7 As String = "", Optional ParmValue7 As Object = Nothing,
+                            Optional ParmName8 As String = "", Optional ParmValue8 As Object = Nothing,
+                            Optional ParmName9 As String = "", Optional ParmValue9 As Object = Nothing,
+                            Optional ParmName10 As String = "", Optional ParmValue10 As Object = Nothing,
+                            Optional ParmName11 As String = "", Optional ParmValue11 As Object = Nothing,
+                            Optional ParmName12 As String = "", Optional ParmValue12 As Object = Nothing,
+                            Optional ParmName13 As String = "", Optional ParmValue13 As Object = Nothing,
+                            Optional ParmName14 As String = "", Optional ParmValue14 As Object = Nothing,
+                            Optional ParmName15 As String = "", Optional ParmValue15 As Object = Nothing,
+                            Optional ParmName16 As String = "", Optional ParmValue16 As Object = Nothing,
+                            Optional ParmName17 As String = "", Optional ParmValue17 As Object = Nothing,
+                            Optional ParmName18 As String = "", Optional ParmValue18 As Object = Nothing,
+                            Optional ParmName19 As String = "", Optional ParmValue19 As Object = Nothing,
+                            Optional ParmName20 As String = "", Optional ParmValue20 As Object = Nothing,
+                            Optional ParmName21 As String = "", Optional ParmValue21 As Object = Nothing,
+                            Optional ParmName22 As String = "", Optional ParmValue22 As Object = Nothing,
+                            Optional ParmName23 As String = "", Optional ParmValue23 As Object = Nothing,
+                            Optional ParmName24 As String = "", Optional ParmValue24 As Object = Nothing,
+                            Optional ParmName25 As String = "", Optional ParmValue25 As Object = Nothing,
+                            Optional ParmName26 As String = "", Optional ParmValue26 As Object = Nothing,
+                            Optional ParmName27 As String = "", Optional ParmValue27 As Object = Nothing,
+                            Optional ParmName28 As String = "", Optional ParmValue28 As Object = Nothing) As Object
 
         Dim cm As New SqlClient.SqlCommand
         Dim cnUTC As New SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings(connectionName).ToString)
@@ -158,7 +158,7 @@ Public Module modCommon
             End With
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
             Return "error: " & ex.Message
         Finally
             cm.Connection.Close()
@@ -186,14 +186,15 @@ Public Module modCommon
             End With
 
         Catch ex As Exception
-            MsgBox(ex.ToString)
+            'MsgBox(ex.ToString)
+            'Return "error: " & ex.Message
         Finally
             cm.Connection.Close()
         End Try
 
     End Sub
 
-    Public Function SQLDataTable(ByVal selectCommand As String, Optional Connection As String = "MayMarCS") As DataTable
+    Public Function SQLDataTable(selectCommand As String, Optional Connection As String = "MayMarCS") As DataTable
 
         Try
             Dim dt As New DataTable
@@ -209,7 +210,7 @@ Public Module modCommon
         End Try
     End Function
 
-    Public Function Mes(ByVal month As Integer) As String
+    Public Function Mes(month As Integer) As String
         Dim meses() As String = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}
         Return meses(month)
     End Function
@@ -316,7 +317,7 @@ Public Module modCommon
 
     End Function
 
-    Public Function ReadText(ByVal TextFilePath As String) As String
+    Public Function ReadText(TextFilePath As String) As String
 
         Dim sr As StreamReader
         sr = File.OpenText(TextFilePath)
@@ -326,7 +327,7 @@ Public Module modCommon
 
     End Function
 
-    Public Function getFiscalWeek(ByVal dateD As DateTime) As Integer
+    Public Function getFiscalWeek(dateD As DateTime) As Integer
 
         Dim dt As New Data.DataTable
         dt = SQLDataTable("select top 1 FiscalWeek from tblFiscalDates where InitialDate <= '" & dateD & "' and fiscalYear = " & Year(dateD) & " order by fiscalWeek Desc")

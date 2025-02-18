@@ -64,7 +64,7 @@ Partial Class cntrlCFDIData
             pnlCompartido.Visible = False
             Dim Terminado As Boolean = dr("Terminado")
 
-            btnMod.Visible = Session("IsAdmin")
+
             chkCompartido.Checked = False
             txtFactura.Focus()
             txtCFDI.ReadOnly = False
@@ -73,6 +73,7 @@ Partial Class cntrlCFDIData
 
         End If
         clearAll()
+        btnMod.Visible = Session("IsAdmin")
     End Sub
 
 
@@ -155,11 +156,6 @@ Partial Class cntrlCFDIData
         End If
     End Sub
 
-    Public Event ModBtnClicked()
-    Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
-        RaiseEvent ModBtnClicked()
-    End Sub
-
     Protected Sub chkCompartido_CheckedChanged(sender As Object, e As EventArgs)
         pnlCompartido.Visible = chkCompartido.Checked
         If chkCompartido.Checked Then
@@ -222,5 +218,10 @@ Partial Class cntrlCFDIData
             txtMontoUSD.Enabled = True
             txtCFDI.ReadOnly = False
         End If
+    End Sub
+
+    Public Event ModBtnClicked(o As String)
+    Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
+        RaiseEvent ModBtnClicked("CDFI")
     End Sub
 End Class

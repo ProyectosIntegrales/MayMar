@@ -115,7 +115,7 @@
                         <table class="auto-style1">
                             <tr>
                                 <td align="right">Factura</td>
-                                <td align="left" valign="top" colspan="2">
+                                <td align="left" valign="top">
                                     <asp:TextBox ID="txtFactura" runat="server" CausesValidation="True" CssClass="textboxg uppercase" MaxLength="10" onkeydown="nextOnEnter(this,event);" TabIndex="17" Width="80px" OnTextChanged="txtFactura_TextChanged" AutoPostBack="true"></asp:TextBox>&nbsp;&nbsp;&nbsp;Compartido
                                     <asp:CheckBox ID="chkCompartido" runat="server" AutoPostBack="true" OnCheckedChanged="chkCompartido_CheckedChanged" />
                                 </td>
@@ -193,7 +193,7 @@
     <tr>
         <td colspan="4">
             <asp:Panel ID="pnlButtons" runat="server" Style="padding: 20px; text-align: center">
-                <asp:Button ID="btnMod" runat="server" CssClass="btn" TabIndex="25" Text="Modificar" Visible="false" Style="margin-right: 20px;" />
+                                <asp:Button ID="btnMod" runat="server" CssClass="btn" TabIndex="25" Text="Modificar" Visible="False" Style="margin-right: 20px;" />
                 <asp:Button ID="btnOK" runat="server" CssClass="btn" TabIndex="25" Text="Aceptar" />
                 &nbsp;&nbsp;
                             <asp:Button ID="btnCancel" runat="server" CausesValidation="False" CssClass="btna" TabIndex="26" Text="Cancelar" />

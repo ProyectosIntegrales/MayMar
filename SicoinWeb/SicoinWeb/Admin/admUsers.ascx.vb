@@ -33,7 +33,8 @@ Partial Class Admin_admUsers
                                 "@Nombre", DirectCast(r.FindControl("Textbox2"), TextBox).Text,
                                 "@Email", DirectCast(r.FindControl("Textbox3"), TextBox).Text,
                                 "@Priv", DirectCast(r.FindControl("ddlPrivs"), DropDownList).SelectedValue,
-                                "@Server", DirectCast(r.FindControl("ddlServer"), DropDownList).SelectedValue
+                                "@Server", DirectCast(r.FindControl("ddlServer"), DropDownList).SelectedValue,
+                                "@SuperAdmin", DirectCast(r.FindControl("chkSuperAdmin"), CheckBox).Checked
                                 )
         If Not Result = "" Then
             cntrlError1.errorMessage = Result
@@ -53,7 +54,8 @@ Partial Class Admin_admUsers
                                 "@Email", DirectCast(r.FindControl("Textbox3"), TextBox).Text,
                                 "@Password", DirectCast(r.FindControl("Textbox4"), TextBox).Text,
                                 "@Priv", DirectCast(r.FindControl("ddlPrivs"), DropDownList).SelectedValue,
-                                "@Server", DirectCast(r.FindControl("ddlServer"), DropDownList).SelectedValue
+                                "@Server", DirectCast(r.FindControl("ddlServer"), DropDownList).SelectedValue,
+                                "@SuperAdmin", False
                                 )
         If Not Result = "" Then
             cntrlError1.errorMessage = Result
