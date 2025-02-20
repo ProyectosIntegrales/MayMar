@@ -425,6 +425,78 @@ Public Class Migrations
 	                END
                 END
             ]]>.Value)
+
+
+        NewMigration(
+       MigrationName:="202502191915 Modificacion de spInventario_Add",
+       MigrationCommand:=<![CDATA[
+    ALTER PROCEDURE [dbo].[spInventario_Add]
+                    @Operacion CHAR(20),
+                    @Caja CHAR(10),
+                    @Mercancia CHAR(70),
+                    @Fechain DATETIME,
+                    @Peso CHAR(10),
+                    @Cliente CHAR(5),
+                    @Nombre CHAR(100),
+                    @Rsocial CHAR(120),
+                    @Valorc FLOAT,
+                    @Fraccion VARCHAR(50),
+                    @Cajas FLOAT,
+                    @UM NUMERIC(18, 0),
+                    @Importador CHAR(100),
+                    @DirImp CHAR(90),
+                    @ClavePed CHAR(10),
+					@Status int,
+                    @FechaAb DATETIME,
+                    @Contenedor CHAR(90),
+                    @Bultos CHAR(90)
+                AS
+                BEGIN
+                    -- Evitar resultados adicionales que puedan interferir
+                    SET NOCOUNT ON;
+
+                    -- Variables locales
+                    DECLARE @hh INT = DATEPART(HOUR, @Fechain);
+                    DECLARE @ap CHAR(1); -- Indica 'a' (AM) o 'p' (PM)
+
+                    -- Determinar el formato de hora (12 horas AM/PM)
+                    IF @hh > 12
+                    BEGIN
+                        SET @hh = @hh - 12;
+                        SET @ap = 'p';
+                    END
+                    ELSE
+                    BEGIN
+                        SET @ap = 'a';
+                    END
+
+                    -- Ajustar para medianoche (00:00 -> 12:00 AM)
+                    IF @hh = 0
+                    BEGIN
+                        SET @hh = 12;
+                        SET @ap = 'a';
+                    END
+
+                    -- Formatear la hora
+                    DECLARE @Horain CHAR(10) = 
+                        REPLACE(STR(@hh, 2), ' ', '0') + ':' +
+                        REPLACE(STR(DATEPART(MINUTE, @Fechain), 2), ' ', '0') + ':' +
+                        REPLACE(STR(DATEPART(SECOND, @Fechain), 2), ' ', '0') + ' ' + @ap;
+
+                    -- Insertar datos en la tabla Inventario
+                    INSERT INTO Inventario (
+                        Operacion, Caja, Mercancia, Cajas, Fechain, Horain, 
+                        Peso, Cliente, Nombre, RSocial, Valorc, Fraccion, UM, 
+                        Importador, DirImp, ClavePed, FechaAb, Contenedor, Bultos, Remanente, [Status]
+                    )
+                    VALUES (
+                        @Operacion, @Caja, @Mercancia, @Cajas, @Fechain, @Horain,
+                        @Peso, @Cliente, @Nombre, @Rsocial, @Valorc, @Fraccion, @UM,
+                        @Importador, @DirImp, @ClavePed, @FechaAb, @Contenedor, @Bultos, @Peso, @Status
+                    );
+
+                END
+            ]]>.Value)
     End Sub
 
 End Class

@@ -132,3 +132,4 @@
 <uc1:cntrlError ID="cntrlError" runat="server" />
 
 <asp:HiddenField ID="hflOp" runat="server" />
+<asp:HiddenField ID="hflStatus" runat="server" />

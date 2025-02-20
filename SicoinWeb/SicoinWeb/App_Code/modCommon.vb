@@ -152,7 +152,7 @@ Public Module modCommon
                     .Parameters.AddWithValue(ParmName28, ParmValue28)
                 End If
                 .Connection.Open()
-                Dim result As Object = .ExecuteScalar
+                Dim result As Object = cm.ExecuteScalar
                 Return result
 
             End With

@@ -10,7 +10,7 @@ Partial Class cntrlAllData
             EnableFields(False)
         End Set
     End Property
-  
+
 
     Public Sub clearAll()
 
@@ -62,9 +62,9 @@ Partial Class cntrlAllData
             txtMontoMXP.Text = isNull(dr("MontoCFDI"), "")
             txtMontoUSD.Text = isNull(dr("MontoCFDIDlls"), "")
             txtAprov.Text = isNull(dr("Aprovechamiento"), "")
-
+            hflStatus.Value = isNull(dr("Status"), -1)
             Dim Terminado As Boolean = dr("Terminado")
-
+            btnConfirmar.Visible = (hflStatus.Value = -1)
 
         End If
         '  clearAll()
@@ -130,7 +130,7 @@ Partial Class cntrlAllData
             End If
 
             RaiseEvent Aceptar()
-            End If
+        End If
     End Sub
 
     Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -182,6 +182,22 @@ Partial Class cntrlAllData
             ddlUM.Enabled = Enabled
         Next
 
+    End Sub
+
+    Protected Sub btnConfirmar_Click(sender As Object, e As EventArgs) Handles btnConfirmar.Click
+        Dim result As String = ""
+        result =
+            doSQLProcedure("UPDATE Inventario SET Status = 0 WHERE Operacion = '" + txtOp.Text.Trim() + "'", CommandType.Text)
+
+        If result <> "" Then
+            cntrlError.errorMessage = result
+        Else
+            If txtNewOper.Text <> txtOp.Text Then
+                Session("op") = txtNewOper.Text
+            End If
+
+            RaiseEvent Aceptar()
+        End If
     End Sub
 End Class
 
