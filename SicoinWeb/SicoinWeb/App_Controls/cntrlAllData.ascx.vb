@@ -65,6 +65,7 @@ Partial Class cntrlAllData
             hflStatus.Value = isNull(dr("Status"), -1)
             Dim Terminado As Boolean = dr("Terminado")
             btnConfirmar.Visible = (hflStatus.Value = -1)
+            btnMod.Visible = (hflStatus.Value = -1)
 
         End If
         '  clearAll()
@@ -164,12 +165,13 @@ Partial Class cntrlAllData
 
     Protected Sub btnMod_clicked(sender As Object, e As EventArgs) Handles btnMod.Click
         EnableFields(True)
+        btnMod.Visible = False
+        btnConfirmar.Visible = False
     End Sub
 
     Public Sub EnableFields(Enabled As Boolean)
 
         btnOK.Visible = Enabled
-        btnMod.Visible = Not Enabled And Session("IsAdmin")
         For Each c As Control In Me.Controls
             If c.GetType() = (New TextBox).GetType() Then
                 Dim txtb As TextBox = DirectCast(c, TextBox)
@@ -187,7 +189,7 @@ Partial Class cntrlAllData
     Protected Sub btnConfirmar_Click(sender As Object, e As EventArgs) Handles btnConfirmar.Click
         Dim result As String = ""
         result =
-            doSQLProcedure("UPDATE Inventario SET Status = 0 WHERE Operacion = '" + txtOp.Text.Trim() + "'", CommandType.Text)
+            doSQLProcedure("UPDATE Inventario SET Status = 0, FechaIn = GETDATE() WHERE Operacion = '" + txtOp.Text.Trim() + "'", CommandType.Text)
 
         If result <> "" Then
             cntrlError.errorMessage = result
