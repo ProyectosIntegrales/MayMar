@@ -10,7 +10,7 @@ Partial Class cntrlAllData
             EnableFields(False)
         End Set
     End Property
-  
+
 
     Public Sub clearAll()
 
@@ -62,9 +62,10 @@ Partial Class cntrlAllData
             txtMontoMXP.Text = isNull(dr("MontoCFDI"), "")
             txtMontoUSD.Text = isNull(dr("MontoCFDIDlls"), "")
             txtAprov.Text = isNull(dr("Aprovechamiento"), "")
-
+            hflStatus.Value = isNull(dr("Status"), -1)
             Dim Terminado As Boolean = dr("Terminado")
-
+            btnConfirmar.Visible = (hflStatus.Value = -1)
+            btnMod.Visible = (hflStatus.Value = -1)
 
         End If
         '  clearAll()
@@ -130,7 +131,7 @@ Partial Class cntrlAllData
             End If
 
             RaiseEvent Aceptar()
-            End If
+        End If
     End Sub
 
     Protected Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -164,12 +165,13 @@ Partial Class cntrlAllData
 
     Protected Sub btnMod_clicked(sender As Object, e As EventArgs) Handles btnMod.Click
         EnableFields(True)
+        btnMod.Visible = False
+        btnConfirmar.Visible = False
     End Sub
 
     Public Sub EnableFields(Enabled As Boolean)
 
         btnOK.Visible = Enabled
-        btnMod.Visible = Not Enabled And Session("IsAdmin")
         For Each c As Control In Me.Controls
             If c.GetType() = (New TextBox).GetType() Then
                 Dim txtb As TextBox = DirectCast(c, TextBox)
@@ -182,6 +184,22 @@ Partial Class cntrlAllData
             ddlUM.Enabled = Enabled
         Next
 
+    End Sub
+
+    Protected Sub btnConfirmar_Click(sender As Object, e As EventArgs) Handles btnConfirmar.Click
+        Dim result As String = ""
+        result =
+            doSQLProcedure("UPDATE Inventario SET Status = 0, FechaIn = GETDATE() WHERE Operacion = '" + txtOp.Text.Trim() + "'", CommandType.Text)
+
+        If result <> "" Then
+            cntrlError.errorMessage = result
+        Else
+            If txtNewOper.Text <> txtOp.Text Then
+                Session("op") = txtNewOper.Text
+            End If
+
+            RaiseEvent Aceptar()
+        End If
     End Sub
 End Class
 

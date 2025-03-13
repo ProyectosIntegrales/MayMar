@@ -55,6 +55,8 @@ Partial Class cntrlInputData
             txtCont.Text = dr("Contenedor")
             txtBultos.Text = dr("Bultos")
             ddlUM.SelectedValue = dr("UM")
+            hflStatus.Value = dr("Status")
+
             'txtFechaout.Text = dr("Fechaout")
             'txtTiempo.Text = DateDiff("d", txtFecha.Text, txtFechaout.Text)
             'txtDescargado.Text = dr("Descargado")
@@ -95,25 +97,26 @@ Partial Class cntrlInputData
             End If
 
             Dim result As String = ""
-            result = _
-                doSQLProcedure("spInventario_Add", Data.CommandType.StoredProcedure, , _
-                               "@Operacion", hflOp.Value, _
-                               "@Caja", txtBox.Text, _
-                               "@Mercancia", txtMercancia.Text, _
-                               "@FechaIn", CDate(txtFecha.Text), _
+            result =
+                doSQLProcedure("spInventario_Add", Data.CommandType.StoredProcedure, ,
+                               "@Operacion", hflOp.Value,
+                               "@Caja", txtBox.Text,
+                               "@Mercancia", txtMercancia.Text,
+                               "@FechaIn", CDate(txtFecha.Text),
                                "@Peso", txtPeso.Text,
-                               "@Cliente", hflCliente.Value, _
-                               "@Nombre", txtNombre.Text, _
-                               "@RSocial", hflRazon.Value, _
-                               "@Valorc", txtValor.Text, _
-                               "@Fraccion", txtFraccion.Text, _
-                               "@Cajas", txtMUM.Text, _
-                               "@UM", ddlUM.SelectedValue, _
-                               "@Importador", txtImp1.Text, _
-                               "@DirImp", hflImp2.Value, _
-                               "@ClavePed", txtClave.Text, _
-                               "@FechaAb", txtFechaAb.Text, _
-                               "@Contenedor", txtCont.Text, _
+                               "@Cliente", hflCliente.Value,
+                               "@Nombre", txtNombre.Text,
+                               "@RSocial", hflRazon.Value,
+                               "@Valorc", txtValor.Text,
+                               "@Fraccion", txtFraccion.Text,
+                               "@Cajas", txtMUM.Text,
+                               "@UM", ddlUM.SelectedValue,
+                               "@Importador", txtImp1.Text,
+                               "@DirImp", hflImp2.Value,
+                               "@ClavePed", txtClave.Text,
+                               "@FechaAb", txtFechaAb.Text,
+                               "@Contenedor", txtCont.Text,
+                               "@Status", -1,
                                "@Bultos", txtBultos.Text)
 
             If result <> "" Then
