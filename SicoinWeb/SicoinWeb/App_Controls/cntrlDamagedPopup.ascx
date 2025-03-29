@@ -44,58 +44,92 @@
 
         <h3 style="margin-top: 0">Mercancía Dañada o Perdida</h3>
 
-        <asp:Panel ID="pnlTable" runat="server" >
-            Table here
+        <asp:Panel ID="pnlTable" runat="server">
+            <asp:Repeater ID="Repeater1" runat="server" DataSourceID="dsDamages">
+                <HeaderTemplate>
+                    <table style="width: 100%; border: 1px solid #AAA;" cellpadding="3" cellspacing="3">
+                        <tr style="background-color: #35679b; color: white;">
+
+                            <th>Cantidad</th>
+                            <th>Comentrios</th>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                        </tr>
+                </HeaderTemplate>
+
+                <ItemTemplate>
+                    <tr>
+
+                        <td><%# Eval("Cantidad") %></td>
+                        <td><%# Eval("Comentario") %></td>
+                        <td><%# Eval("Fecha", "{0:dd/MM/yyyy}") %></td>
+                        <td><%# Eval("CreatedBy") %></td>
+                    </tr>
+                </ItemTemplate>
+
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
+            </asp:Repeater>
+            <asp:SqlDataSource ID="dsDamages" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT [ID], [Operacion], [Cantidad], [Comentario], [Fecha], [CreatedBy] FROM [Damages] WHERE ([Operacion] = @Operacion) ORDER BY [Fecha] DESC">
+                <SelectParameters>
+                    <asp:SessionParameter Name="Operacion" SessionField="op" Type="String" />
+                </SelectParameters>
+            </asp:SqlDataSource>
+            <br />
             <asp:Button ID="btnAdd" CssClass="btn" runat="server" Text="Agregar" OnClick="btnAdd_Click" />
         </asp:Panel>
 
         <asp:Panel ID="pnlAdd" runat="server" Visible="false">
-              <div class="d-flex">
-            <div class="col d-flex justify-content-end align-items-center">
-                Cantidad
+            <div class="d-flex">
+                <div class="col d-flex justify-content-end align-items-center">
+                    Cantidad
+                </div>
+                <div class="col-7">
+                    <asp:TextBox ID="txtCantidad" Width="60px" runat="server" CssClass="textbox"></asp:TextBox>
+                </div>
             </div>
-            <div class="col-7">
-                <asp:TextBox ID="txtCantidad" Width="60px" runat="server" CssClass="textbox"></asp:TextBox>
-            </div>
-        </div>
 
-        <div class="d-flex mt-3">
-            <div class="col d-flex justify-content-end align-items-center" style="text-align: right">
-                Comentario o descripción
+            <div class="d-flex mt-3">
+                <div class="col d-flex justify-content-end align-items-center" style="text-align: right">
+                    Comentario o descripción
+                </div>
+                <div class="col-7">
+                    <asp:TextBox ID="txtComments" TextMode="MultiLine" Columns="30" runat="server" CssClass="textbox"></asp:TextBox>
+                </div>
             </div>
-            <div class="col-7">
-                <asp:TextBox ID="txtComments" TextMode="MultiLine" Columns="30" runat="server" CssClass="textbox"></asp:TextBox>
+
+            <div class="d-flex mt-3">
+                <div class="col d-flex justify-content-end align-items-center" style="text-align: right">
+                    Fecha de detección de daño o pérdida
+                </div>
+                <div class="col-7 d-flex align-items-center">
+                    <asp:ImageButton ID="imbCalendar1" runat="server" ImageAlign="Bottom" ImageUrl="~/images/icons/16x16/calendar (1).png" Style="width: 16px; margin-right: 4px" />
+                    <asp:TextBox ID="txtFecha" runat="server" Font-Size="8" Width="100"></asp:TextBox>
+                    <cc1:CalendarExtender ID="CalendarExtender0" runat="server" Enabled="True" Format="MM/dd/yyyy" PopupButtonID="imbCalendar1" TargetControlID="txtFecha"></cc1:CalendarExtender>
+                </div>
             </div>
-        </div>
-
-        <div class="d-flex mt-3">
-            <div class="col d-flex justify-content-end align-items-center" style="text-align: right">
-                Fecha de detección de daño o pérdida
-            </div>
-            <div class="col-7 d-flex align-items-center">
-                <asp:ImageButton ID="imbCalendar1" runat="server" ImageAlign="Bottom" ImageUrl="~/images/icons/16x16/calendar (1).png" Style="width: 16px; margin-right: 4px" />
-                <asp:TextBox ID="txtFecha" runat="server" Font-Size="8" Width="100"></asp:TextBox>
-                <cc1:CalendarExtender ID="CalendarExtender0" runat="server" Enabled="True" Format="MM/dd/yyyy" PopupButtonID="imbCalendar1" TargetControlID="txtFecha"></cc1:CalendarExtender>
-            </div>
-        </div>
 
 
 
-        <asp:Label ID="lblError" ForeColor="Red" runat="server" CssClass="mt-3" Style="text-align: center" Width="100%" Visible="false">
+            <asp:Label ID="lblError" ForeColor="Red" runat="server" CssClass="mt-3" Style="text-align: center" Width="100%" Visible="false">
     Error en la Cantidad
-        </asp:Label>
+            </asp:Label>
 
-        <asp:Panel ID="pnlButtons" runat="server" Style="margin-top: 20px; text-align: center">
+            <asp:Panel ID="pnlButtons" runat="server" Style="margin-top: 20px; text-align: center">
 
-            <asp:Button ID="btnOK" runat="server" CssClass="btn" TabIndex="25" Text="Aceptar" Style="margin-right: 20px;" />
+                <asp:Button ID="btnOK" runat="server" CssClass="btn" TabIndex="25" Text="Aceptar" Style="margin-right: 20px;" />
 
-            <asp:Button ID="btnCancel" runat="server" CausesValidation="False" CssClass="btna" TabIndex="26" Text="Cancelar" Style="margin-right: 20px;" />
+                <asp:Button ID="btnCancel" runat="server" CausesValidation="False" CssClass="btna" TabIndex="26" Text="Cancelar" Style="margin-right: 20px;" />
 
+            </asp:Panel>
         </asp:Panel>
-        </asp:Panel>
-      
+
 
     </div>
 
 </asp:Panel>
 <uc1:cntrlError ID="cntrlError" runat="server" />
+
+
+

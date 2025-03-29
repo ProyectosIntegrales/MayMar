@@ -32,7 +32,7 @@
     <tr>
         <td align="right" valign="center" style="width: 190px;">Caja #</td>
         <td>
-            <asp:TextBox ID="txtBox" runat="server" Width="100px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False"></asp:TextBox>&nbsp;<asp:TextBox ID="txtNewOper" runat="server" CssClass="textboxg uppercase" Width="130px" Style="position: relative; top: -42px; left: -98px;"></asp:TextBox>
+            <asp:TextBox ID="txtBox" runat="server" Width="100px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False"></asp:TextBox>&nbsp;<asp:TextBox ID="txtNewOper" runat="server" CssClass="textboxg uppercase" Width="130px" Style="position: relative; top: -42px; left: -99px;"></asp:TextBox>
         </td>
         <td align="center" valign="center" colspan="2" style="font-weight: bold;">Cliente</td>
     </tr>

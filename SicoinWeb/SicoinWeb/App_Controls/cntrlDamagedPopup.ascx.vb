@@ -5,6 +5,8 @@ Partial Class App_Controls_cntrlDamagedPopup
     Inherits System.Web.UI.UserControl
     Public Sub Show()
         txtFecha.Text = DateTime.Now.ToString("MM/dd/yyyy")
+        txtCantidad.Text = ""
+        txtComments.Text = ""
         lblError.Visible = Not ValidarCantidad(txtCantidad.Text) And Trim(txtCantidad.Text) <> ""
         mdlPopup.Show()
         pnlTable.Visible = True
