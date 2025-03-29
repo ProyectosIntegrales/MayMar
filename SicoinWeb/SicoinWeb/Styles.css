@@ -1066,7 +1066,7 @@ hr {
     padding: 0;
     position: absolute;
     text-align: right;
-    z-index: 20000;
+    z-index: 1000;
     width: 300px;
     right: 10px;
 }
@@ -1176,4 +1176,13 @@ hr {
 .bold {
     font-weight: bold;
     color: #11418d;
+}
+
+
+.w-700 {
+    width: 700px !important
+}
+
+.nowrap {
+
 }

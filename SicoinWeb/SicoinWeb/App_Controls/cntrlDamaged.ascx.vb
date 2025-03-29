@@ -10,10 +10,24 @@ Partial Class App_Controls_cntrlDamaged
 
     Public ReadOnly Property Cantidad As Double
         Get
-            Return txtDamage.Text
+            Dim result As Double
+            BindDamageValue()
+            If Double.TryParse(txtDamage.Text, result) Then
+                Return result
+            Else
+                Return 0.0 ' Or handle it differently if needed (e.g., throw an exception)
+            End If
         End Get
-
     End Property
+
+
+    Protected Overrides Sub OnInit(e As EventArgs)
+        MyBase.OnInit(e)
+        AddHandler cntrlDamagedPopup.PopupClosed, AddressOf HandlePopupClosed
+
+    End Sub
+
+
 
     Public WriteOnly Property ButtonVisible As Boolean
         Set(value As Boolean)
@@ -23,6 +37,10 @@ Partial Class App_Controls_cntrlDamaged
 
     Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
         BindDamageValue()
+    End Sub
+
+    Private Sub HandlePopupClosed(sender As Object, e As EventArgs)
+        RaiseEvent PopupClosed(Me, EventArgs.Empty)
     End Sub
 
     Protected Sub btnDamaged_Click(sender As Object, e As EventArgs) Handles btnDamaged.Click
@@ -36,6 +54,14 @@ Partial Class App_Controls_cntrlDamaged
             Dim dr As DataRow = dt.Rows(0)
             txtDamage.Text = dr("Cantidad")
         End If
+
+    End Sub
+
+    Protected WithEvents cntrlDamaged As App_Controls_cntrlDamaged
+
+    Public Event PopupClosed As EventHandler
+
+    Protected Sub txtDamage_TextChanged(sender As Object, e As EventArgs)
 
     End Sub
 End Class

@@ -9,8 +9,11 @@ Partial Class App_Controls_cntrlDamagedPopup
         txtComments.Text = ""
         lblError.Visible = Not ValidarCantidad(txtCantidad.Text) And Trim(txtCantidad.Text) <> ""
         mdlPopup.Show()
-        pnlTable.Visible = True
-        pnlAdd.Visible = False
+        gvDamaged.DataBind()
+        Dim hasrows = gvDamaged.Rows.Count > 0
+        pnlTable.Visible = hasrows
+        pnlAdd.Visible = Not hasrows
+
     End Sub
 
     Protected Sub btnOk_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
@@ -51,8 +54,9 @@ Partial Class App_Controls_cntrlDamagedPopup
         If result <> "" Then
             cntrlError.errorMessage = result
         Else
-
+            Show()
         End If
+        mdlPopup.Show()
     End Sub
 
     Protected Sub Cancel(ByVal sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -63,5 +67,81 @@ Partial Class App_Controls_cntrlDamagedPopup
         pnlAdd.Visible = True
         pnlTable.Visible = False
         mdlPopup.Show()
+    End Sub
+
+    Protected Sub imbDelete_Click(sender As Object, e As ImageClickEventArgs)
+        Dim b As ImageButton = sender
+        Dim r As GridViewRow = b.Parent.Parent
+        Dim result = doSQLProcedure("spDamaged", Data.CommandType.StoredProcedure, ,
+                      "@Action", "DEL",
+                      "@ID", TryCast(r.FindControl("lblID"), Label).Text,
+)
+        If Not result = "" Then
+            cntrlError.errorMessage = result
+        Else
+            gvDamaged.SetEditRow(-1)
+            gvDamaged.DataBind()
+
+        End If
+        mdlPopup.Show()
+    End Sub
+
+    Protected Sub imbSave_Click(sender As Object, e As ImageClickEventArgs)
+        Dim b As ImageButton = sender
+        Dim r As GridViewRow = b.Parent.Parent
+        Dim fecha As DateTime
+        Dim fechaText As String = TryCast(r.FindControl("txtFecha"), TextBox).Text
+        If DateTime.TryParseExact(fechaText, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, fecha) Then
+            Dim result = doSQLProcedure("spDamaged", Data.CommandType.StoredProcedure, ,
+                        "@Action", "UPD",
+                        "@ID", TryCast(r.FindControl("lblID"), Label).Text,
+                        "@Cantidad", TryCast(r.FindControl("txtCantidad"), TextBox).Text,
+                        "@Comentario", TryCast(r.FindControl("txtComentarios"), TextBox).Text,
+                        "@Fecha", fecha.ToString("yyyy-MM-dd")
+                        )
+            If Not result = "" Then
+                cntrlError.errorMessage = result
+            Else
+                gvDamaged.SetEditRow(-1)
+                gvDamaged.DataBind()
+
+            End If
+        End If
+        mdlPopup.Show()
+        btnAdd.Visible = True
+    End Sub
+
+    Protected Sub imbCancel_Click(sender As Object, e As ImageClickEventArgs)
+        gvDamaged.EditIndex = -1
+        gvDamaged.ShowFooter = False
+        mdlPopup.Show()
+        btnAdd.Visible = True
+    End Sub
+
+    Protected Sub imbAdd_Click(sender As Object, e As ImageClickEventArgs)
+        gvDamaged.EditIndex = -1
+        pnlTable.Visible = False
+        pnlAdd.Visible = True
+        mdlPopup.Show()
+    End Sub
+
+    Protected Sub imbEdit_Command(sender As Object, e As CommandEventArgs)
+        If e.CommandName = "EDIT" Then
+            ' Logic to put the control or row into edit mode
+            ' For example, in a GridView:
+            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
+            gvDamaged.EditIndex = index
+            gvDamaged.DataBind() ' Rebind data to refresh the GridView with the row in edit mode
+            mdlPopup.Show()
+            btnAdd.Visible = False
+        End If
+    End Sub
+
+    Protected WithEvents cntrlDamagedPopup As App_Controls_cntrlDamagedPopup
+
+    Public Event PopupClosed As EventHandler
+
+    Protected Sub imbClose_Click(sender As Object, e As ImageClickEventArgs) Handles imbClose.Click
+        RaiseEvent PopupClosed(Me, EventArgs.Empty)
     End Sub
 End Class

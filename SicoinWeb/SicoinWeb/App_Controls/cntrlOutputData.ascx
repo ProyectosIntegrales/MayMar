@@ -1,6 +1,8 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlOutputData.ascx.vb" Inherits="cntrlOutputData" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/App_Controls/cntrlError.ascx" TagName="cntrlError" TagPrefix="uc1" %>
+<%@ Register Src="~/App_Controls/cntrlDamaged.ascx" TagPrefix="uc1" TagName="cntrlDamaged" %>
+
 
 
 <style type="text/css">
@@ -65,7 +67,13 @@
     <tr>
         <td align="right" valign="top">&nbsp;</td>
         <td>&nbsp;</td>
-        <td align="right" colspan="2" rowspan="6">
+        <td align="right">Mcia Dañada</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td align="right" valign="top">&nbsp;</td>
+        <td>&nbsp;</td>
+        <td align="right" colspan="2" rowspan="4">
             <asp:Panel ID="pnlOut" runat="server" CssClass="tableHl" Style="position: relative; width: 400px; left: -10px;">
 
                 <asp:UpdatePanel ID="pnlUpdate1" runat="server">
@@ -74,19 +82,24 @@
 
                         <table class="auto-style1">
                             <tr>
-                                <td align="right" valign="top">Fecha de Salida</td>
-                                <td align="left">
+                                <td align="right" valign="center" style="padding-bottom: 10px">Fecha de Salida</td>
+                                <td align="left" style="padding-bottom: 10px">
                                     <asp:TextBox ID="txtFechaout" runat="server" CssClass="textboxg uppercase" Enabled="False" Width="160px"></asp:TextBox>
                                     &nbsp;-&gt;
             <asp:TextBox ID="txtTiempo" runat="server" CssClass="textboxg uppercase" Enabled="False" Width="40px"></asp:TextBox>
                                     &nbsp;Días</td>
                             </tr>
                             <tr>
-                                <td align="right" valign="top">&nbsp;</td>
-                                <td align="left" valign="top"></td>
+                                <td align="right" valign="center">Mcia Dañada</td>
+                                <td align="left" valign="center">
+                                  
+                                  
+                                            <uc1:cntrlDamaged runat="server" ID="cntrlDamaged" ButtonVisible="true" OnPopupClosed="txtDescargado_TextChanged" />
+                                  
+                                </td>
                             </tr>
                             <tr>
-                                <td align="right" valign="top">Descargado</td>
+                                <td align="right" valign="center">Descargado</td>
                                 <td align="left" valign="top">
                                     <asp:TextBox ID="txtDescargado" runat="server" AutoPostBack="True" CausesValidation="True" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" TabIndex="15" Width="80px"></asp:TextBox>
                                     &nbsp;&nbsp;&nbsp; Remanente&nbsp;<asp:TextBox ID="txtRemanente" runat="server" CausesValidation="True" CssClass="textboxg uppercase" Enabled="False" onkeydown="nextOnEnter(this,event);" TabIndex="16" Width="80px"></asp:TextBox>
@@ -179,7 +192,7 @@
                 <asp:Button ID="btnOK" runat="server" CssClass="btn" TabIndex="25" Text="Aceptar" Style="margin-right: 20px;" />
                 &nbsp;&nbsp;
                             <asp:Button ID="btnCancel" runat="server" CausesValidation="False" CssClass="btna" TabIndex="26" Text="Cancelar" Style="margin-right: 20px;" />
-                <asp:Button ID="btnDamaged" runat="server" CssClass="btn" TabIndex="25" Text="Mercancía Dañada" />
+
             </asp:Panel>
         </td>
     </tr>

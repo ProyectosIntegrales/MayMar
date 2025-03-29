@@ -118,7 +118,7 @@
         <td align="right" valign="center">Importador/Exportador</td>
         <td>
             <asp:TextBox ID="txtImp1" runat="server" Width="300px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False" ClientIDMode="Static"></asp:TextBox></td>
-        <td align="right" valign="center">Dañada
+        <td align="right" valign="center">Mcia Dañada
         </td>
         <td class="d-flex">
            

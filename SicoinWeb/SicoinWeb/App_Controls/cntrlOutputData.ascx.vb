@@ -1,7 +1,7 @@
 ﻿Imports System.Data
 Partial Class cntrlOutputData
     Inherits System.Web.UI.UserControl
-
+    Protected WithEvents cntrlOutputData As cntrlOutputData
     Public WriteOnly Property Operacion As String
         Set(value As String)
             hflOp.Value = value
@@ -33,8 +33,28 @@ Partial Class cntrlOutputData
 
     End Sub
 
+    Public ReadOnly Property Damaged As Double
+        Get
+            ' Access Cantidad property from the WebUserControl inside the UpdatePanel
+            'Dim cntrlDamaged = TryCast(pnlUpdate1.FindControl("cntrlDamaged"), App_Controls_cntrlDamaged)
+            If cntrlDamaged IsNot Nothing Then
+                AddHandler cntrlDamaged.PopupClosed, AddressOf txtDescargado_TextChanged
+
+                ' Assuming Cantidad is a Double property of the WebUserControl
+                Dim cantidad As Double
+                If Double.TryParse(cntrlDamaged.Cantidad.ToString(), cantidad) Then
+                    Return cantidad
+                End If
+
+            End If
+            Return 0
+
+        End Get
+    End Property
+
     Protected Sub getData()
         clearAll()
+        Session("op") = hflOp.Value
         Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
         If Not dt Is Nothing Then
             Dim dr As DataRow = dt.Rows(0)
@@ -71,7 +91,16 @@ Partial Class cntrlOutputData
             End If
             txtTiempo.Text = DateDiff("d", txtFecha.Text, txtFechaout.Text)
             txtDescargado.Text = dr("Descargado")
-            txtRemanente.Text = dr("Remanente")
+
+            Dim remanente As Double
+            If Double.TryParse(dr("Remanente").ToString(), remanente) Then
+
+            Else
+                ' Handle invalid Remanente value
+                txtRemanente.Text = "Invalid Remanente"
+            End If
+
+            txtRemanente.Text = (remanente - Damaged).ToString()
 
             Dim Terminado As Boolean = dr("Terminado")
 
@@ -173,8 +202,11 @@ Partial Class cntrlOutputData
     End Function
 
     Protected Sub txtDescargado_TextChanged(sender As Object, e As EventArgs) Handles txtDescargado.TextChanged
+        If txtDescargado.Text = "" Then txtDescargado.Text = "0"
         If IsNumeric(txtDescargado.Text) Then
-            txtRemanente.Text = txtPeso.Text - txtDescargado.Text
+            txtRemanente.Text = txtPeso.Text - txtDescargado.Text - Damaged
+        Else
+            cntrlError.errorMessage = "El campo Descargado es Inválido"
         End If
     End Sub
 
@@ -197,4 +229,6 @@ Partial Class cntrlOutputData
     Protected Sub btnMod_Click(sender As Object, e As EventArgs) Handles btnMod.Click
         RaiseEvent ModBtnClicked("OUT")
     End Sub
+
+
 End Class
