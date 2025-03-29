@@ -1,6 +1,12 @@
 ﻿Imports System.Data
+Imports System.Data.SqlClient
+
 Partial Class cntrlAllData
     Inherits UserControl
+
+    Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
+        Session("op") = txtOp.Text
+    End Sub
 
     Public WriteOnly Property Operacion As String
         Set(value As String)
@@ -66,7 +72,7 @@ Partial Class cntrlAllData
             Dim Terminado As Boolean = dr("Terminado")
             btnConfirmar.Visible = (hflStatus.Value = -1)
             btnMod.Visible = (hflStatus.Value = -1)
-            btnDamaged.Visible = Not Terminado
+            cntrlDamaged.ButtonVisible = Not Terminado
         End If
         '  clearAll()
     End Sub
@@ -202,10 +208,10 @@ Partial Class cntrlAllData
         End If
     End Sub
 
-    Protected Sub btnDamaged_Click(sender As Object, e As EventArgs) Handles btnDamaged.Click
-        Session("op") = txtOp.Text
-        cntrlDamaged.Show()
-    End Sub
+
+
+
+
 End Class
 
 
