@@ -499,82 +499,121 @@ Public Class Migrations
             ]]>.Value)
 
         NewMigration(
-  MigrationName:="20250326915 Creacion de Tabla Damages",
-  MigrationCommand:=<![CDATA[
-      CREATE TABLE [dbo].[Damages](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[Operacion] [nvarchar](50) NOT NULL,
-	[Cantidad] [float] NULL,
-	[Comentario] [nvarchar](max) NULL,
-	[Fecha] [datetime2](7) NULL,
-	[CreatedBy] [nvarchar](max) NULL,
-	[CreatedOn] [datetime2](7) NULL,
- CONSTRAINT [PK_Damages] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+          MigrationName:="20250326915 Creacion de Tabla Damages",
+          MigrationCommand:=<![CDATA[
+              CREATE TABLE [dbo].[Damages](
+	        [ID] [int] IDENTITY(1,1) NOT NULL,
+	        [Operacion] [nvarchar](50) NOT NULL,
+	        [Cantidad] [float] NULL,
+	        [Comentario] [nvarchar](max) NULL,
+	        [Fecha] [datetime2](7) NULL,
+	        [CreatedBy] [nvarchar](max) NULL,
+	        [CreatedOn] [datetime2](7) NULL,
+         CONSTRAINT [PK_Damages] PRIMARY KEY CLUSTERED 
+        (
+	        [ID] ASC
+        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
      
         ]]>.Value)
 
         NewMigration(
         MigrationName:="20250326915 Creacion de Tabla Damages 1",
-MigrationCommand:=<![CDATA[
-ALTER TABLE [dbo].[Damages]  WITH CHECK ADD  CONSTRAINT [FK_Damages_Damages] FOREIGN KEY([ID])
-REFERENCES [dbo].[Damages] ([ID])
+        MigrationCommand:=<![CDATA[
+        ALTER TABLE [dbo].[Damages]  WITH CHECK ADD  CONSTRAINT [FK_Damages_Damages] FOREIGN KEY([ID])
+        REFERENCES [dbo].[Damages] ([ID])
      
-        ]]>.Value)
+                ]]>.Value)
 
         NewMigration(
-MigrationName:="20250326915 Creacion de Tabla Damages 2",
-MigrationCommand:=<![CDATA[
-ALTER TABLE [dbo].[Damages] CHECK CONSTRAINT [FK_Damages_Damages]
+        MigrationName:="20250326915 Creacion de Tabla Damages 2",
+        MigrationCommand:=<![CDATA[
+        ALTER TABLE [dbo].[Damages] CHECK CONSTRAINT [FK_Damages_Damages]
      
-        ]]>.Value)
+                ]]>.Value)
 
         NewMigration(
-MigrationName:="20250326915 Creacion de SP Damages",
-MigrationCommand:=<![CDATA[
-CREATE OR ALTER PROCEDURE [dbo].[spDamaged]
-	-- Add the parameters for the stored procedure here
-	@Action char(3),
-	@ID int = 0,
-	@Operacion nvarchar(50),
-	@Cantidad float,
-	@Fecha date,
-	@Comentario nvarchar(max),
-	@CreatedBy nvarchar(max)
+        MigrationName:="20250326915 Creacion de SP Damages",
+        MigrationCommand:=<![CDATA[
+        CREATE   PROCEDURE [dbo].[spDamaged]
+	        -- Add the parameters for the stored procedure here
+	        @Action char(3),
+	        @ID int = 0,
+	        @Operacion nvarchar(50) = '',
+	        @Cantidad float = 0,
+	        @Fecha date = '',
+	        @Comentario nvarchar(max) = '',
+	        @CreatedBy nvarchar(max) = ''
 	
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+        AS
+        BEGIN
+	        -- SET NOCOUNT ON added to prevent extra result sets from
+	        -- interfering with SELECT statements.
+	        SET NOCOUNT ON;
 
-    -- Insert statements for procedure here
-	IF @Action = 'ADD'
-	BEGIN
-		INSERT INTO Damages(Operacion, Cantidad, Comentario, Fecha, CreatedBy, CreatedOn)
-			VALUES(@Operacion, @Cantidad, @Comentario, @Fecha, @CreatedBy, GETDATE())
-	END
+            -- Insert statements for procedure here
+	        IF @Action = 'ADD'
+	        BEGIN
+		        INSERT INTO Damages(Operacion, Cantidad, Comentario, Fecha, CreatedBy, CreatedOn)
+			        VALUES(@Operacion, @Cantidad, @Comentario, @Fecha, @CreatedBy, GETDATE())
+	        END
 
-	--IF @Action = 'UPD'
-	--BEGIN
-	--	UPDATE Clientes
-	--		SET Nombre = @Nombre,
-	--			RSocial = @RSocial,
-	--			Rfc = @Rfc,
-	--			Direccion = @Direccion,
-	--			Patente = @Patente
-	--		WHERE Clave = @Clave
-	--END
+	        IF @Action = 'UPD'
+	        BEGIN
+		        UPDATE Damages
+			        SET Cantidad = @Cantidad,
+				        Comentario = @Comentario,
+				        Fecha = @Fecha
+			        WHERE ID = @ID
+	        END
 
-	IF @Action = 'DEL'
-	BEGIN
-		DELETE Damages WHERE ID = @ID
-	END
-END     
-        ]]>.Value)
+	        IF @Action = 'DEL'
+	        BEGIN
+		        DELETE Damages WHERE ID = @ID
+	        END
+        END
+                ]]>.Value)
+
+
+        NewMigration(
+              MigrationName:="20250328915 Correcion Sp Importador",
+              MigrationCommand:=<![CDATA[
+               ALTER PROCEDURE [dbo].[spImportador]
+	        -- Add the parameters for the stored procedure here
+	        @Action char(3),
+	        @Clave varchar(6),
+	        @Nombre varchar(80) = '',
+	        @Direccion varchar(80) = ''
+	
+        AS
+        BEGIN
+	        -- SET NOCOUNT ON added to prevent extra result sets from
+	        -- interfering with SELECT statements.
+	        SET NOCOUNT ON;
+
+            -- Insert statements for procedure here
+	        IF @Action = 'ADD'
+	        BEGIN
+		        INSERT INTO Importador (Clave, Nombre, Direccion)
+			        VALUES(@Clave, @Nombre, @Direccion)
+	        END
+
+	        IF @Action = 'UPD'
+	        BEGIN
+		        UPDATE Importador
+			        SET Nombre = @Nombre,
+				        Direccion = @Direccion
+			        WHERE Clave = @Clave
+	        END
+
+	        IF @Action = 'DEL'
+	        BEGIN
+		        DELETE Importador WHERE Clave = @Clave
+	        END
+        END
+                ]]>.Value)
     End Sub
+
+
 
 End Class

@@ -27,11 +27,15 @@ Partial Class Admin_admImportador
     Protected Sub Save(sender As Object, e As ImageClickEventArgs)
         Dim b As ImageButton = sender
         Dim r As GridViewRow = b.Parent.Parent
-        Result = doSQLProcedure("spImportador", Data.CommandType.StoredProcedure, , "@Action", "UPD", _
-                                "@Clave", DirectCast(r.FindControl("Label1"), Label).Text, _
-                                "@Nombre", DirectCast(r.FindControl("Textbox2"), TextBox).Text, _
-                                "@Direccion", DirectCast(r.FindControl("Textbox3"), TextBox).Text _
-                                )
+        Dim clave = DirectCast(r.FindControl("Label1"), Label).Text
+        Dim nombre = DirectCast(r.FindControl("Textbox2"), TextBox).Text
+        Dim direccion = DirectCast(r.FindControl("Textbox3"), TextBox).Text
+
+        Result = doSQLProcedure("spImportador", Data.CommandType.StoredProcedure, , "@Action", "UPD",
+                                "@Clave", clave,
+                                "@Nombre", nombre,
+                                "@Direccion", direccion
+)
         If Not Result = "" Then
             cntrlError1.errorMessage = Result
         Else
