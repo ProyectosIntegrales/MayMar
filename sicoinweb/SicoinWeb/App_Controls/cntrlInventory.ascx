@@ -74,7 +74,7 @@
                         <td align="right" valign="middle" style="width: 190px;">
                             <asp:Label ID="lblOper" runat="server">Operación/Pedimento</asp:Label></td>
                         <td valign="middle">
-                            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="130px" AutoPostBack="True"></asp:TextBox>
+                            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="130px" AutoPostBack="True" Rows="1"></asp:TextBox>
                             <asp:DropDownList ID="ddlOut" runat="server" CssClass="textboxg uppercase" DataSourceID="dsOut" DataTextField="Operacion" DataValueField="Operacion" Visible="false" Width="150px" Style="width: 150px;"></asp:DropDownList>
                             <asp:DropDownList ID="ddlCFDI" runat="server" CssClass="textboxg uppercase" DataSourceID="dsCFDI" DataTextField="Operacion" DataValueField="Operacion" Visible="False" Width="150px" Style="width: 150px;">
                             </asp:DropDownList>
