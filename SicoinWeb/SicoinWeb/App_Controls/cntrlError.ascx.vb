@@ -29,4 +29,8 @@ Partial Class App_Controls_cntrlError
 
     End Sub
 
+    Public Sub Show()
+        ModalPopupExtender1.Show()
+    End Sub
+
 End Class

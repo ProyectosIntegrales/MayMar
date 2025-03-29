@@ -1,31 +1,33 @@
 ﻿<%@ Control Language="VB" AutoEventWireup="false" CodeFile="cntrlAllData.ascx.vb" Inherits="cntrlAllData" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/App_Controls/cntrlError.ascx" TagName="cntrlError" TagPrefix="uc1" %>
+<%@ Register Src="~/App_Controls/cntrlDamaged.ascx" TagName="cntrlDamaged" TagPrefix="uc2" %>
 
 
 <style type="text/css">
     .auto-style1 {
         width: 100%;
     }
+
     .pnlLoginPopup {
-    position: absolute !important;
-    z-index: 10002 !important;
-    top: 65% !important;
-    left: 50% !important;
-}
+        position: absolute !important;
+        z-index: 10002 !important;
+        top: 65% !important;
+        left: 50% !important;
+    }
 </style>
 
 <asp:HiddenField ID="hflRazon" runat="server" ClientIDMode="Static" />
 <asp:HiddenField ID="hflCliente" runat="server" ClientIDMode="Static" />
 <asp:HiddenField ID="hflImp2" runat="server" ClientIDMode="Static" />
 
-            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="120px" Style="display: none"></asp:TextBox>
+<asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="120px" Style="display: none"></asp:TextBox>
 
 <table class="auto-style1">
     <tr>
         <td align="right" valign="top" style="width: 190px;">Caja #</td>
         <td>
-            <asp:TextBox ID="txtBox" runat="server" Width="100px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False"></asp:TextBox>&nbsp;<asp:TextBox ID="txtNewOper" runat="server" CssClass="textboxg uppercase" Width="130px" style="position: relative; top:-42px; left:-98px;"></asp:TextBox>
+            <asp:TextBox ID="txtBox" runat="server" Width="100px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False"></asp:TextBox>&nbsp;<asp:TextBox ID="txtNewOper" runat="server" CssClass="textboxg uppercase" Width="130px" Style="position: relative; top: -42px; left: -98px;"></asp:TextBox>
         </td>
         <td align="center" valign="top" colspan="2" style="font-weight: bold;">Cliente</td>
     </tr>
@@ -106,17 +108,22 @@
             <asp:TextBox ID="txtRemanente" runat="server" TabIndex="16" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" CausesValidation="True" Enabled="False"></asp:TextBox>
 
         </td>
-
-
-
-
     </tr>
     <tr>
         <td align="right" valign="top">Importador/Exportador</td>
         <td>
-            <asp:TextBox ID="txtImp1" runat="server" Width="300px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False" ClientIDMode="Static"></asp:TextBox>
+            <asp:TextBox ID="txtImp1" runat="server" Width="300px" CssClass="textboxg uppercase" onkeydown="nextOnEnter(this,event);" Enabled="False" ClientIDMode="Static"></asp:TextBox></td>
+        <td align="right" valign="top">Dañada
+        </td>
+        <td>
 
-            <br />
+            <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:MaymarCS %>" SelectCommand="SELECT Clave, REPLACE(STR(Clave, 2), SPACE(1), '  ') + ' - ' + Descripcion AS Descripcion FROM Medidas ORDER BY Clave"></asp:SqlDataSource>
+
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
             <asp:TextBox ID="txtImp2" runat="server" Width="300px" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" ReadOnly="False" ClientIDMode="Static" Enabled="False"></asp:TextBox>
 
         </td>
@@ -172,12 +179,14 @@
 
                 <asp:Button ID="btnCancel" runat="server" CausesValidation="False" CssClass="btna" TabIndex="26" Text="Cancelar" Style="margin-right: 20px;" />
                 <asp:Button ID="btnConfirmar" runat="server" CssClass="btn" Style="margin-right: 20px;" TabIndex="25" Text="Confirmar Entrada" Visible="false" />
+                <asp:Button ID="btnDamaged" runat="server" CssClass="btn" Style="margin-right: 20px;" TabIndex="25" Text="Mercancía Dañada" Visible="false" />
             </asp:Panel>
         </td>
     </tr>
 </table>
 
 <uc1:cntrlError ID="cntrlError" runat="server" />
+<uc2:cntrlDamaged ID="cntrlDamaged" runat="server" />
 
 <asp:HiddenField ID="hflOp" runat="server" />
 <asp:HiddenField ID="hflStatus" runat="server" />

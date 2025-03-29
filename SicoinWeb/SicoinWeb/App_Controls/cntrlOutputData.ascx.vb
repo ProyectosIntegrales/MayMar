@@ -112,7 +112,7 @@ Partial Class cntrlOutputData
             Else
                 SaveData(False)
             End If
-   
+
         Catch ex As Exception
             cntrlError.errorMessage = ex.Message
         End Try

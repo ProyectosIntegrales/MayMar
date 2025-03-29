@@ -66,7 +66,7 @@ Partial Class cntrlAllData
             Dim Terminado As Boolean = dr("Terminado")
             btnConfirmar.Visible = (hflStatus.Value = -1)
             btnMod.Visible = (hflStatus.Value = -1)
-
+            btnDamaged.Visible = Not Terminado
         End If
         '  clearAll()
     End Sub
@@ -200,6 +200,11 @@ Partial Class cntrlAllData
 
             RaiseEvent Aceptar()
         End If
+    End Sub
+
+    Protected Sub btnDamaged_Click(sender As Object, e As EventArgs) Handles btnDamaged.Click
+        Session("op") = txtOp.Text
+        cntrlDamaged.Show()
     End Sub
 End Class
 
