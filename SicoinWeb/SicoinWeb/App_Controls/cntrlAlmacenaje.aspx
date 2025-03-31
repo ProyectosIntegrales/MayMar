@@ -63,7 +63,7 @@
 
                 </Columns>
                 <EmptyDataTemplate>
-                    <div style="padding: 20px; font-size: 1.5em;">No se encontraron registros que causan abandono en el mes seleccionado.</div>
+                    <div style="padding: 20px; font-size: 1.5em;">No se encontraron registrcon Almacenaje en el mes seleccionado.</div>
                 </EmptyDataTemplate>
             </asp:GridView>
         </div>

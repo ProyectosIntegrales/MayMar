@@ -18,7 +18,7 @@ Partial Class App_Controls_cntrlAlmacenaje
 
         Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings("MayMarCS").ToString)
 
-        Dim cm As New SqlClient.SqlCommand("spGetAlmacenaje", cn)
+        Dim cm As New SqlClient.SqlCommand("spAlmacenaje", cn)
         cm.CommandType = CommandType.StoredProcedure
         cm.Parameters.AddWithValue("@year", y)
         cm.Parameters.AddWithValue("@month", m)
