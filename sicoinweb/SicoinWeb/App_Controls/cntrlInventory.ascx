@@ -31,7 +31,8 @@
 </style>
 
 <div class="menu1" style="white-space: nowrap;">
-    <a id="lnbAb" href="#" class="btn" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
+    <a id="lnbAb" href="#" class="btn" onclick="javascript:$('#ifraba').fadetoggle(100);">Abandonos</a>
+    <a id="lnbDm" href="#" class="btn" onclick="javascript:$('#ifrdamage').fadeToggle(100);">Mcia Dañada</a>
     <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right: 10px">Reportes</a>
 </div>
 
@@ -41,8 +42,13 @@
 </div>
 
 <div id="ifraba" style="display: none; position: fixed; top: 10vh; right: 0; left: 0; margin-right: auto; margin-left: auto; height: 80vh; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 90vw; border-width: 2px; box-shadow: 0px 0px 10px; padding: 10px; z-index: 20000">
-    <div class="close" onclick="javascript:$('#ifraba').toggle(500);"><span>X</span></div>
+    <div class="close" onclick="javascript:$('#ifraba').fadeToggle(100);"><span>X</span></div>
     <iframe src="app_controls/cntrlAbandono.aspx" width="100%" height="100%" frameborder="0"></iframe>
+</div>
+
+<div id="ifrdamage" style="display: none; position: fixed; top: 10vh; right: 0; left: 0; margin-right: auto; margin-left: auto; height: 80vh; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 90vw; border-width: 2px; box-shadow: 0px 0px 10px; padding: 10px; z-index: 20000">
+    <div class="close" onclick="javascript:$('#ifrdamage').fadeToggle(100);"><span>X</span></div>
+    <iframe src="app_controls/cntrlDamagedReport.aspx" width="100%" height="100%" frameborder="0"></iframe>
 </div>
 
 <asp:Panel ID="pnlMain" runat="server" CssClass="main" DefaultButton="btnGo">

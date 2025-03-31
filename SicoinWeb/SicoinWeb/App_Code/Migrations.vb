@@ -612,8 +612,82 @@ Public Class Migrations
 	        END
         END
                 ]]>.Value)
+
+
+        NewMigration(
+        MigrationName:="202503311001 VDamageReport",
+        MigrationCommand:=<![CDATA[
+        CREATE OR ALTER VIEW [dbo].[vDamagedReport]
+            AS
+            SELECT   SUM(d.Cantidad) AS TotalCantidad, STRING_AGG(d.Comentario, ' | ') AS Comentarios, d.Fecha, i.Operacion, i.Caja, i.Mercancia, i.Cajas, i.Fechain, i.Horain, i.Fechaout, i.Horaout, 
+                                     i.Descargado, i.Remanente, i.Peso, i.Cliente, i.Nombre, i.RSocial, i.Terminado, i.Valorc, i.Fraccion, i.UM, i.Importador, i.ClavePed, i.DiasAlmacen, i.AvisoAb, i.Fechaab, i.FechaDeclAb, 
+                                     i.FechaSalidaAb, i.NotaAb, i.NoAplica, i.Gratis, i.Contenedor, i.DirImp, i.Bultos, i.Factura, i.CFDI, i.MontoCFDI, i.MontoCFDIDlls, i.Aprovechamiento, i.Status, i.Compartido, 
+                                     i.CompartidoCon
+            FROM         dbo.Inventario AS i INNER JOIN
+                                     dbo.Damages AS d ON i.Operacion = d.Operacion
+            WHERE     (i.Status >= 0)
+            GROUP BY i.Status, d.Fecha, i.Status, i.Operacion, i.Caja, i.Mercancia, i.Cajas, i.Fechain, i.Horain, i.Fechaout, i.Horaout, i.Descargado, i.Remanente, i.Peso, i.Cliente, i.Nombre, i.RSocial, i.Terminado, 
+                                     i.Valorc, i.Fraccion, i.UM, i.Importador, i.ClavePed, i.DiasAlmacen, i.AvisoAb, i.Fechaab, i.FechaDeclAb, i.FechaSalidaAb, i.NotaAb, i.NoAplica, i.Gratis, i.Contenedor, i.DirImp, i.Bultos, 
+                                     i.Factura, i.CFDI, i.MontoCFDI, i.MontoCFDIDlls, i.Aprovechamiento, i.CompartidoCon, i.Compartido
+             ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311003 vFechasAb",
+                MigrationCommand:=<![CDATA[
+                CREATE OR ALTER VIEW [dbo].[vFechasAb]
+                    AS
+                    WITH MonthlyData AS (
+                        SELECT DISTINCT
+                            CONVERT(VARCHAR(7), Fechain, 120) AS M, -- YYYY-MM format
+                            SUBSTRING('ENE FEB MAR ABR MAY JUN JUL AGO SEP OCT NOV DIC ', 
+                                      MONTH(Fechain) * 4 - 3, 3) + ' - ' + CAST(YEAR(Fechain) AS VARCHAR) AS DisplayDate
+                        FROM dbo.Inventario
+                        WHERE Fechain < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+                    ),
+                    MaxMonth AS (
+                        SELECT DATEADD(MONTH, 1, MAX(DATEADD(DAY, 1 - DAY(Fechain), CAST(Fechain AS DATE)))) AS NextMonth
+                        FROM dbo.Inventario
+                        WHERE Fechain < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+                    ),
+                    NextMonthRow AS (
+                        SELECT 
+                            CONVERT(VARCHAR(7), NextMonth, 120) AS M,
+                            SUBSTRING('ENE FEB MAR ABR MAY JUN JUL AGO SEP OCT NOV DIC ', MONTH(NextMonth) * 4 - 3, 3)
+                            + ' - ' + CAST(YEAR(NextMonth) AS VARCHAR) AS DisplayDate
+                        FROM MaxMonth
+                    )
+
+                    SELECT * FROM MonthlyData
+                    UNION
+                    SELECT * FROM NextMonthRow
+                 ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311005 spDamagedReport",
+                MigrationCommand:=<![CDATA[
+                CREATE OR ALTER PROCEDURE [dbo].[spDamagedReport] 
+	                -- Add the parameters for the stored procedure here
+	                @year varchar(4),
+	                @month varchar(2)
+                AS
+                BEGIN
+	                -- SET NOCOUNT ON added to prevent extra result sets from
+	                -- interfering with SELECT statements.
+	                SET NOCOUNT ON;
+
+                    -- Insert statements for procedure here
+                SELECT * FROM vDamagedReport
+	                WHERE Fecha >= CAST(@year + '-' + @month + '-1' as date) AND Fecha <= dbo.GetLastDayOfMonth(@year, @month)
+	
+                END
+                 ]]>.Value)
     End Sub
 
 
-
 End Class
+
+
+'NewMigration(
+'        MigrationName:="202503311001 VDamageReport",
+'        MigrationCommand:=<![CDATA[
+'         ]]>.Value)
