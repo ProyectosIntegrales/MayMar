@@ -681,6 +681,213 @@ Public Class Migrations
 	
                 END
                  ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311042 Almacenaje",
+                MigrationCommand:=<![CDATA[
+                BEGIN TRANSACTION
+                CREATE TABLE dbo.Almacenaje
+	                (
+	                Operacion char(20) NOT NULL,
+	                Almacenaje bit NULL,
+	                CreatedBy varchar(50) NULL,
+	                CreatedOn datetime2(7) NULL,
+	                UpdatedBy varchar(50) NULL,
+	                UpdatedOn datetime2(7) NULL
+	                )  ON [PRIMARY]
+                ALTER TABLE dbo.Almacenaje ADD CONSTRAINT
+	                PK_Almacenaje PRIMARY KEY CLUSTERED 
+	                (
+	                Operacion
+	                ) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+                CREATE NONCLUSTERED INDEX IX_Almacenaje ON dbo.Almacenaje
+	                (
+	                Almacenaje
+	                ) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                ALTER TABLE dbo.Almacenaje ADD CONSTRAINT
+	                FK_Almacenaje_Inventario FOREIGN KEY
+	                (
+	                Operacion
+	                ) REFERENCES dbo.Inventario
+	                (
+	                Operacion
+	                ) ON UPDATE  NO ACTION 
+	                 ON DELETE  NO ACTION 
+	
+                ALTER TABLE dbo.Almacenaje SET (LOCK_ESCALATION = TABLE)
+                COMMIT
+                 ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311042 spInventario_CFDI",
+                MigrationCommand:=<![CDATA[
+              ALTER PROCEDURE [dbo].[spInventario_CFDI] 
+                   @Operacion Char(20), 
+                   @Factura nchar(10), 
+                   @CFDI nchar(36), 
+                   @MontoCFDI float, 
+                   @MontoCFDIDlls float, 
+                   @Aprovechamiento float, 
+                   @Compartido bit, 
+                   @CompartidoCon nchar(20),
+                   @Almacenaje bit
+                AS 
+                BEGIN 
+                   UPDATE Inventario  
+                       SET	Factura = @Factura, 
+                           CFDI = @CFDI, 
+                           MontoCFDI = @MontoCFDI, 
+                           MontoCFDIDlls = @MontoCFDIDlls, 
+                           Aprovechamiento = @Aprovechamiento, 
+                           Compartido = @Compartido, 
+                           CompartidoCon = @CompartidoCon, 
+                           [Status] = 2 
+                       WHERE Operacion = @Operacion 
+
+	                IF EXISTS (SELECT 1 FROM Almacenaje WHERE Operacion = @Operacion)
+	                BEGIN
+		                UPDATE Almacenaje
+		                SET Almacenaje = @Almacenaje
+		                WHERE Operacion = @Operacion
+	                END
+	                ELSE
+	                BEGIN
+		                INSERT INTO Almacenaje (Operacion, Almacenaje)
+		                VALUES (@Operacion, @Almacenaje)
+	                END
+
+                END
+                 ]]>.Value)
+
+
+        NewMigration(
+                MigrationName:="202503311250 spInventario_All",
+                MigrationCommand:=<![CDATA[
+            ALTER PROCEDURE [dbo].[spInventario_All]
+	            @Operacion char(20),
+	            @NewOper char(20),
+	            @Caja char(10),
+	            @Mercancia char(70),
+	            @Fechain datetime,
+	            @Peso char(10),
+	            @Cajas float,
+	            @Cliente char(5),
+	            @Nombre char(100),
+	            @Rsocial char(120),
+	            @Valorc float,
+	            @Fraccion varchar(50),
+	            @UM numeric(18,0),
+	            @Importador char(100),
+	            @ClavePed char(10),
+	            @FechaAb datetime,
+	            @Contenedor char(90),
+	            @DirImp char(90),
+	            @Bultos char(90),
+	            @Fechaout datetime,
+	            @Descargado float,
+	            @Remanente float,
+	            @Factura nchar(10),
+	            @CFDI nchar(36),
+	            @MontoCFDI float,
+	            @MontoCFDIDlls float,
+	            @Aprovechamiento float,
+				@Almacenaje bit
+
+            AS
+            BEGIN
+	            -- SET NOCOUNT ON added to prevent extra result sets from
+	            -- interfering with SELECT statements.
+	            SET NOCOUNT ON;
+	            Declare @hh int = datepart(Hour,@fechaout)
+	            Declare @hi int = datepart(Hour,@fechain)
+
+	            Declare @ap char(1), @api char(1)
+
+	            IF @hh > 12 
+		            BEGIN
+			            SET @hh = @hh -12
+			            SET @ap = 'p'
+		            END
+		            ELSE
+			            SET @ap = 'a'
+		
+	            IF @hh = 0
+		            BEGIN
+		            SET @hh = 12
+		            SET @ap = 'a'
+		            END
+
+	            IF @hi > 12 
+		            BEGIN
+			            SET @hi = @hi -12
+			            SET @api = 'p'
+		            END
+		            ELSE
+			            SET @api = 'a'
+		
+	            IF @hi = 0
+		            BEGIN
+		            SET @hi = 12
+		            SET @ap = 'a'
+		            END
+		 
+                -- Insert statements for procedure here 
+	            Declare @Horaout char(10) = replace(str(@hh,2),' ','0') + ':' +  replace(str(datepart(minute,@fechaout),2),' ','0') + ':' + replace(str(datepart(second,@fechaout),2),' ','0') + ' ' + @ap
+	            Declare @Horain char(10) = replace(str(@hi,2),' ','0') + ':' +  replace(str(datepart(minute,@fechain),2),' ','0') + ':' + replace(str(datepart(second,@fechain),2),' ','0') + ' ' + @api
+
+	            IF @Cliente = '' OR @Rsocial = ''
+	            SELECT @Cliente = Clave, @Rsocial = RSocial FROM Clientes Where Nombre = @Nombre
+
+	            IF @DirImp = ''
+	            SELECT @DirImp = Direccion FROM Importador WHERE Nombre = @Importador
+
+	            UPDATE Inventario 
+		            SET 
+			            Operacion = @NewOper,
+			            Caja = @Caja,
+			            Mercancia = @Mercancia,
+			            Fechain = @Fechain,
+			            @Horain = @Horain,
+			            Peso = @Peso,
+			            Cliente = @Cliente,
+			            Nombre = @Nombre,
+			            Cajas = @Cajas,
+			            RSocial = @Rsocial,
+			            Valorc = @Valorc,
+			            Fraccion = @Fraccion,
+			            UM = @UM,
+			            Importador = @Importador,
+			            ClavePed = @ClavePed,
+			            Fechaab = @FechaAb,
+			            Contenedor = @Contenedor,
+			            DirImp = @DirImp,
+			            Bultos = @Bultos,
+			            Fechaout = @Fechaout,
+			            Horaout = @Horaout,
+			            Descargado = @Descargado,
+			            Remanente = @Remanente,
+			            Factura = @Factura,
+			            CFDI = @CFDI,
+			            MontoCFDI = @MontoCFDI,
+			            MontoCFDIDlls = @MontoCFDIDlls,
+			            Aprovechamiento = @Aprovechamiento
+		            WHERE Operacion = @Operacion
+
+					IF EXISTS (SELECT 1 FROM Almacenaje WHERE Operacion = @Operacion)
+	                BEGIN
+		                UPDATE Almacenaje
+		                SET Almacenaje = @Almacenaje
+		                WHERE Operacion = @Operacion
+	                END
+	                ELSE
+	                BEGIN
+		                INSERT INTO Almacenaje (Operacion, Almacenaje)
+		                VALUES (@Operacion, @Almacenaje)
+	                END
+            END
+                 ]]>.Value)
+
     End Sub
 
 
@@ -690,4 +897,5 @@ End Class
 'NewMigration(
 '        MigrationName:="202503311001 VDamageReport",
 '        MigrationCommand:=<![CDATA[
+
 '         ]]>.Value)

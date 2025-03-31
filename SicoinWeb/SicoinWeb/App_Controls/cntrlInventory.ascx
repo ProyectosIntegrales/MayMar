@@ -55,8 +55,6 @@
     <div class="main">
         <asp:UpdatePanel ID="pnlUpdate" runat="server">
             <ContentTemplate>
-
-
                 <table class="auto-style1">
                     <tr>
                         <td colspan="3" style="padding-bottom: 20px; padding-left: 10px;">
@@ -77,8 +75,8 @@
 
                     </tr>
                     <tr>
-                        <td align="right" valign="middle" style="width: 190px;">
-                            <asp:Label ID="lblOper" runat="server">Operación/Pedimento</asp:Label></td>
+                        <td align="right" valign="middle" style="width: 177px; position: relative; top: -2px">
+                            <asp:Label ID="lblOper" runat="server">Operación</asp:Label></td>
                         <td valign="middle">
                             <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="130px" AutoPostBack="True" Rows="1"></asp:TextBox>
                             <asp:DropDownList ID="ddlOut" runat="server" CssClass="textboxg uppercase" DataSourceID="dsOut" DataTextField="Operacion" DataValueField="Operacion" Visible="false" Width="150px" Style="width: 150px;"></asp:DropDownList>
@@ -96,7 +94,7 @@
                                 &nbsp;<asp:Button ID="btnNew" runat="server" Text="Aceptar" CssClass="btn" OnPreRender="btnNew_PreRender" />
                                 &nbsp;<asp:Button ID="btnCancelNew" runat="server" Text="Cancelar" CssClass="btna" />
                             </asp:Panel>
-                                                        <asp:Panel ID="pnlNotExists" runat="server" Visible="false">
+                            <asp:Panel ID="pnlNotExists" runat="server" Visible="false">
                                 <asp:Label ID="Label1" runat="server" Text="Este número de operación no existe!"></asp:Label>
                             </asp:Panel>
                             <asp:Panel ID="pnlTryagain" runat="server" Visible="false" Style="color: #a90000">
@@ -107,7 +105,14 @@
                     </tr>
 
                 </table>
+                <asp:PlaceHolder ID="plhControls" runat="server">
+                    <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false" />
+                    <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
+                    <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
+                    <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />
+                    <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" Visible="false" />
 
+                </asp:PlaceHolder>
             </ContentTemplate>
             <Triggers>
                 <asp:PostBackTrigger ControlID="btnNew" />
@@ -115,14 +120,7 @@
             </Triggers>
         </asp:UpdatePanel>
         <br />
-        <asp:PlaceHolder ID="plhControls" runat="server">
-            <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false" />
-            <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
-            <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
-            <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />
-            <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" Visible="false" />
 
-        </asp:PlaceHolder>
         <uc1:cntrlAbandono runat="server" ID="cntrlAbandono" Visible="false" />
         <uc1:cntrlReports runat="server" ID="cntrlReports" />
         <uc1:cntrlRepAbandono runat="server" ID="cntrlRepAbandono" />

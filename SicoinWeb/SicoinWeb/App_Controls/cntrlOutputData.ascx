@@ -64,17 +64,12 @@
             <asp:TextBox ID="txtFechaAb" runat="server" CssClass="textboxg uppercase" Enabled="False" Width="170px"></asp:TextBox>
         </td>
     </tr>
+
     <tr>
         <td align="right" valign="top">&nbsp;</td>
         <td>&nbsp;</td>
-        <td align="right">Mcia Dañada</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td align="right" valign="top">&nbsp;</td>
-        <td>&nbsp;</td>
-        <td align="right" colspan="2" rowspan="4">
-            <asp:Panel ID="pnlOut" runat="server" CssClass="tableHl" Style="position: relative; width: 400px; left: -10px;">
+        <td align="right" colspan="2" rowspan="5">
+            <asp:Panel ID="pnlOut" runat="server" CssClass="tableHl" Style="position: relative; width: 400px; left: -10px; top: 30px; padding-bottom: 5px">
 
                 <asp:UpdatePanel ID="pnlUpdate1" runat="server">
                     <ContentTemplate>
@@ -92,10 +87,10 @@
                             <tr>
                                 <td align="right" valign="center">Mcia Dañada</td>
                                 <td align="left" valign="center">
-                                  
-                                  
-                                            <uc1:cntrlDamaged runat="server" ID="cntrlDamaged" ButtonVisible="true" OnPopupClosed="txtDescargado_TextChanged" />
-                                  
+
+
+                                    <uc1:cntrlDamaged runat="server" ID="cntrlDamaged" ButtonVisible="true" OnPopupClosed="txtDescargado_TextChanged" />
+
                                 </td>
                             </tr>
                             <tr>
@@ -106,7 +101,7 @@
                                     &nbsp;</td>
                             </tr>
                             <tr>
-                                <td align="right" colspan="2" valign="middle" style="min-height: 50px;">
+                                <td align="center" colspan="2" valign="middle" style="min-height: 50px; padding-top: 10px">
                                     <asp:Button ID="btnDeclAb" runat="server" Text="Declarar en Abandono" CssClass="btn" />
                                     <asp:Panel ID="pnlDeclAbandono" runat="server" Visible="false" Style="border-top: 1px solid #333; margin-top: 5px;">
                                         <table>

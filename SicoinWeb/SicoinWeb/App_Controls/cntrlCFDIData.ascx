@@ -115,7 +115,7 @@
                         <table class="auto-style1">
                             <tr>
                                 <td align="right">Factura</td>
-                                <td align="left" valign="top">
+                                <td align="left" valign="top" colspan="2">
                                     <asp:TextBox ID="txtFactura" runat="server" CausesValidation="True" CssClass="textboxg uppercase" MaxLength="10" onkeydown="nextOnEnter(this,event);" TabIndex="17" Width="80px" OnTextChanged="txtFactura_TextChanged" AutoPostBack="true"></asp:TextBox>&nbsp;&nbsp;&nbsp;Compartido
                                     <asp:CheckBox ID="chkCompartido" runat="server" AutoPostBack="true" OnCheckedChanged="chkCompartido_CheckedChanged" />
                                 </td>
@@ -132,7 +132,7 @@
                             </asp:Panel>
                             <tr>
                                 <td align="right" valign="top">CFDI</td>
-                                <td valign="top" align="left">
+                                <td valign="top" align="left" colspan="2">
 
                                     <asp:TextBox ID="txtCFDI" runat="server" TabIndex="18" Font-Size="8" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" CausesValidation="True" Width="250px" MaxLength="36"></asp:TextBox>
 
@@ -140,7 +140,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">Monto</td>
-                                <td align="left">
+                                <td align="left" colspan="2">
 
                                     <asp:TextBox ID="txtMontoMXP" runat="server" TabIndex="19" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" CausesValidation="True" Width="60px"></asp:TextBox>
 
@@ -155,9 +155,12 @@
                                     <asp:TextBox ID="txtAprov" runat="server" TabIndex="21" onkeydown="nextOnEnter(this,event);" CssClass="textboxg uppercase" CausesValidation="True" Width="60px"></asp:TextBox>
 
                                 </td>
+                                <td align="left">
+                                    <asp:CheckBox ID="chkAlmacenaje" runat="server" Text="Almacenaje" TextAlign="Left" />
+                                </td>
                             </tr>
                             <tr>
-                                <td align="right" colspan="2" valign="top"></td>
+                                <td align="right" colspan="3" valign="top"></td>
                             </tr>
                         </table>
 

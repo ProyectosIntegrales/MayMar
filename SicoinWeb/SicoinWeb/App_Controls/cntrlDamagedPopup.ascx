@@ -25,14 +25,14 @@
         margin-left: 15px;
     }
 </style>
-<link rel="stylesheet" href="~/styles/boostrap-grid.css" asp-append-version="true" />
+<link rel="stylesheet" href="/styles/boostrap-grid.css" asp-append-version="true" />
 
 
 
 <asp:Button ID="btnShowPopup" runat="server" Text="PopUp" Style="display: none;" />
 
 <cc1:ModalPopupExtender ID="mdlPopup" runat="server" TargetControlID="btnShowPopup"
-    PopupControlID="pnlPopup" BackgroundCssClass="modalBackground" DropShadow="True" >
+    PopupControlID="pnlPopup" BackgroundCssClass="modalBackground" DropShadow="True">
 </cc1:ModalPopupExtender>
 
 <asp:Panel ID="pnlPopup" runat="server" Width="420px" CssClass="modalPopUpBig w-700"
