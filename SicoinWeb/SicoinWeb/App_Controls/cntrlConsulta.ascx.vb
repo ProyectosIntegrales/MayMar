@@ -11,7 +11,4 @@ Partial Class App_Controls_cntrlConsulta
         cntrlRepAnexo29XLS.goReport()
     End Sub
 
-    Protected Sub btnAban_Click(sender As Object, e As EventArgs) Handles btnAban.Click
-        cntrlRepAbandono.goReport()
-    End Sub
 End Class

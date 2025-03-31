@@ -888,6 +888,40 @@ Public Class Migrations
             END
                  ]]>.Value)
 
+        NewMigration(
+                MigrationName:="202503311518 vInventario",
+                MigrationCommand:=<![CDATA[
+                    CREATE OR ALTER VIEW [dbo].[vInventario]
+                    AS
+                    SELECT   i.Operacion, i.Caja, i.Mercancia, i.Cajas, i.Fechain, i.Horain, i.Fechaout, i.Horaout, i.Descargado, i.Remanente, i.Peso, i.Cliente, i.Nombre, i.RSocial, i.Terminado, i.Valorc, i.Fraccion, i.UM, 
+                                             i.Importador, i.ClavePed, i.DiasAlmacen, i.AvisoAb, i.Fechaab, i.NoAplica, i.Gratis, i.Contenedor, i.DirImp, i.Bultos, i.Factura, i.CFDI, i.MontoCFDI, i.MontoCFDIDlls, i.Aprovechamiento, 
+                                             a.Almacenaje
+                    FROM         dbo.Inventario AS i LEFT OUTER JOIN
+                                             dbo.Almacenaje AS a ON i.Operacion = a.Operacion
+                 ]]>.Value)
+
+
+        NewMigration(
+                MigrationName:="202503311001 spAlmacenaje",
+                MigrationCommand:=<![CDATA[
+                 CREATE OR ALTER   PROCEDURE [dbo].[spAlmacenaje] 
+	                            -- Add the parameters for the stored procedure here
+	                            @year varchar(4),
+	                            @month varchar(2)
+                            AS
+                            BEGIN
+	                            -- SET NOCOUNT ON added to prevent extra result sets from
+	                            -- interfering with SELECT statements.
+	                            SET NOCOUNT ON;
+
+                                -- Insert statements for procedure here
+                            SELECT * FROM vInventario
+	                            WHERE Almacenaje = 1 And Fechain >= CAST(@year + '-' + @month + '-1' as date) AND Fechain <= dbo.GetLastDayOfMonth(@year, @month)
+	
+				
+                            END
+                 ]]>.Value)
+
     End Sub
 
 
