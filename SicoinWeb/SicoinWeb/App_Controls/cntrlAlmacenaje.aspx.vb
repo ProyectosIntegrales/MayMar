@@ -131,7 +131,7 @@ Partial Class App_Controls_cntrlAlmacenaje
 
 
         Catch ex As Exception
-
+            Console.Write(ex.ToString())
         End Try
 
     End Sub
