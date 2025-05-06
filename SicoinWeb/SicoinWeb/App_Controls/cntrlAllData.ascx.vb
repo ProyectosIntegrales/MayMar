@@ -1,6 +1,14 @@
 ﻿Imports System.Data
+Imports System.Data.SqlClient
+Imports System.Diagnostics
+
 Partial Class cntrlAllData
     Inherits UserControl
+
+    Protected Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
+        Session("op") = txtOp.Text
+
+    End Sub
 
     Public WriteOnly Property Operacion As String
         Set(value As String)
@@ -11,6 +19,14 @@ Partial Class cntrlAllData
         End Set
     End Property
 
+    Public Property SuperAdmin As Boolean
+        Set(value As Boolean)
+            hflSA.Value = value
+        End Set
+        Get
+            Return IIf(hflSA.Value <> "", hflSA.Value, False)
+        End Get
+    End Property
 
     Public Sub clearAll()
 
@@ -27,7 +43,8 @@ Partial Class cntrlAllData
     End Sub
 
     Protected Sub getData()
-        Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
+
+        Dim dt As DataTable = SQLDataTable("SELECT i.*, a.Almacenaje FROM Inventario i LEFT OUTER JOIN Almacenaje a ON a.Operacion = i.Operacion WHERE i.Operacion = '" & hflOp.Value & "'")
         If Not dt Is Nothing And dt.Rows.Count > 0 Then
             Dim dr As DataRow = dt.Rows(0)
 
@@ -65,10 +82,12 @@ Partial Class cntrlAllData
             hflStatus.Value = isNull(dr("Status"), -1)
             Dim Terminado As Boolean = dr("Terminado")
             btnConfirmar.Visible = (hflStatus.Value = -1)
-            btnMod.Visible = (hflStatus.Value = -1)
+            btnMod.Visible = (hflStatus.Value = -1) Or SuperAdmin
+            cntrlDamaged.ButtonVisible = Not Terminado
+            Dim Almacenaje As Boolean = isNull(dr("Almacenaje"), False)
+            chkAlmacenaje.Checked = Almacenaje
 
         End If
-        '  clearAll()
     End Sub
 
 
@@ -121,7 +140,9 @@ Partial Class cntrlAllData
                            "@CFDI", txtCFDI.Text,
                            "@MontoCFDI", txtMontoMXP.Text,
                            "@MontoCFDIDlls", txtMontoUSD.Text,
-                           "@Aprovechamiento", txtAprov.Text)
+                           "@Aprovechamiento", txtAprov.Text,
+                           "@Almacenaje", chkAlmacenaje.Checked
+                           )
 
         If result <> "" Then
             cntrlError.errorMessage = result
@@ -181,8 +202,9 @@ Partial Class cntrlAllData
                 End If
 
             End If
-            ddlUM.Enabled = Enabled
         Next
+        ddlUM.Enabled = Enabled
+        chkAlmacenaje.Enabled = Enabled
 
     End Sub
 
@@ -201,6 +223,11 @@ Partial Class cntrlAllData
             RaiseEvent Aceptar()
         End If
     End Sub
+
+
+
+
+
 End Class
 
 

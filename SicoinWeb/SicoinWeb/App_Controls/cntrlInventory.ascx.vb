@@ -1,5 +1,6 @@
 ﻿Imports System.Data
 Imports System.Web
+
 Partial Class App_Controls_cntrlInventory
     Inherits UI.UserControl
 
@@ -14,6 +15,7 @@ Partial Class App_Controls_cntrlInventory
         Set(value As Boolean)
             hflSA.Value = value
             btnSA.Visible = value
+            cntrlAllData.SuperAdmin = value
         End Set
         Get
             Return IIf(hflSA.Value <> "", hflSA.Value, False)
@@ -52,7 +54,8 @@ Partial Class App_Controls_cntrlInventory
                 'If (rblOp.SelectedValue = "SA") Then
                 cntrlAllData.Visible = True
                 cntrlAllData.Operacion = txtOp.Text
-                btnGo.Focus()
+                btnGo.Visible = False
+                txtOp.Visible = False
                 'End If
             Else
                 If rblOp.SelectedValue = "SA" Then
@@ -61,6 +64,7 @@ Partial Class App_Controls_cntrlInventory
                     pnlValid.Visible = True
                     btnNew.Focus()
                 End If
+                txtOp.Enabled = False
                 btnGo.Visible = False
             End If
         Else
@@ -74,7 +78,7 @@ Partial Class App_Controls_cntrlInventory
     End Sub
 
     Private Function Exists(OperationNo As String) As Boolean
-        Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & OperationNo & "'")
+        Dim dt As DataTable = SQLDataTable("SELECT i.*, a.Almacenaje FROM Inventario i LEFT OUTER JOIN Almacenaje a ON a.Operacion = i.Operacion WHERE i.Operacion = '" & OperationNo & "'")
         If Not dt Is Nothing And dt.Rows.Count = 1 Then
             Terminado = dt.Rows(0)("Terminado")
             Status = isNull(dt.Rows(0)("Status"), 0)
@@ -96,16 +100,14 @@ Partial Class App_Controls_cntrlInventory
     Public Sub Initialize()
         rblOp.Items.FindByValue("SA").Enabled = SuperAdmin
         hflChanging.Value = False
-
-            InitRbl()
-
-            btnGo.Visible = False
-            pnlTryagain.Visible = False
+        InitRbl()
+        btnGo.Visible = False
+        pnlTryagain.Visible = False
         pnlNotExists.Visible = False
         dvMsg.Visible = False
         txtOp.Text = ""
-            txtOp.Focus()
-            EnableButtons(True)
+        txtOp.Focus()
+        EnableButtons(True)
 
     End Sub
 
@@ -270,7 +272,6 @@ Partial Class App_Controls_cntrlInventory
                         ClosePanels()
                         cntrlInputData.Operacion = txtOp.Text
                         cntrlInputData.Visible = True
-                        btnGo.Visible = False
                         EnableButtons(False)
                     Else
                         txtOp.Visible = True
@@ -280,13 +281,10 @@ Partial Class App_Controls_cntrlInventory
                         ClosePanels()
                         cntrlAllData.Visible = True
                         cntrlAllData.EnableFields(False)
-                        btnGo.Visible = False
                         EnableButtons(False)
                     End If
-
                 End If
-
-                    Case "OUT"
+            Case "OUT"
                 txtOp.Visible = True
                 txtOp.Text = ddlOut.SelectedValue.Trim
                 txtOp.Enabled = False
@@ -322,6 +320,7 @@ Partial Class App_Controls_cntrlInventory
                 End If
 
         End Select
+
 
         'If Not pnlTryagain.Visible Then
         '    btnGo.Visible = False

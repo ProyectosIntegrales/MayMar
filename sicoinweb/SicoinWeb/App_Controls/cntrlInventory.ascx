@@ -31,8 +31,9 @@
 </style>
 
 <div class="menu1" style="white-space: nowrap;">
-    <a id="lnbAb" href="#" class="btn" onclick="javascript:$('#ifraba').toggle(500);">Abandonos</a>
-    <a href="#" onclick="javascript:$('#reps').toggle(500);" class="btn" style="margin-right: 10px">Reportes</a>
+    <a id="lnbAb" href="#" class="btn" onclick="javascript:$('#ifraba').fadeToggle(100);">Abandonos</a>
+    <a id="lnbDm" href="#" class="btn" onclick="javascript:$('#ifrdamage').fadeToggle(200);">Mcia Dañada</a>
+    <a href="#" onclick="javascript:$('#reps').fadeToggle(200);" class="btn" style="margin-right: 10px">Reportes</a>
 </div>
 
 <div id="reps" style="display: none; position: absolute; top: 40px; right: 20px; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 199px; border-width: 2px; box-shadow: 5px 5px 10px; padding: 10px; z-index: 10000">
@@ -41,16 +42,19 @@
 </div>
 
 <div id="ifraba" style="display: none; position: fixed; top: 10vh; right: 0; left: 0; margin-right: auto; margin-left: auto; height: 80vh; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 90vw; border-width: 2px; box-shadow: 0px 0px 10px; padding: 10px; z-index: 20000">
-    <div class="close" onclick="javascript:$('#ifraba').toggle(500);"><span>X</span></div>
+    <div class="close" onclick="javascript:$('#ifraba').fadeToggle(200);"><span>X</span></div>
     <iframe src="app_controls/cntrlAbandono.aspx" width="100%" height="100%" frameborder="0"></iframe>
+</div>
+
+<div id="ifrdamage" style="display: none; position: fixed; top: 10vh; right: 0; left: 0; margin-right: auto; margin-left: auto; height: 80vh; background-color: #fff; border-color: #0a1963; border-radius: 3px; width: 90vw; border-width: 2px; box-shadow: 0px 0px 10px; padding: 10px; z-index: 20000">
+    <div class="close" onclick="javascript:$('#ifrdamage').fadeToggle(200);"><span>X</span></div>
+    <iframe src="app_controls/cntrlDamagedReport.aspx" width="100%" height="100%" frameborder="0"></iframe>
 </div>
 
 <asp:Panel ID="pnlMain" runat="server" CssClass="main" DefaultButton="btnGo">
     <div class="main">
         <asp:UpdatePanel ID="pnlUpdate" runat="server">
             <ContentTemplate>
-
-
                 <table class="auto-style1">
                     <tr>
                         <td colspan="3" style="padding-bottom: 20px; padding-left: 10px;">
@@ -71,10 +75,10 @@
 
                     </tr>
                     <tr>
-                        <td align="right" valign="middle" style="width: 190px;">
-                            <asp:Label ID="lblOper" runat="server">Operación/Pedimento</asp:Label></td>
+                        <td align="right" valign="middle" style="width: 177px; position: relative; top: -2px">
+                            <asp:Label ID="lblOper" runat="server">Operación</asp:Label></td>
                         <td valign="middle">
-                            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="130px" AutoPostBack="True"></asp:TextBox>
+                            <asp:TextBox ID="txtOp" runat="server" CssClass="textboxg uppercase" Width="130px" AutoPostBack="True" Rows="1"></asp:TextBox>
                             <asp:DropDownList ID="ddlOut" runat="server" CssClass="textboxg uppercase" DataSourceID="dsOut" DataTextField="Operacion" DataValueField="Operacion" Visible="false" Width="150px" Style="width: 150px;"></asp:DropDownList>
                             <asp:DropDownList ID="ddlCFDI" runat="server" CssClass="textboxg uppercase" DataSourceID="dsCFDI" DataTextField="Operacion" DataValueField="Operacion" Visible="False" Width="150px" Style="width: 150px;">
                             </asp:DropDownList>
@@ -90,7 +94,7 @@
                                 &nbsp;<asp:Button ID="btnNew" runat="server" Text="Aceptar" CssClass="btn" OnPreRender="btnNew_PreRender" />
                                 &nbsp;<asp:Button ID="btnCancelNew" runat="server" Text="Cancelar" CssClass="btna" />
                             </asp:Panel>
-                                                        <asp:Panel ID="pnlNotExists" runat="server" Visible="false">
+                            <asp:Panel ID="pnlNotExists" runat="server" Visible="false">
                                 <asp:Label ID="Label1" runat="server" Text="Este número de operación no existe!"></asp:Label>
                             </asp:Panel>
                             <asp:Panel ID="pnlTryagain" runat="server" Visible="false" Style="color: #a90000">
@@ -101,22 +105,20 @@
                     </tr>
 
                 </table>
+                <asp:PlaceHolder ID="plhControls" runat="server">
+                    <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false" />
+                    <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
+                    <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
+                    <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />
+                    <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" Visible="false" />
 
+                </asp:PlaceHolder>
             </ContentTemplate>
             <Triggers>
                 <asp:PostBackTrigger ControlID="btnNew" />
                 <asp:PostBackTrigger ControlID="btnGo" />
             </Triggers>
         </asp:UpdatePanel>
-        <br />
-        <asp:PlaceHolder ID="plhControls" runat="server">
-            <uc1:cntrlOutputData runat="server" ID="cntrlOutputData" Visible="false" />
-            <uc1:cntrlInputData runat="server" ID="cntrlInputData" Visible="false" />
-            <uc1:cntrlCFDIData runat="server" ID="cntrlCFDIData" Visible="false" />
-            <uc1:cntrlAllData runat="server" ID="cntrlAllData" Visible="false" />
-            <uc2:cntrlSalidas ID="cntrlSalidas1" runat="server" Visible="false" />
-
-        </asp:PlaceHolder>
         <uc1:cntrlAbandono runat="server" ID="cntrlAbandono" Visible="false" />
         <uc1:cntrlReports runat="server" ID="cntrlReports" />
         <uc1:cntrlRepAbandono runat="server" ID="cntrlRepAbandono" />

@@ -1,8 +1,7 @@
 ﻿Imports System.Data
 Imports CrystalDecisions.CrystalReports.Engine
 Imports CrystalDecisions.Shared
-
-Partial Class App_Controls_cntrlAbandono
+Partial Class App_Controls_cntrlDamagedReport
     Inherits System.Web.UI.Page
 
     Protected Sub DropDownList1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DropDownList1.SelectedIndexChanged
@@ -17,7 +16,7 @@ Partial Class App_Controls_cntrlAbandono
 
         Dim cn As SqlClient.SqlConnection = New SqlClient.SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings("MayMarCS").ToString)
 
-        Dim cm As New SqlClient.SqlCommand("spGetAbandonosLastMonth", cn)
+        Dim cm As New SqlClient.SqlCommand("spDamagedReport", cn)
         cm.CommandType = CommandType.StoredProcedure
         cm.Parameters.AddWithValue("@year", y)
         cm.Parameters.AddWithValue("@month", m)
@@ -33,7 +32,7 @@ Partial Class App_Controls_cntrlAbandono
 
     End Sub
 
-    Private Sub App_Controls_cntrlAbandono_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub App_Controls_cntrlDamaged_Load(sender As Object, e As EventArgs) Handles Me.Load
         If Not IsPostBack Then
             DropDownList1.DataBind()
             GVDatabind()
@@ -41,6 +40,7 @@ Partial Class App_Controls_cntrlAbandono
 
 
     End Sub
+
     Protected Sub lnbExp_Click(sender As Object, e As EventArgs) Handles lnbExp.Click
 
         Dim dt As String = DropDownList1.SelectedValue
@@ -71,9 +71,9 @@ Partial Class App_Controls_cntrlAbandono
             'Dim dv As DataView = DirectCast(dsReport.Select(DataSourceSelectArguments.Empty), DataView)
             'Dim dr As DataRow = dv.Item(0).Row
 
-            Dim reportFile As String = "~/reports/CausaAbandono.rpt"
-            Dim reportName As String = "CausaAbandono.rpt"
-            Dim reportTitle As String = "Causa abandono"
+            Dim reportFile As String = "~/reports/Damaged.rpt"
+            Dim reportName As String = "Damaged.rpt"
+            Dim reportTitle As String = "Mercancía Dañada"
             Dim serverName As String = ".\SQLEXPRESS"
             Dim databaseName As String = "Maymar"
 

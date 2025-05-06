@@ -1,4 +1,5 @@
 ﻿/* {border: solid 1px red}*/
+@import url('styles/bootstrap-grid.css');
 
 body {
     padding: 0px;
@@ -125,8 +126,8 @@ input:focus {
     -webkit-border-radius: 5px 5px 0 0;
     border: 1px solid #DDD;
     background-color: #dcdcdc;
-    position:relative;
-    top: -9px;
+    position: relative;
+    /*    top: -9px;*/
 }
 
 /*.btnb:hover  {
@@ -149,21 +150,20 @@ input:focus {
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     background-color: #d1dcef;
-    position:relative;
-    top: -9px;
+    position: relative;
 }
 
     .btnc:hover {
         color: #719ECE;
-    background-color: #134680;
+        background-color: #134680;
         border-color: #719ECE;
         box-shadow: 0 0 10px #719ECE;
     }
 
-    .btnba {
+.btnba {
     font-size: .9em;
     color: #666;
-    padding:5px;
+    padding: 5px;
     width: 110px;
     border-radius: 5px 5px 0 0;
     text-align: center;
@@ -171,9 +171,9 @@ input:focus {
     -webkit-border-radius: 5px 5px 0 0;
     border: 1px solid #DDD;
     background-image: url("images/icons/16X16/applications.png");
-    background-position:center;
+    background-position: center;
     background-repeat: no-repeat;
-        background-color: #dcdcdc;
+    background-color: #dcdcdc;
 }
 
 /*.btnb:hover  {
@@ -184,7 +184,7 @@ input:focus {
 
 .btnca {
     font-size: .9em;
-    padding:5px;
+    padding: 5px;
     width: 120px;
     border-radius: 5px 5px 0 0;
     text-align: center;
@@ -194,14 +194,14 @@ input:focus {
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
     background-image: url("images/icons/16X16/applications.png");
-    background-position:center;
+    background-position: center;
     background-repeat: no-repeat;
     background-color: #d1dcef;
 }
 
     .btnca:hover {
         color: #719ECE;
-    background-color: #134680;
+        background-color: #134680;
         border-color: #719ECE;
         box-shadow: 0 0 10px #719ECE;
     }
@@ -424,7 +424,7 @@ hr {
 }
 
 .mainDialog {
-    padding: 5px;
+    /*    padding: 5px;*/
     /* padding-right: 1px; */
     padding-left: 1px;
     padding-top: 15px;
@@ -514,7 +514,7 @@ hr {
     -webkit-box-shadow: #000 2px 2px 5px;
     -moz-box-shadow: #000 2px 2px 5px;
     box-shadow: #000 1px 2px 5px;
-    position: fixed;
+    position: fixed !important;
     left: 50% !important;
     top: 40% !important;
     transform: translate(-50%,-50%);
@@ -681,19 +681,16 @@ hr {
 
 
 .dropdown {
-
     font-family: Verdana, Geneva, sans-serif;
     font-size: 14px;
-
     border: none;
     padding: 3px;
     overflow: hidden;
-    border-radius:3px;
+    border-radius: 3px;
 }
 
     .dropdown option {
         background-color: #FFF;
-       
     }
 
 
@@ -997,6 +994,7 @@ hr {
     text-align: right;
     padding-top: 10px;
 }
+
     .closeButton a {
         color: #11418d;
         text-decoration: dotted;
@@ -1067,7 +1065,7 @@ hr {
     padding: 0;
     position: absolute;
     text-align: right;
-    z-index: 20000;
+    z-index: 1000;
     width: 300px;
     right: 10px;
 }
@@ -1139,8 +1137,7 @@ hr {
     white-space: nowrap;
 }
 
-.close
-{
+.close {
     color: #CCC;
     background-color: #777;
     height: 10px;
@@ -1156,26 +1153,34 @@ hr {
     border: 1px solid #AAA;
     transition: .3s;
 }
-.close:hover {
-    background-color: #F53;
-    color: #FFF;
-    border: 1px solid #555;
-}
 
-.close span
-{
-    position: relative;
-    top: -3px;
-    font-size: 1.1em;
-    left: 0px;
-}
+    .close:hover {
+        background-color: #F53;
+        color: #FFF;
+        border: 1px solid #555;
+    }
+
+    .close span {
+        position: relative;
+        top: -3px;
+        font-size: 1.1em;
+        left: 0px;
+    }
 
 .panel {
-    position: relative; 
+    position: relative;
     top: -20px;
 }
 
 .bold {
     font-weight: bold;
     color: #11418d;
+}
+
+
+.w-700 {
+    width: 700px !important
+}
+
+.nowrap {
 }

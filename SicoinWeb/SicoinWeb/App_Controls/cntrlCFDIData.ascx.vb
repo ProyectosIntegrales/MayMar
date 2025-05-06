@@ -31,8 +31,8 @@ Partial Class cntrlCFDIData
     End Sub
 
     Protected Sub getData()
-        Dim dt As DataTable = SQLDataTable("SELECT * FROM Inventario WHERE Operacion = '" & hflOp.Value & "'")
-        If Not dt Is Nothing Then
+        Dim dt As DataTable = SQLDataTable("SELECT i.*, a.Almacenaje FROM Inventario i LEFT OUTER JOIN Almacenaje a ON a.Operacion = i.Operacion WHERE i.Operacion = '" & hflOp.Value & "'")
+        If dt IsNot Nothing Then
             Dim dr As DataRow = dt.Rows(0)
 
             txtBox.Text = dr("Caja")
@@ -63,9 +63,10 @@ Partial Class cntrlCFDIData
             txtAprov.Text = isNull(dr("Aprovechamiento"), "")
             pnlCompartido.Visible = False
             Dim Terminado As Boolean = dr("Terminado")
-
+            Dim Almacenaje As Boolean = isNull(dr("Almacenaje"), False)
 
             chkCompartido.Checked = False
+            chkAlmacenaje.Checked = Almacenaje
             txtFactura.Focus()
             txtCFDI.ReadOnly = False
             txtMontoMXP.Enabled = True
@@ -101,6 +102,7 @@ Partial Class cntrlCFDIData
         If chkCompartido.Checked Then
             compartidoCon = ddFacturas.SelectedItem.Text
         End If
+
         Dim result As String = ""
         result =
             doSQLProcedure("spInventario_CFDI", Data.CommandType.StoredProcedure, ,
@@ -111,7 +113,8 @@ Partial Class cntrlCFDIData
                            "@MontoCFDIDlls", txtMontoUSD.Text,
                            "@Aprovechamiento", txtAprov.Text,
                            "@Compartido", chkCompartido.Checked,
-                           "@CompartidoCon", compartidoCon
+                           "@CompartidoCon", compartidoCon,
+                           "@Almacenaje", chkAlmacenaje.Checked
             )
 
         If result <> "" Then

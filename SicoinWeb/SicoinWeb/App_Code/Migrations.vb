@@ -497,6 +497,439 @@ Public Class Migrations
 
                 END
             ]]>.Value)
+
+        NewMigration(
+          MigrationName:="20250326915 Creacion de Tabla Damages",
+          MigrationCommand:=<![CDATA[
+              CREATE TABLE [dbo].[Damages](
+	        [ID] [int] IDENTITY(1,1) NOT NULL,
+	        [Operacion] [nvarchar](50) NOT NULL,
+	        [Cantidad] [float] NULL,
+	        [Comentario] [nvarchar](max) NULL,
+	        [Fecha] [datetime2](7) NULL,
+	        [CreatedBy] [nvarchar](max) NULL,
+	        [CreatedOn] [datetime2](7) NULL,
+         CONSTRAINT [PK_Damages] PRIMARY KEY CLUSTERED 
+        (
+	        [ID] ASC
+        )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+        ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+     
+        ]]>.Value)
+
+        NewMigration(
+        MigrationName:="20250326915 Creacion de Tabla Damages 1",
+        MigrationCommand:=<![CDATA[
+        ALTER TABLE [dbo].[Damages]  WITH CHECK ADD  CONSTRAINT [FK_Damages_Damages] FOREIGN KEY([ID])
+        REFERENCES [dbo].[Damages] ([ID])
+     
+                ]]>.Value)
+
+        NewMigration(
+        MigrationName:="20250326915 Creacion de Tabla Damages 2",
+        MigrationCommand:=<![CDATA[
+        ALTER TABLE [dbo].[Damages] CHECK CONSTRAINT [FK_Damages_Damages]
+     
+                ]]>.Value)
+
+        NewMigration(
+        MigrationName:="20250326915 Creacion de SP Damages",
+        MigrationCommand:=<![CDATA[
+        CREATE   PROCEDURE [dbo].[spDamaged]
+	        -- Add the parameters for the stored procedure here
+	        @Action char(3),
+	        @ID int = 0,
+	        @Operacion nvarchar(50) = '',
+	        @Cantidad float = 0,
+	        @Fecha date = '',
+	        @Comentario nvarchar(max) = '',
+	        @CreatedBy nvarchar(max) = ''
+	
+        AS
+        BEGIN
+	        -- SET NOCOUNT ON added to prevent extra result sets from
+	        -- interfering with SELECT statements.
+	        SET NOCOUNT ON;
+
+            -- Insert statements for procedure here
+	        IF @Action = 'ADD'
+	        BEGIN
+		        INSERT INTO Damages(Operacion, Cantidad, Comentario, Fecha, CreatedBy, CreatedOn)
+			        VALUES(@Operacion, @Cantidad, @Comentario, @Fecha, @CreatedBy, GETDATE())
+	        END
+
+	        IF @Action = 'UPD'
+	        BEGIN
+		        UPDATE Damages
+			        SET Cantidad = @Cantidad,
+				        Comentario = @Comentario,
+				        Fecha = @Fecha
+			        WHERE ID = @ID
+	        END
+
+	        IF @Action = 'DEL'
+	        BEGIN
+		        DELETE Damages WHERE ID = @ID
+	        END
+        END
+                ]]>.Value)
+
+
+        NewMigration(
+              MigrationName:="20250328915 Correcion Sp Importador",
+              MigrationCommand:=<![CDATA[
+               ALTER PROCEDURE [dbo].[spImportador]
+	        -- Add the parameters for the stored procedure here
+	        @Action char(3),
+	        @Clave varchar(6),
+	        @Nombre varchar(80) = '',
+	        @Direccion varchar(80) = ''
+	
+        AS
+        BEGIN
+	        -- SET NOCOUNT ON added to prevent extra result sets from
+	        -- interfering with SELECT statements.
+	        SET NOCOUNT ON;
+
+            -- Insert statements for procedure here
+	        IF @Action = 'ADD'
+	        BEGIN
+		        INSERT INTO Importador (Clave, Nombre, Direccion)
+			        VALUES(@Clave, @Nombre, @Direccion)
+	        END
+
+	        IF @Action = 'UPD'
+	        BEGIN
+		        UPDATE Importador
+			        SET Nombre = @Nombre,
+				        Direccion = @Direccion
+			        WHERE Clave = @Clave
+	        END
+
+	        IF @Action = 'DEL'
+	        BEGIN
+		        DELETE Importador WHERE Clave = @Clave
+	        END
+        END
+                ]]>.Value)
+
+
+        NewMigration(
+        MigrationName:="202503311001 VDamageReport",
+        MigrationCommand:=<![CDATA[
+        CREATE OR ALTER VIEW [dbo].[vDamagedReport]
+            AS
+            SELECT   SUM(d.Cantidad) AS TotalCantidad, STRING_AGG(d.Comentario, ' | ') AS Comentarios, d.Fecha, i.Operacion, i.Caja, i.Mercancia, i.Cajas, i.Fechain, i.Horain, i.Fechaout, i.Horaout, 
+                                     i.Descargado, i.Remanente, i.Peso, i.Cliente, i.Nombre, i.RSocial, i.Terminado, i.Valorc, i.Fraccion, i.UM, i.Importador, i.ClavePed, i.DiasAlmacen, i.AvisoAb, i.Fechaab, i.FechaDeclAb, 
+                                     i.FechaSalidaAb, i.NotaAb, i.NoAplica, i.Gratis, i.Contenedor, i.DirImp, i.Bultos, i.Factura, i.CFDI, i.MontoCFDI, i.MontoCFDIDlls, i.Aprovechamiento, i.Status, i.Compartido, 
+                                     i.CompartidoCon
+            FROM         dbo.Inventario AS i INNER JOIN
+                                     dbo.Damages AS d ON i.Operacion = d.Operacion
+            WHERE     (i.Status >= 0)
+            GROUP BY i.Status, d.Fecha, i.Status, i.Operacion, i.Caja, i.Mercancia, i.Cajas, i.Fechain, i.Horain, i.Fechaout, i.Horaout, i.Descargado, i.Remanente, i.Peso, i.Cliente, i.Nombre, i.RSocial, i.Terminado, 
+                                     i.Valorc, i.Fraccion, i.UM, i.Importador, i.ClavePed, i.DiasAlmacen, i.AvisoAb, i.Fechaab, i.FechaDeclAb, i.FechaSalidaAb, i.NotaAb, i.NoAplica, i.Gratis, i.Contenedor, i.DirImp, i.Bultos, 
+                                     i.Factura, i.CFDI, i.MontoCFDI, i.MontoCFDIDlls, i.Aprovechamiento, i.CompartidoCon, i.Compartido
+             ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311003 vFechasAb",
+                MigrationCommand:=<![CDATA[
+                CREATE OR ALTER VIEW [dbo].[vFechasAb]
+                    AS
+                    WITH MonthlyData AS (
+                        SELECT DISTINCT
+                            CONVERT(VARCHAR(7), Fechain, 120) AS M, -- YYYY-MM format
+                            SUBSTRING('ENE FEB MAR ABR MAY JUN JUL AGO SEP OCT NOV DIC ', 
+                                      MONTH(Fechain) * 4 - 3, 3) + ' - ' + CAST(YEAR(Fechain) AS VARCHAR) AS DisplayDate
+                        FROM dbo.Inventario
+                        WHERE Fechain < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+                    ),
+                    MaxMonth AS (
+                        SELECT DATEADD(MONTH, 1, MAX(DATEADD(DAY, 1 - DAY(Fechain), CAST(Fechain AS DATE)))) AS NextMonth
+                        FROM dbo.Inventario
+                        WHERE Fechain < DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
+                    ),
+                    NextMonthRow AS (
+                        SELECT 
+                            CONVERT(VARCHAR(7), NextMonth, 120) AS M,
+                            SUBSTRING('ENE FEB MAR ABR MAY JUN JUL AGO SEP OCT NOV DIC ', MONTH(NextMonth) * 4 - 3, 3)
+                            + ' - ' + CAST(YEAR(NextMonth) AS VARCHAR) AS DisplayDate
+                        FROM MaxMonth
+                    )
+
+                    SELECT * FROM MonthlyData
+                    UNION
+                    SELECT * FROM NextMonthRow
+                 ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311005 spDamagedReport",
+                MigrationCommand:=<![CDATA[
+                CREATE OR ALTER PROCEDURE [dbo].[spDamagedReport] 
+	                -- Add the parameters for the stored procedure here
+	                @year varchar(4),
+	                @month varchar(2)
+                AS
+                BEGIN
+	                -- SET NOCOUNT ON added to prevent extra result sets from
+	                -- interfering with SELECT statements.
+	                SET NOCOUNT ON;
+
+                    -- Insert statements for procedure here
+                SELECT * FROM vDamagedReport
+	                WHERE Fecha >= CAST(@year + '-' + @month + '-1' as date) AND Fecha <= dbo.GetLastDayOfMonth(@year, @month)
+	
+                END
+                 ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311042 Almacenaje",
+                MigrationCommand:=<![CDATA[
+                BEGIN TRANSACTION
+                CREATE TABLE dbo.Almacenaje
+	                (
+	                Operacion char(20) NOT NULL,
+	                Almacenaje bit NULL,
+	                CreatedBy varchar(50) NULL,
+	                CreatedOn datetime2(7) NULL,
+	                UpdatedBy varchar(50) NULL,
+	                UpdatedOn datetime2(7) NULL
+	                )  ON [PRIMARY]
+                ALTER TABLE dbo.Almacenaje ADD CONSTRAINT
+	                PK_Almacenaje PRIMARY KEY CLUSTERED 
+	                (
+	                Operacion
+	                ) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+                CREATE NONCLUSTERED INDEX IX_Almacenaje ON dbo.Almacenaje
+	                (
+	                Almacenaje
+	                ) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+                ALTER TABLE dbo.Almacenaje ADD CONSTRAINT
+	                FK_Almacenaje_Inventario FOREIGN KEY
+	                (
+	                Operacion
+	                ) REFERENCES dbo.Inventario
+	                (
+	                Operacion
+	                ) ON UPDATE  NO ACTION 
+	                 ON DELETE  NO ACTION 
+	
+                ALTER TABLE dbo.Almacenaje SET (LOCK_ESCALATION = TABLE)
+                COMMIT
+                 ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311042 spInventario_CFDI",
+                MigrationCommand:=<![CDATA[
+              ALTER PROCEDURE [dbo].[spInventario_CFDI] 
+                   @Operacion Char(20), 
+                   @Factura nchar(10), 
+                   @CFDI nchar(36), 
+                   @MontoCFDI float, 
+                   @MontoCFDIDlls float, 
+                   @Aprovechamiento float, 
+                   @Compartido bit, 
+                   @CompartidoCon nchar(20),
+                   @Almacenaje bit
+                AS 
+                BEGIN 
+                   UPDATE Inventario  
+                       SET	Factura = @Factura, 
+                           CFDI = @CFDI, 
+                           MontoCFDI = @MontoCFDI, 
+                           MontoCFDIDlls = @MontoCFDIDlls, 
+                           Aprovechamiento = @Aprovechamiento, 
+                           Compartido = @Compartido, 
+                           CompartidoCon = @CompartidoCon, 
+                           [Status] = 2 
+                       WHERE Operacion = @Operacion 
+
+	                IF EXISTS (SELECT 1 FROM Almacenaje WHERE Operacion = @Operacion)
+	                BEGIN
+		                UPDATE Almacenaje
+		                SET Almacenaje = @Almacenaje
+		                WHERE Operacion = @Operacion
+	                END
+	                ELSE
+	                BEGIN
+		                INSERT INTO Almacenaje (Operacion, Almacenaje)
+		                VALUES (@Operacion, @Almacenaje)
+	                END
+
+                END
+                 ]]>.Value)
+
+
+        NewMigration(
+                MigrationName:="202503311250 spInventario_All",
+                MigrationCommand:=<![CDATA[
+            ALTER PROCEDURE [dbo].[spInventario_All]
+	            @Operacion char(20),
+	            @NewOper char(20),
+	            @Caja char(10),
+	            @Mercancia char(70),
+	            @Fechain datetime,
+	            @Peso char(10),
+	            @Cajas float,
+	            @Cliente char(5),
+	            @Nombre char(100),
+	            @Rsocial char(120),
+	            @Valorc float,
+	            @Fraccion varchar(50),
+	            @UM numeric(18,0),
+	            @Importador char(100),
+	            @ClavePed char(10),
+	            @FechaAb datetime,
+	            @Contenedor char(90),
+	            @DirImp char(90),
+	            @Bultos char(90),
+	            @Fechaout datetime,
+	            @Descargado float,
+	            @Remanente float,
+	            @Factura nchar(10),
+	            @CFDI nchar(36),
+	            @MontoCFDI float,
+	            @MontoCFDIDlls float,
+	            @Aprovechamiento float,
+				@Almacenaje bit
+
+            AS
+            BEGIN
+	            -- SET NOCOUNT ON added to prevent extra result sets from
+	            -- interfering with SELECT statements.
+	            SET NOCOUNT ON;
+	            Declare @hh int = datepart(Hour,@fechaout)
+	            Declare @hi int = datepart(Hour,@fechain)
+
+	            Declare @ap char(1), @api char(1)
+
+	            IF @hh > 12 
+		            BEGIN
+			            SET @hh = @hh -12
+			            SET @ap = 'p'
+		            END
+		            ELSE
+			            SET @ap = 'a'
+		
+	            IF @hh = 0
+		            BEGIN
+		            SET @hh = 12
+		            SET @ap = 'a'
+		            END
+
+	            IF @hi > 12 
+		            BEGIN
+			            SET @hi = @hi -12
+			            SET @api = 'p'
+		            END
+		            ELSE
+			            SET @api = 'a'
+		
+	            IF @hi = 0
+		            BEGIN
+		            SET @hi = 12
+		            SET @ap = 'a'
+		            END
+		 
+                -- Insert statements for procedure here 
+	            Declare @Horaout char(10) = replace(str(@hh,2),' ','0') + ':' +  replace(str(datepart(minute,@fechaout),2),' ','0') + ':' + replace(str(datepart(second,@fechaout),2),' ','0') + ' ' + @ap
+	            Declare @Horain char(10) = replace(str(@hi,2),' ','0') + ':' +  replace(str(datepart(minute,@fechain),2),' ','0') + ':' + replace(str(datepart(second,@fechain),2),' ','0') + ' ' + @api
+
+	            IF @Cliente = '' OR @Rsocial = ''
+	            SELECT @Cliente = Clave, @Rsocial = RSocial FROM Clientes Where Nombre = @Nombre
+
+	            IF @DirImp = ''
+	            SELECT @DirImp = Direccion FROM Importador WHERE Nombre = @Importador
+
+	            UPDATE Inventario 
+		            SET 
+			            Operacion = @NewOper,
+			            Caja = @Caja,
+			            Mercancia = @Mercancia,
+			            Fechain = @Fechain,
+			            @Horain = @Horain,
+			            Peso = @Peso,
+			            Cliente = @Cliente,
+			            Nombre = @Nombre,
+			            Cajas = @Cajas,
+			            RSocial = @Rsocial,
+			            Valorc = @Valorc,
+			            Fraccion = @Fraccion,
+			            UM = @UM,
+			            Importador = @Importador,
+			            ClavePed = @ClavePed,
+			            Fechaab = @FechaAb,
+			            Contenedor = @Contenedor,
+			            DirImp = @DirImp,
+			            Bultos = @Bultos,
+			            Fechaout = @Fechaout,
+			            Horaout = @Horaout,
+			            Descargado = @Descargado,
+			            Remanente = @Remanente,
+			            Factura = @Factura,
+			            CFDI = @CFDI,
+			            MontoCFDI = @MontoCFDI,
+			            MontoCFDIDlls = @MontoCFDIDlls,
+			            Aprovechamiento = @Aprovechamiento
+		            WHERE Operacion = @Operacion
+
+					IF EXISTS (SELECT 1 FROM Almacenaje WHERE Operacion = @Operacion)
+	                BEGIN
+		                UPDATE Almacenaje
+		                SET Almacenaje = @Almacenaje
+		                WHERE Operacion = @Operacion
+	                END
+	                ELSE
+	                BEGIN
+		                INSERT INTO Almacenaje (Operacion, Almacenaje)
+		                VALUES (@Operacion, @Almacenaje)
+	                END
+            END
+                 ]]>.Value)
+
+        NewMigration(
+                MigrationName:="202503311518 vInventario",
+                MigrationCommand:=<![CDATA[
+                    CREATE OR ALTER VIEW [dbo].[vInventario]
+                    AS
+                    SELECT   i.Operacion, i.Caja, i.Mercancia, i.Cajas, i.Fechain, i.Horain, i.Fechaout, i.Horaout, i.Descargado, i.Remanente, i.Peso, i.Cliente, i.Nombre, i.RSocial, i.Terminado, i.Valorc, i.Fraccion, i.UM, 
+                                             i.Importador, i.ClavePed, i.DiasAlmacen, i.AvisoAb, i.Fechaab, i.NoAplica, i.Gratis, i.Contenedor, i.DirImp, i.Bultos, i.Factura, i.CFDI, i.MontoCFDI, i.MontoCFDIDlls, i.Aprovechamiento, 
+                                             a.Almacenaje
+                    FROM         dbo.Inventario AS i LEFT OUTER JOIN
+                                             dbo.Almacenaje AS a ON i.Operacion = a.Operacion
+                 ]]>.Value)
+
+
+        NewMigration(
+                MigrationName:="202503311001 spAlmacenaje",
+                MigrationCommand:=<![CDATA[
+                 CREATE OR ALTER   PROCEDURE [dbo].[spAlmacenaje] 
+	                            -- Add the parameters for the stored procedure here
+	                            @year varchar(4),
+	                            @month varchar(2)
+                            AS
+                            BEGIN
+	                            -- SET NOCOUNT ON added to prevent extra result sets from
+	                            -- interfering with SELECT statements.
+	                            SET NOCOUNT ON;
+
+                                -- Insert statements for procedure here
+                            SELECT * FROM vInventario
+	                            WHERE Almacenaje = 1 And Fechain >= CAST(@year + '-' + @month + '-1' as date) AND Fechain <= dbo.GetLastDayOfMonth(@year, @month)
+	
+				
+                            END
+                 ]]>.Value)
+
     End Sub
 
+
 End Class
+
+
+'NewMigration(
+'        MigrationName:="202503311001 VDamageReport",
+'        MigrationCommand:=<![CDATA[
+
+'         ]]>.Value)
