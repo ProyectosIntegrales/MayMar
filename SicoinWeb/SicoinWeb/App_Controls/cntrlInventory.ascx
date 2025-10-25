@@ -100,8 +100,11 @@
                             <asp:Panel ID="pnlTryagain" runat="server" Visible="false" Style="color: #a90000">
                                 Algo salió mal, intente de nuevo. Verifique que sea el número correcto.
                             </asp:Panel>
+                            
                         </td>
-
+                        <td  style="display: flex; justify-content: end; padding-right:10px"><span>CR 
+                            <asp:TextBox ID="txtOp0" runat="server" AutoPostBack="True" CssClass="textboxg uppercase" ReadOnly="True" Rows="1" Width="30px">177</asp:TextBox>
+                            </span></td>
                     </tr>
 
                 </table>
